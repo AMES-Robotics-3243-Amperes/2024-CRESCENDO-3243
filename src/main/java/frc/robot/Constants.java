@@ -63,6 +63,16 @@ public final class Constants {
     public static final double hardVoltageCap = 7.8;
   }
 
+  public static final class Climber {
+    public static final class ClimberConstants {
+      public static final class IDs {
+        // ££ Climber ids
+        public static final int kMotorOne = 9;
+        public static final int kMotorTwo = 10;
+      }
+    }
+  }
+
   public static final class DriveTrain {
 
     // :3 constants for individual modules
