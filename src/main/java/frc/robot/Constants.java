@@ -65,6 +65,9 @@ public final class Constants {
 
   public static final class Climber {
     public static final class ClimberConstants {
+      // ££ Sets the current at which the motors will stop running on the descent
+      public static final double MotorCurrentLimit = 50.0;
+
       public static final class IDs {
         // ££ Climber ids
         public static final int kMotorOne = 9;
@@ -74,6 +77,15 @@ public final class Constants {
       public static final class MotorSpeeds {
         // ££ Sets the speeds of the motors on the rise and fall
         public static final double kRiseSpeed = 0.5;
+        public static final double kInitialFallSpeed = -0.5;
+      }
+
+      public static final class ClimberPIDFF {
+        // ££ Sets the P, I, D, and FF values for the climber motors when they're pulling the robot up
+        public static final double kP = 0.1;
+        public static final double kI = 0.1;
+        public static final double kD = 0.1;
+        public static final double kFF = 0.1;
       }
     }
   }
