@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DataManager;
 import frc.robot.IMUWrapper;
 import frc.robot.utility.PowerManager;
+import frc.robot.utility.SubsystemBaseTestable;
+import frc.robot.utility.Test;
+import frc.robot.utility.TestUtil;
 import frc.robot.Constants.DriveTrain.DriveConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.utility.TranslationRateLimiter;
@@ -23,7 +26,7 @@ import frc.robot.utility.TranslationRateLimiter;
  * 
  * @author :3
  */
-public class SubsystemSwerveDrivetrain extends SubsystemBase {
+public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
 
   // :3 create swerve modules
   private final SubsystemSwerveModule m_frontLeft = new SubsystemSwerveModule(DriveConstants.IDs.kFrontLeftDrivingCanId,
@@ -87,7 +90,7 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
+  public void doPeriodic() {
     m_drivingRateLimiter.changeLimit(DataManager.currentAccelerationConstant.get());
 
     // :3 update odometry and feed that information into DataManager
@@ -343,5 +346,49 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   */
   public double getDriveRearRightCurrent() {
     return (m_rearRight.getMotorOutputCurrent());
+  }
+
+  @Override
+  public Test[] getTests() {
+    return new Test[]{new ExampleTest(), new ExampleFailingTest()};
+  }
+
+  protected class ExampleTest implements Test {
+    @Override public void testPeriodic() {}
+    @Override public boolean testIsDone() {return true;}
+    @Override public void setupPeriodic() {}
+    @Override public boolean setupIsDone() {return true;}
+    @Override public void closedownPeriodic() {}
+    @Override public boolean closedownIsDone() {return true;}
+
+    @Override public String getName() {return "Example Test";}
+
+    @Override public Test[] getDependencies() {return new Test[0];}
+  }
+
+  protected class ExampleFailingTest implements Test {
+    @Override public void testPeriodic() {TestUtil.assertEquals(2+2,7);}
+    @Override public boolean testIsDone() {return true;}
+    @Override public void setupPeriodic() {}
+    @Override public boolean setupIsDone() {return true;}
+    @Override public void closedownPeriodic() {}
+    @Override public boolean closedownIsDone() {return true;}
+
+    @Override public String getName() {return "Example Failing Test";}
+
+    @Override public Test[] getDependencies() {return new Test[0];}
+  }
+
+  protected class ExampleDependentTest implements Test {
+    @Override public void testPeriodic() {}
+    @Override public boolean testIsDone() {return true;}
+    @Override public void setupPeriodic() {}
+    @Override public boolean setupIsDone() {return true;}
+    @Override public void closedownPeriodic() {}
+    @Override public boolean closedownIsDone() {return true;}
+
+    @Override public String getName() {return "Example Dependent Test";}
+
+    @Override public Test[] getDependencies() {return new Test[]{new ExampleTest()};}
   }
 }

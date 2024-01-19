@@ -7,6 +7,7 @@ package frc.robot.utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -93,8 +94,10 @@ public class TestManager {
     protected static TestState testState = TestState.SETUP;
 
     public static boolean testsFinished = false;
-    public static boolean testsFinishedCompletely = false;
     public static boolean testStarted = false;
+    private static boolean inInitialPause = true;
+
+    protected static int cyclesRun = 0;
 
 
 
@@ -120,9 +123,10 @@ public class TestManager {
      */
     public static void init() {
         System.out.println("init!");
-        //groupsToTest.clear();
+        groupsToTest.clear();
         testIndex = 0;
         testState = TestState.SETUP;
+        inInitialPause = true;
         testsFinished = false;
     }
 
@@ -132,6 +136,17 @@ public class TestManager {
      * @author H!
      */
     public static void periodic() {
+        if (Robot.managerFirst == null) {
+            Robot.managerFirst = true;
+        }
+
+        if (inInitialPause) {
+            inInitialPause = false;
+            return;
+        }
+        
+        cyclesRun++;
+        SmartDashboard.putNumber("CyclesRun", cyclesRun);
         //System.out.println("#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#");
         String[] testGroupNames = new String[groupsToTest.size()];
         for (int i = 0; i < groupsToTest.size(); i++) {
@@ -144,7 +159,7 @@ public class TestManager {
         try {
             SmartDashboard.putString("FirstTestGroup", groupsToTest.get(0).getName());
         } catch (Exception e) {
-            System.out.println("No test groups");
+            //System.out.println("No test groups");
         }
         
 
@@ -153,14 +168,10 @@ public class TestManager {
             runTests(groupsToTest.get(0));
 
         } else {
-            if (!testsFinished && testsFinishedCompletely) {
-                displayTestResults();
-                testsFinishedCompletely = false;
-            }
             if (!testsFinished) {
-                testsFinishedCompletely = true;
+                displayTestResults();;
+                testsFinished = true;
             }
-            testsFinished = true;
         }
     }
 
@@ -174,7 +185,7 @@ public class TestManager {
      */
     protected static void runTests(TestGroup testGroup) {
         if (testsToTest.size() == 0) {
-            testsToTest = Arrays.asList(testGroup.getTests());
+            testsToTest = new LinkedList<Test>(Arrays.asList(testGroup.getTests()));
         }
 
         if (!testStarted) {
@@ -277,6 +288,7 @@ public class TestManager {
                     break;
             }
         } catch (AssertionError e) {
+            System.out.println("\n\n\n\n\n\nFAILURE\n\n\n\n\n\n\n");
             results.get(groupsToTest.get(0).getName()).put(test.getName(), new TestResults(TestSuccess.FAIL, e.getMessage()));
             testsRun.put(test, TestSuccess.FAIL);
             onTestDone();
@@ -363,7 +375,7 @@ public class TestManager {
         for (Entry<String, Map<String, TestResults>> groupEntry : results.entrySet()) {
             try {
                 doc.insertAfterStart(doc.getElement("testGroupList"), getGroupHTMLElement(groupEntry));
-
+                
                 for (Entry<String, TestResults> testResultEntry : groupEntry.getValue().entrySet()) {
                     doc.insertAfterStart(doc.getElement("testGroupList").getElement(0).getElement(2), getTestHTMLFormat(testResultEntry));
                 }

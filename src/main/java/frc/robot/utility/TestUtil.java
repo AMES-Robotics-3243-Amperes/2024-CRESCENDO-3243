@@ -66,5 +66,65 @@ public class TestUtil {
         return askUserBool(question, "Yes", "No");
     }
 
+    /**
+     * Asserts that one number is equal to another, and if this is false, throws an error,
+     * typically to be caught by a test manager, or to stop the program.
+     * 
+     * @param a The first number
+     * @param b The second number
+     * @param message The optional error message
+     * @param error The allowable error
+     * @throws AssertionError
+     */
+    public static void assertEquals(double a, double b, String message, double error) throws AssertionError {
+        if (Math.abs(a-b) > error) {
+            throw new AssertionError(message);
+        }
+    }
+
+    /**
+     * Asserts that one number is equal to another, and if this is false, throws an error,
+     * typically to be caught by a test manager, or to stop the program.
+     * 
+     * Defaulting to an error of no more than one part in a million.
+     * 
+     * @param a The first number
+     * @param b The second number
+     * @param message The optional error message
+     * @throws AssertionError
+     */
+    public static void assertEquals(double a, double b, String message) throws AssertionError {
+        assertEquals(a, b, message, ((a+b)/2.)*1E-6);
+    }
+
+    /**
+     * Asserts that one number is equal to another, and if this is false, throws an error,
+     * typically to be caught by a test manager, or to stop the program.
+     * 
+     * Defaulting to an error of no more than one part in a million, and to have a simple error message.
+     * 
+     * @param a The first number
+     * @param b The second number
+     * @throws AssertionError
+     */
+    public static void assertEquals(double a, double b) throws AssertionError {
+        assertEquals(a, b, a+" was not equal to "+b, ((a+b)/2.)*1E-6);
+    }
+
+    /**
+     * Asserts that one number is equal to another, and if this is false, throws an error,
+     * typically to be caught by a test manager, or to stop the program.
+     * 
+     * Defaulting to have a simple error message.
+     * 
+     * @param a The first number
+     * @param b The second number
+     * @param message The optional error message
+     * @throws AssertionError
+     */
+    public static void assertEquals(double a, double b, double error) throws AssertionError {
+        assertEquals(a, b, a+" was not equal to "+b, error);
+    }
+
 
 }
