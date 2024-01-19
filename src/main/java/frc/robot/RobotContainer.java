@@ -6,11 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.CommandSwerveTeleopDrive;
+import frc.robot.commands.CommandIntake; 
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
+import frc.robot.subsystems.SubsystemIntake;
 
 import java.io.IOException;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -23,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // :3 Controler
+  private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
+public final CommandIntake m_commandIntake = new CommandIntake();
   private final JoyUtil primaryController = new JoyUtil(JoyUtilConstants.primaryControllerID);
   private final JoyUtil secondaryController = new JoyUtil(JoyUtilConstants.secondaryControllerID);
   //
@@ -40,6 +45,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
+    m_subsystemIntake.setDefaultCommand(m_commandIntake);
 
     try {
       new SubsystemPhotonvision();
