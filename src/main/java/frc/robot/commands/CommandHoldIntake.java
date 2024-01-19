@@ -5,12 +5,11 @@
 package frc.robot.commands;
 import frc.robot.subsystems.SubsystemIntake;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.XboxController;
-public class CommandIntake extends Command {
+public class CommandHoldIntake extends Command {
 
 
   /** Creates a new tsagpbigonelittleone. */
-  public void commandIntake(SubsystemIntake intake, XboxController driverXboxController) {
+  public void CommandHoldIntake(SubsystemIntake intake) {
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -22,6 +21,7 @@ public class CommandIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
 
   }
   // Called once the command ends or is interrupted.

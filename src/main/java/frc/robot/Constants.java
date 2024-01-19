@@ -27,6 +27,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class IntakeConstants {
+    public static int IntakeMotorID = -999;
+    public static double kP = 0;
+    public static double kI = 0;
+    public static double kD = 0;
+    public static double kFF = 0;
+    public static double kV = 0;
+    public static int ToronDeployerMotorID = -9098;
+  }
   public static class JoyUtilConstants {
     // :3 size of controller deadzone
     public static final double kDeadzone = 0.12;
@@ -258,4 +267,5 @@ public final class Constants {
       new Pose3d(new Translation3d(25.0 / 100, -.22, 14.4 / 100), new Rotation3d());
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
   }
+
 }

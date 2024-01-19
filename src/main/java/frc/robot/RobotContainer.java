@@ -6,14 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.CommandSwerveTeleopDrive;
-import frc.robot.commands.CommandIntake; 
+import frc.robot.commands.CommandHoldIntake; 
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
 
 import java.io.IOException;
 
-import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // :3 Controler
   private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
-public final CommandIntake m_commandIntake = new CommandIntake();
+public final CommandHoldIntake m_commandIntake = new CommandHoldIntake(m_subsystemIntake);
   private final JoyUtil primaryController = new JoyUtil(JoyUtilConstants.primaryControllerID);
   private final JoyUtil secondaryController = new JoyUtil(JoyUtilConstants.secondaryControllerID);
   //
@@ -66,7 +66,9 @@ public final CommandIntake m_commandIntake = new CommandIntake();
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    primaryController.a().whileTrue(m_commandIntake);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
