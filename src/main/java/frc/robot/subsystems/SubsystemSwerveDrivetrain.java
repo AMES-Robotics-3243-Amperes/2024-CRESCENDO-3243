@@ -1,4 +1,6 @@
 package frc.robot.subsystems;
+import java.util.concurrent.Future;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -10,10 +12,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DataManager;
 import frc.robot.IMUWrapper;
 import frc.robot.utility.PowerManager;
+import frc.robot.utility.Test;
+import frc.robot.utility.TestUtil;
 import frc.robot.Constants.DriveTrain.DriveConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.utility.TranslationRateLimiter;
@@ -343,5 +348,75 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   */
   public double getDriveRearRightCurrent() {
     return (m_rearRight.getMotorOutputCurrent());
+  }
+
+  private class EncoderTest implements Test {
+    private boolean hasRanOneTimeSetup = false;
+    private boolean hasRanOneTimeTest = false;
+    private Timer timer = new Timer();
+    private Future<Boolean> response;
+
+    @Override
+    public void testPeriodic() {
+      if (!hasRanOneTimeTest) {
+        hasRanOneTimeTest = true;
+        response = TestUtil.askUserBool("Are the robot's wheels all pointing in the same direction?");
+      }
+
+      driveWithSpeeds(new Translation2d(0.0, 0.0), 0.0, true);
+    }
+
+    @Override
+    public boolean testIsDone() {
+      if (response.isDone()) {
+        try {
+          assert(response.get() == true);
+          return true;
+        } catch (Exception e) {
+          // something unexpected happened. fail test and be done with it.w 
+          assert("Something went wrong getting boolean response" == " ");
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    @Override
+    public void setupPeriodic() {
+      if (!hasRanOneTimeSetup) {
+        timer.reset();
+        timer.start();
+        hasRanOneTimeSetup = true;
+      }
+
+      driveWithSpeeds(new Translation2d(0.1, 0.0), 0.0, true);
+    }
+
+    @Override
+    public boolean setupIsDone() {
+      return timer.hasElapsed(1);
+    }
+
+    @Override
+    public void closedownPeriodic() {}
+
+    @Override
+    public boolean closedownIsDone() {
+      hasRanOneTimeSetup = false;
+      hasRanOneTimeTest = false;
+
+      return true;
+    }
+
+    @Override
+    public String getName() {
+      return "SubsystemSwerveDrivetrainEncoderTest";
+    }
+
+    @Override
+    public Test[] getDependencies() {
+      return new Test[0];
+    }
   }
 }

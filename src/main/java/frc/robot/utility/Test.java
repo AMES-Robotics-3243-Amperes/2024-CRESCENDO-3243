@@ -4,8 +4,6 @@
 
 package frc.robot.utility;
 
-import java.util.Arrays;
-
 /** Add your docs here. */
 public interface Test {
     public void testPeriodic();
