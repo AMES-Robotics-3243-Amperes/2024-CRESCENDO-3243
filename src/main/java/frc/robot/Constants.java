@@ -70,6 +70,11 @@ public final class Constants {
         public static final int kMotorOne = 9;
         public static final int kMotorTwo = 10;
       }
+
+      public static final class MotorSpeeds {
+        // ££ Sets the speeds of the motors on the rise and fall
+        public static final double kRiseSpeed = 0.5;
+      }
     }
   }
 

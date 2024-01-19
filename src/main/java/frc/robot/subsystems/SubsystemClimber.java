@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import frc.robot.Constants;
 
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +21,13 @@ public class SubsystemClimber extends SubsystemBase {
   public SubsystemClimber() {
     motorOne = new CANSparkMax(Constants.Climber.ClimberConstants.IDs.kMotorOne, MotorType.kBrushless);
     motorTwo = new CANSparkMax(Constants.Climber.ClimberConstants.IDs.kMotorTwo, MotorType.kBrushless);
+  }
+
+  public void runClimber(boolean dPadUp) {
+    if (dPadUp) {
+      motorOne.set(Constants.Climber.ClimberConstants.MotorSpeeds.kRiseSpeed);
+      motorTwo.set(Constants.Climber.ClimberConstants.MotorSpeeds.kRiseSpeed);
+    }
   }
 
   @Override
