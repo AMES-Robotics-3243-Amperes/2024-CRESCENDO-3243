@@ -4,12 +4,17 @@
 
 package frc.robot.subsystems;
 
+import java.util.ResourceBundle.Control;
+
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.SparkRelativeEncoder;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import frc.robot.Constants;
-
+import frc.robot.Constants.Climber;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,6 +27,10 @@ public class SubsystemClimber extends SubsystemBase {
   // ££ Initializes the PID controllers
   private final SparkPIDController motorOneController;
   private final SparkPIDController motorTwoController;
+
+  // ££ Initializes the relative encoders
+  private final RelativeEncoder motorOneRelativeEncoder;
+  private final RelativeEncoder motorTwoRelativeEncoder;
 
   // ££ Boolean values for if the climber arms have reached positions ready to pull up
   boolean motorOneComplete;
@@ -43,6 +52,22 @@ public class SubsystemClimber extends SubsystemBase {
       Constants.Climber.ClimberConstants.ClimberPIDFF.kI,
       Constants.Climber.ClimberConstants.ClimberPIDFF.kD,
       Constants.Climber.ClimberConstants.ClimberPIDFF.kFF);
+
+    // ££ Creates the relative encoders
+    motorOneRelativeEncoder = motorOne.getEncoder();
+    motorTwoRelativeEncoder = motorTwo.getEncoder();
+
+    motorOneRelativeEncoder.setPositionConversionFactor(Constants.Climber.ClimberConstants.kGearRatio);
+    motorTwoRelativeEncoder.setPositionConversionFactor(Constants.Climber.ClimberConstants.kGearRatio);
+
+    // // ££ Sets the feedback devices
+    // motorOneController.setFeedbackDevice(motorOneRelativeEncoder);
+    // motorTwoController.setFeedbackDevice(motorTwoRelativeEncoder);
+  }
+
+  public void setMotorPositionTarget(double position) {
+    motorOneController.setReference(position, ControlType.kPosition);
+    motorTwoController.setReference(position, ControlType.kPosition);
   }
 
   public void runClimber(boolean dPadUp, boolean dPadDown) {
@@ -70,7 +95,10 @@ public class SubsystemClimber extends SubsystemBase {
     }
 
     if (motorOneComplete && motorTwoComplete) {
+      double currentRotations = motorOneRelativeEncoder.getPosition();
+      double targetPositon = currentRotations - Constants.Climber.ClimberConstants.kPositionOffset;
 
+      setMotorPositionTarget(targetPositon);
     }
   }
 

@@ -87,6 +87,12 @@ public final class Constants {
         public static final double kD = 0.1;
         public static final double kFF = 0.1;
       }
+
+      // ££ Sets the positional reference value
+      public static final double kPositionOffset = 20;
+
+      // ££ Sets the position conversion factor
+      public static final double kGearRatio = 12;
     }
   }
 
