@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // :3 Controler
   private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
-public final CommandHoldIntake m_commandIntake = new CommandHoldIntake(m_subsystemIntake);
+  public final CommandHoldIntake m_commandIntake = new CommandHoldIntake(m_subsystemIntake);
   private final JoyUtil primaryController = new JoyUtil(JoyUtilConstants.primaryControllerID);
   private final JoyUtil secondaryController = new JoyUtil(JoyUtilConstants.secondaryControllerID);
   //

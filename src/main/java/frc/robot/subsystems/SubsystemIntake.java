@@ -41,4 +41,12 @@ protected final SparkPIDController IntakePID;
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public void TurnOnIntake() {
+    IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
+  }
+
+  public void TurnOffIntake() {
+    IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+  }
 }

@@ -7,16 +7,19 @@ import frc.robot.subsystems.SubsystemIntake;
 import edu.wpi.first.wpilibj2.command.Command;
 public class CommandHoldIntake extends Command {
 
-
-  /** Creates a new tsagpbigonelittleone. */
-  public void CommandHoldIntake(SubsystemIntake intake) {
+  protected final SubsystemIntake m_SubsystemIntake;
+  /** Creates a new CommandHoldIntake. */
+  public CommandHoldIntake(SubsystemIntake intake) {
     addRequirements(intake);
+    m_SubsystemIntake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_SubsystemIntake.TurnOnIntake();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -27,6 +30,7 @@ public class CommandHoldIntake extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_SubsystemIntake.TurnOffIntake();
 }
 
   // Returns true when the command should end.
