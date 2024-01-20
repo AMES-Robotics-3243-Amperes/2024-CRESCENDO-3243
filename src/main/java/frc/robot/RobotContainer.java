@@ -42,12 +42,11 @@ public class RobotContainer {
   // :3 COMMANDS
   //
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
-  public final CommandHoldIntake m_commandIntake = new CommandHoldIntake(m_subsystemIntake);
-  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
+  public final CommandHoldIntake m_CommandHoldIntake = new CommandHoldIntake(m_subsystemIntake);
+  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController, m_CommandHoldIntake);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
-    m_subsystemIntake.setDefaultCommand(m_commandIntake);
     m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     try {
       new SubsystemPhotonvision();
@@ -68,9 +67,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-    primaryController.a().whileTrue(m_commandIntake);
-  }
+  private void configureBindings() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
