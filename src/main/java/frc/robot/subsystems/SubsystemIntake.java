@@ -87,7 +87,7 @@ public class SubsystemIntake extends SubsystemBase {
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
     m_PivotPID.setFeedbackDevice(m_PivotAbsoluteEncoder);
 
-    setTouronPIDFValues(m_PivotPID, IntakePIDs.touronP, IntakePIDs.touronI, IntakePIDs.touronD, IntakePIDs.touronFF);
+    setPivotPIDFValues(m_PivotPID, IntakePIDs.touronP, IntakePIDs.touronI, IntakePIDs.touronD, IntakePIDs.touronFF);
 
     // 
     // :> Shuffleboard PID Tuning
@@ -117,28 +117,29 @@ public class SubsystemIntake extends SubsystemBase {
     * @param f
     * @author :>
     */
-  protected void setTouronPIDFValues(SparkPIDController pidController, double p, double i, double d, double f) {
+  protected void setPivotPIDFValues(SparkPIDController pidController, double p, double i, double d, double f) {
     pidController.setP(p);
     pidController.setI(i);
     pidController.setD(d);
     pidController.setFF(f);
   }
   /**
-    * gets the current position of the Touron
+    * gets the current position of the Pivot
     * Currently only planned to be used for auto if used at all
-    * @return Position of the Touron
+    * ss I used it to tell if the Pivot is at the setpoint
+    * @return Position of the Pivot
     * @author :>
     */
-  public double getTouronMotorPosition() {
+  public double getPivotMotorPosition() {
     return m_PivotAbsoluteEncoder.getPosition();
   }
   /**
-   * Gets whether the Touron is at the setPoint
+   * Gets whether the Pivot is at the setPoint
    * @param position
    * @author ss
    */
-  public boolean getTouronAtPosition(setPoints position) {
-    return ((getTouronMotorPosition() / position.angle) > lowerBound) && ((getTouronMotorPosition() / position.angle) < upperBound);
+  public boolean getPivotAtSetPoint(setPoints position) {
+    return ((getPivotMotorPosition() / position.angle) > lowerBound) && ((getPivotMotorPosition() / position.angle) < upperBound);
   }
   /**
     * Sets the position of the Touron based off of an inputted setPoint
