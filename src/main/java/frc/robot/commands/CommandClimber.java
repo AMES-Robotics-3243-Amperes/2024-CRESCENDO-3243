@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.SubsystemClimber;
 import frc.robot.JoyUtil;
 
@@ -34,6 +33,9 @@ public class CommandClimber extends Command {
   @Override
   public void execute() {
     boolean dPadUp = m_controller.getPOVUp();
+    boolean dPadDown = m_controller.getPOVDown();
+
+    m_subsystemClimber.runClimber(dPadUp, dPadDown);
   }
 
   // Called once the command ends or is interrupted.

@@ -4,20 +4,14 @@
 
 package frc.robot.subsystems;
 
-import java.util.ResourceBundle.Control;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.SparkRelativeEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 
-import frc.robot.Constants;
-import frc.robot.Constants.Climber;
-import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
+import static frc.robot.Constants.Climber.ClimberConstants.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class SubsystemClimber extends SubsystemBase {
   // ££ Initialize climber motors
@@ -33,14 +27,14 @@ public class SubsystemClimber extends SubsystemBase {
   private final RelativeEncoder motorTwoRelativeEncoder;
 
   // ££ Boolean values for if the climber arms have reached positions ready to pull up
-  boolean motorOneComplete;
-  boolean motorTwoComplete;
+  boolean motorOneComplete = false;
+  boolean motorTwoComplete = false;
 
   /** Creates a new ClimberSubsystem. */
   public SubsystemClimber() {
     // ££ Creates the two motors
-    motorOne = new CANSparkMax(Constants.Climber.ClimberConstants.IDs.kMotorOne, MotorType.kBrushless);
-    motorTwo = new CANSparkMax(Constants.Climber.ClimberConstants.IDs.kMotorTwo, MotorType.kBrushless);
+    motorOne = new CANSparkMax(IDs.kMotorOne, MotorType.kBrushless);
+    motorTwo = new CANSparkMax(IDs.kMotorTwo, MotorType.kBrushless);
 
     // ££ Creates the PID controllers
     motorOneController = motorOne.getPIDController();
@@ -48,21 +42,21 @@ public class SubsystemClimber extends SubsystemBase {
 
     // ££ Sets PID values
     setPIDValues(motorOneController,
-      Constants.Climber.ClimberConstants.ClimberPIDFF.kP,
-      Constants.Climber.ClimberConstants.ClimberPIDFF.kI,
-      Constants.Climber.ClimberConstants.ClimberPIDFF.kD,
-      Constants.Climber.ClimberConstants.ClimberPIDFF.kFF);
+      ClimberPIDFF.kP,
+      ClimberPIDFF.kI,
+      ClimberPIDFF.kD,
+      ClimberPIDFF.kFF);
 
     // ££ Creates the relative encoders
     motorOneRelativeEncoder = motorOne.getEncoder();
     motorTwoRelativeEncoder = motorTwo.getEncoder();
 
-    motorOneRelativeEncoder.setPositionConversionFactor(Constants.Climber.ClimberConstants.kGearRatio);
-    motorTwoRelativeEncoder.setPositionConversionFactor(Constants.Climber.ClimberConstants.kGearRatio);
+    motorOneRelativeEncoder.setPositionConversionFactor(kGearRatio);
+    motorTwoRelativeEncoder.setPositionConversionFactor(kGearRatio);
 
-    // // ££ Sets the feedback devices
-    // motorOneController.setFeedbackDevice(motorOneRelativeEncoder);
-    // motorTwoController.setFeedbackDevice(motorTwoRelativeEncoder);
+    // ££ Sets the feedback devices
+    motorOneController.setFeedbackDevice(motorOneRelativeEncoder);
+    motorTwoController.setFeedbackDevice(motorTwoRelativeEncoder);
   }
 
   public void setMotorPositionTarget(double position) {
@@ -71,32 +65,32 @@ public class SubsystemClimber extends SubsystemBase {
   }
 
   public void runClimber(boolean dPadUp, boolean dPadDown) {
-    if (motorOne.getOutputCurrent() > Constants.Climber.ClimberConstants.MotorCurrentLimit) {
+    if (motorOne.getOutputCurrent() > MotorCurrentLimit) {
       motorOneComplete = true;
     }
 
-    if (motorTwo.getOutputCurrent() > Constants.Climber.ClimberConstants.MotorCurrentLimit) {
+    if (motorTwo.getOutputCurrent() > MotorCurrentLimit) {
       motorTwoComplete = true;
     }
 
     if (dPadUp) {
-      motorOne.set(Constants.Climber.ClimberConstants.MotorSpeeds.kRiseSpeed);
-      motorTwo.set(Constants.Climber.ClimberConstants.MotorSpeeds.kRiseSpeed);
+      motorOne.set(MotorSpeeds.kRiseSpeed);
+      motorTwo.set(MotorSpeeds.kRiseSpeed);
     } 
     
     if (dPadDown) {
       if (!motorOneComplete) {
-        motorOne.set(Constants.Climber.ClimberConstants.MotorSpeeds.kInitialFallSpeed);
+        motorOne.set(MotorSpeeds.kInitialFallSpeed);
       }
 
       if (!motorTwoComplete) {
-      motorTwo.set(Constants.Climber.ClimberConstants.MotorSpeeds.kInitialFallSpeed);
+      motorTwo.set(MotorSpeeds.kInitialFallSpeed);
       }
     }
 
     if (motorOneComplete && motorTwoComplete) {
       double currentRotations = motorOneRelativeEncoder.getPosition();
-      double targetPositon = currentRotations - Constants.Climber.ClimberConstants.kPositionOffset;
+      double targetPositon = currentRotations - kPositionOffset;
 
       setMotorPositionTarget(targetPositon);
     }
