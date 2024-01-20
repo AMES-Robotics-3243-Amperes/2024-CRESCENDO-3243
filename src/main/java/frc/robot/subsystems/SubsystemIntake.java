@@ -64,7 +64,7 @@ public class SubsystemIntake extends SubsystemBase {
   protected ShuffleboardTab tab = Shuffleboard.getTab("Intake Tuning");
 
 
-  /** Creates a new IntakeSubsystem. */
+  /** Creates a new SubsystemIntake. */
   public SubsystemIntake() {
 
     m_IntakeMotor = new CANSparkMax(IntakeMotorID, CANSparkMax.MotorType.kBrushless);
