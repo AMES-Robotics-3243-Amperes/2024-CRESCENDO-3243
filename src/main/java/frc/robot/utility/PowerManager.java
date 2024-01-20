@@ -58,7 +58,7 @@ public class PowerManager {
     public static final double getDriveSpeedDamper() {
     
         if (getTotalRobotPowerDraw() > 230) {
-            System.out.println("TOO MUCH CURRENT PULL");
+            //System.out.println("TOO MUCH CURRENT PULL");
             return 0;
         }if (RobotController.getBatteryVoltage() < Constants.PowerManager.softVoltageCap) {
         return Constants.DriveTrain.DriveConstants.kSlowDrivingSpeedDamper;
@@ -81,7 +81,7 @@ public class PowerManager {
      */
     public static final double getDriveAccelerationDampener() {
         if (getTotalRobotPowerDraw() > 230) {
-            System.out.println("TOO MUCH CURRENT PULL");
+            //System.out.println("TOO MUCH CURRENT PULL");
             return 0;
         } else if (getCurrentRobotVoltageDrop() > 4.5) {
             return 1;
