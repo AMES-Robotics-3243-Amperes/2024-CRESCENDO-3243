@@ -23,12 +23,13 @@ public interface Test {
     public String getName();
 
     /** 
+     * <p><b>This method must always return the same thing, down to the refrences. That means
+     * this method CANNOT create new test objects each time it is run.</b></p>
+     * 
      * <p>This should return a list of tests that must run before this one. By 
      * default, it is assumed all tests must succeed before this test should run.
      * If you wish to change this behavior, see {@link Test#getDependencySuccessRequirements()}.</p>
      * 
-     * <p>Note that be deafault, this method is called by {@link Test#getDependencySuccessRequirements()},
-     * so try to avoid this method being non-deterministic or too expensive.</p>
      */
     public Test[] getDependencies();
 

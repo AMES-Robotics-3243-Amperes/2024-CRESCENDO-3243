@@ -188,6 +188,10 @@ public class TestManager {
             testsToTest = new LinkedList<Test>(Arrays.asList(testGroup.getTests()));
         }
 
+        if (testsToTest.get(0).getName() == "Example Test") {
+            System.out.println("it's time");
+        }
+
         if (!testStarted) {
             /* DEPENDENCY LOGIC:
              * 
@@ -206,10 +210,10 @@ public class TestManager {
                 TestSuccess isRun = testsRun.get(test);
                 if (isRun == null) {
                     allDependenciesDone = false;
-                } else if (isRun == TestSuccess.FAIL && test.getDependencySuccessRequirements()[i] == true) {
+                } else if (isRun == TestSuccess.FAIL && testsToTest.get(0).getDependencySuccessRequirements()[i] == true) {
                     allDependenciesCorrect = false;
                     break; // We can stop the loop if any are wrong, because no matter what else happens, if one dependency is wrong, we have to cancel the test
-                } else if (isRun == TestSuccess.SUCCESS && test.getDependencySuccessRequirements()[i] == false) {
+                } else if (isRun == TestSuccess.SUCCESS && testsToTest.get(0).getDependencySuccessRequirements()[i] == false) {
                     allDependenciesCorrect = false;
                     break; // We can stop the loop if any are wrong, because no matter what else happens, if one dependency is wrong, we have to cancel the test
                 } else if (isRun == TestSuccess.NOTRUN) {
@@ -221,9 +225,12 @@ public class TestManager {
             if (!allDependenciesCorrect) {
                 results.get(groupsToTest.get(0).getName()).put(testsToTest.get(0).getName(), new TestResults(TestSuccess.NOTRUN, "Dependencies Not Correct"));
                 testsToTest.remove(0);
-            }
-
-            if (!allDependenciesDone) {
+                if (testsToTest.size() == 0) {
+                    groupsToTest.remove(0);
+                }
+                testStarted = false;
+                return;
+            } else if (!allDependenciesDone) {
                 for (Test test : testsToTest.get(0).getDependencies()) {
                     if (!testsRun.containsKey(test) && !testsToTest.contains(test)) {
                         testsToTest.add(1, test);
