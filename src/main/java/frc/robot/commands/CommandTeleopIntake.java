@@ -5,12 +5,12 @@ import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
 public class CommandTeleopIntake extends Command {
 
-  private final JoyUtil m_controller;
-  protected final SubsystemIntake m_subsystem;
+  private final JoyUtil m_Controller;
+  protected final SubsystemIntake m_Subsystem;
   /** Creates a new command. */
   public CommandTeleopIntake(SubsystemIntake intake, JoyUtil controller) {
-    m_controller = controller;
-    m_subsystem = intake;
+    m_Controller = controller;
+    m_Subsystem = intake;
     addRequirements(intake);
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,20 +24,20 @@ public class CommandTeleopIntake extends Command {
   @Override
   public void execute() {
     // :> Checks which setpoint the driver wants to input
-    if (m_controller.getPOVLeft()) {
-      m_subsystem.setPositionReference(setPoints.position1);
+    if (m_Controller.getPOVLeft()) {
+      m_Subsystem.setPositionReference(setPoints.position1);
     }
-    if (m_controller.getPOVDown()) {
-      m_subsystem.setPositionReference(setPoints.position2);
+    if (m_Controller.getPOVDown()) {
+      m_Subsystem.setPositionReference(setPoints.position2);
     }
-    if (m_controller.getPOVRight()) {
-      m_subsystem.setPositionReference(setPoints.position3);
+    if (m_Controller.getPOVRight()) {
+      m_Subsystem.setPositionReference(setPoints.position3);
     }
-    if (m_controller.getAButton()) {
-      m_subsystem.TurnOnIntake();
+    if (m_Controller.getAButton()) {
+      m_Subsystem.turnOnIntake();
     }
     else {
-      m_subsystem.TurnOffIntake();
+      m_Subsystem.turnOffIntake();
     }
 
   }

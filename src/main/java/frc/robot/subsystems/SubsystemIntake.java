@@ -30,17 +30,17 @@ import frc.robot.Constants.IntakeConstants.IntakePIDs;
 public class SubsystemIntake extends SubsystemBase {
 
   // :> Creates the pivotMotor
-  protected final CANSparkMax touronMotor = new CANSparkMax(Constants.IntakeConstants.touronMotor, MotorType.kBrushless);
+  protected final CANSparkMax m_PivotMotor = new CANSparkMax(Constants.IntakeConstants.touronMotor, MotorType.kBrushless);
   // :> Creates the pivot PIDController
-  protected final SparkPIDController touronPID;
+  protected final SparkPIDController m_PivotPID;
   // :> Creates the pivot AbsoluteEncoder
-  protected final SparkAbsoluteEncoder touronAbsoluteEncoder; 
+  protected final SparkAbsoluteEncoder m_PivotAbsoluteEncoder; 
 
-  private final CANSparkMax intakeMotor1;
+  protected final CANSparkMax m_IntakeMotor;
 
-  protected final RelativeEncoder IntakeEncoder;
+  protected final RelativeEncoder m_IntakeRelativeEncoder;
 
-  protected final SparkPIDController IntakePID;
+  protected final SparkPIDController m_IntakePID;
 
   // :> Shuffleboard entries for us to be able to tune PIDs live
   protected GenericEntry touronP;
@@ -59,6 +59,7 @@ public class SubsystemIntake extends SubsystemBase {
       this.angle = angle;
     }
   }
+  
   // :> Creates Shuffleboard tab to be able to put stuff on it relating to Intake
   protected ShuffleboardTab tab = Shuffleboard.getTab("Intake Tuning");
 
@@ -66,27 +67,27 @@ public class SubsystemIntake extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   public SubsystemIntake() {
 
-    intakeMotor1 = new CANSparkMax(IntakeMotorID, CANSparkMax.MotorType.kBrushless);
-    IntakeEncoder = intakeMotor1.getEncoder();
-    IntakePID = intakeMotor1.getPIDController();
-    IntakePID.setFeedbackDevice(IntakeEncoder);
+    m_IntakeMotor = new CANSparkMax(IntakeMotorID, CANSparkMax.MotorType.kBrushless);
+    m_IntakeRelativeEncoder = m_IntakeMotor.getEncoder();
+    m_IntakePID = m_IntakeMotor.getPIDController();
+    m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
 
-    IntakePID.setP(kP);
-    IntakePID.setI(kI);
-    IntakePID.setD(kD);
-    IntakePID.setFF(kFF);
+    m_IntakePID.setP(kP);
+    m_IntakePID.setI(kI);
+    m_IntakePID.setD(kD);
+    m_IntakePID.setFF(kFF);
 
-    IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+    m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
     // :> Gets the absolute encoder from the motor
-    touronAbsoluteEncoder = touronMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    m_PivotAbsoluteEncoder = m_PivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
     // :> Gets the PIDController from the motor
-    touronPID = touronMotor.getPIDController();
+    m_PivotPID = m_PivotMotor.getPIDController();
     // :> Accounts for the amount of turns it takes for the motor to actually move the intake
-    touronAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.touronConversionFactor);
+    m_PivotAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.touronConversionFactor);
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
-    touronPID.setFeedbackDevice(touronAbsoluteEncoder);
+    m_PivotPID.setFeedbackDevice(m_PivotAbsoluteEncoder);
 
-    setTouronPIDFValues(touronPID, IntakePIDs.touronP, IntakePIDs.touronI, IntakePIDs.touronD, IntakePIDs.touronFF);
+    setTouronPIDFValues(m_PivotPID, IntakePIDs.touronP, IntakePIDs.touronI, IntakePIDs.touronD, IntakePIDs.touronFF);
 
     // 
     // :> Shuffleboard PID Tuning
@@ -98,7 +99,7 @@ public class SubsystemIntake extends SubsystemBase {
     /* :> Sets the idlemode to break, 
       *   the reason why we do this is to make it so when the intake stops getting input it doesn't flail about
     */
-    touronMotor.setIdleMode(IdleMode.kBrake);
+    m_PivotMotor.setIdleMode(IdleMode.kBrake);
     
   }
 
@@ -129,7 +130,7 @@ public class SubsystemIntake extends SubsystemBase {
     * @author :>
     */
   public double getTouronMotorPosition() {
-    return touronAbsoluteEncoder.getPosition();
+    return m_PivotAbsoluteEncoder.getPosition();
   }
   /**
    * Gets whether the Touron is at the setPoint
@@ -145,14 +146,14 @@ public class SubsystemIntake extends SubsystemBase {
     * @author :>
     */
   public void setPositionReference(setPoints position) {
-    touronPID.setReference(position.angle, ControlType.kPosition);
+    m_PivotPID.setReference(position.angle, ControlType.kPosition);
   }
 
-  public void TurnOnIntake() {
-    IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
+  public void turnOnIntake() {
+    m_IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
   }
 
-  public void TurnOffIntake() {
-    IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+  public void turnOffIntake() {
+    m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
 }
