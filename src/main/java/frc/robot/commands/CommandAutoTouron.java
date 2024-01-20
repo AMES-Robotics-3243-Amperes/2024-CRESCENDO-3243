@@ -18,18 +18,15 @@ public class CommandAutoTouron extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      
-  }
-  @Override
-  public void execute() {
     m_subsystem.setPositionReference(m_setPoint);
   }
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void execute() {}
+  @Override
+  public void end(boolean interrupted) {}
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_subsystem.getTouronAtPosition(m_setPoint);
   }
 }

@@ -34,18 +34,22 @@ public final class Constants {
     public static final double touronConversionFactor = 1/64;
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
-    // :> Gives the angle at which the touron needs to rotate to for each position
+    // ss These are in Rotations
     public static final double touronSetPoint1 = 0;
-    public static final double touronSetPoint2 = 46;
-    public static final double touronSetPoint3 = 92;
+    public static final double touronSetPoint2 = 0.128;
+    public static final double touronSetPoint3 = 0.256;
+
+    // ss the bounds for the getTouronAtPosition() function as a ratio
+    public static final double lowerBound = 0.99;
+    public static final double upperBound = 1.01;
     
     // :> TODO: NOTE THESE ARE PLACEHOLDERS
-    public static int IntakeMotorID = -999;
-    public static double kP = 0;
-    public static double kI = 0;
-    public static double kD = 0;
-    public static double kFF = 0;
-    public static double kV = 0;
+    public static final int IntakeMotorID = -999;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kFF = 0;
+    public static final double kV = 0;
 
     public static final class IntakePIDs {
       // :> TODO: Change these to actual PID values when we get the robot

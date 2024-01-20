@@ -132,6 +132,14 @@ public class SubsystemIntake extends SubsystemBase {
     return touronAbsoluteEncoder.getPosition();
   }
   /**
+   * Gets whether the Touron is at the setPoint
+   * @param position
+   * @author ss
+   */
+  public boolean getTouronAtPosition(setPoints position) {
+    return ((getTouronMotorPosition() / position.angle) > lowerBound) && ((getTouronMotorPosition() / position.angle) < upperBound);
+  }
+  /**
     * Sets the position of the Touron based off of an inputted setPoint
     * @param position
     * @author :>
