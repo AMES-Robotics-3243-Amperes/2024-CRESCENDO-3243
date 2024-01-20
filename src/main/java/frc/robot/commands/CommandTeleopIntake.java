@@ -7,13 +7,12 @@ public class CommandTeleopIntake extends Command {
 
   private final JoyUtil m_Controller;
   protected final SubsystemIntake m_Subsystem;
+
   /** Creates a new command. */
   public CommandTeleopIntake(SubsystemIntake intake, JoyUtil controller) {
     m_Controller = controller;
     m_Subsystem = intake;
     addRequirements(intake);
-
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -33,6 +32,7 @@ public class CommandTeleopIntake extends Command {
     if (m_Controller.getPOVRight()) {
       m_Subsystem.setPositionReference(setPoints.position3);
     }
+    // ss Activates and Deactivates the Intake when the A button is pressed or unpressed
     if (m_Controller.getAButton()) {
       m_Subsystem.turnOnIntake();
     }
