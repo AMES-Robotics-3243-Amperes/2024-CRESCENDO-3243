@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.CommandSwerveTeleopDrive;
 import frc.robot.commands.CommandTeleopIntake;
-import frc.robot.commands.CommandHoldIntake; 
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
@@ -42,8 +41,7 @@ public class RobotContainer {
   // :3 COMMANDS
   //
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
-  public final CommandHoldIntake m_CommandHoldIntake = new CommandHoldIntake(m_subsystemIntake);
-  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController, m_CommandHoldIntake);
+  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
