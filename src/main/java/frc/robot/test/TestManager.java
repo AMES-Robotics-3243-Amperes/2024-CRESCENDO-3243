@@ -2,11 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.utility;
+package frc.robot.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,13 +25,9 @@ import frc.robot.Robot;
 public class TestManager {
     /* TODO:
      * Make the test runner behave nicely if the testing is cut off halfway through
-     * Add "Require enabled" method/abstract class
      * Other Utils
      * 
      * Paralalizable (<- spelled wrong):
-     * Test test implementation
-     * 
-     * Test the test test
      */
 
     public enum TestSuccess {
@@ -93,8 +90,10 @@ public class TestManager {
     protected static TestState testState = TestState.SETUP;
 
     public static boolean testsFinished = false;
-    public static boolean testsFinishedCompletely = false;
     public static boolean testStarted = false;
+    private static boolean inInitialPause = true;
+
+    protected static int cyclesRun = 0;
 
 
 
@@ -109,7 +108,7 @@ public class TestManager {
      * @author H!
      */
     public static void queueGroupToTest(TestGroup toTest) {
-        System.out.println("test Queued");
+        //System.out.println("test Queued");
         groupsToTest.add(toTest);
     }
 
@@ -119,10 +118,11 @@ public class TestManager {
      * @author H!
      */
     public static void init() {
-        System.out.println("init!");
-        //groupsToTest.clear();
+        //System.out.println("init!");
+        groupsToTest.clear();
         testIndex = 0;
         testState = TestState.SETUP;
+        inInitialPause = true;
         testsFinished = false;
     }
 
@@ -132,6 +132,17 @@ public class TestManager {
      * @author H!
      */
     public static void periodic() {
+        if (Robot.managerFirst == null) {
+            Robot.managerFirst = true;
+        }
+
+        if (inInitialPause) {
+            inInitialPause = false;
+            return;
+        }
+        
+        cyclesRun++;
+        SmartDashboard.putNumber("CyclesRun", cyclesRun);
         //System.out.println("#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#");
         String[] testGroupNames = new String[groupsToTest.size()];
         for (int i = 0; i < groupsToTest.size(); i++) {
@@ -144,7 +155,7 @@ public class TestManager {
         try {
             SmartDashboard.putString("FirstTestGroup", groupsToTest.get(0).getName());
         } catch (Exception e) {
-            System.out.println("No test groups");
+            //System.out.println("No test groups");
         }
         
 
@@ -153,14 +164,10 @@ public class TestManager {
             runTests(groupsToTest.get(0));
 
         } else {
-            if (!testsFinished && testsFinishedCompletely) {
-                displayTestResults();
-                testsFinishedCompletely = false;
-            }
             if (!testsFinished) {
-                testsFinishedCompletely = true;
+                displayTestResults();;
+                testsFinished = true;
             }
-            testsFinished = true;
         }
     }
 
@@ -174,7 +181,11 @@ public class TestManager {
      */
     protected static void runTests(TestGroup testGroup) {
         if (testsToTest.size() == 0) {
-            testsToTest = Arrays.asList(testGroup.getTests());
+            testsToTest = new LinkedList<Test>(Arrays.asList(testGroup.getTests()));
+        }
+
+        if (testsToTest.get(0).getName() == "Example Dependent Test") {
+            System.out.println("it's time");
         }
 
         if (!testStarted) {
@@ -195,10 +206,10 @@ public class TestManager {
                 TestSuccess isRun = testsRun.get(test);
                 if (isRun == null) {
                     allDependenciesDone = false;
-                } else if (isRun == TestSuccess.FAIL && test.getDependencySuccessRequirements()[i] == true) {
+                } else if (isRun == TestSuccess.FAIL && testsToTest.get(0).getDependencySuccessRequirements()[i] == true) {
                     allDependenciesCorrect = false;
                     break; // We can stop the loop if any are wrong, because no matter what else happens, if one dependency is wrong, we have to cancel the test
-                } else if (isRun == TestSuccess.SUCCESS && test.getDependencySuccessRequirements()[i] == false) {
+                } else if (isRun == TestSuccess.SUCCESS && testsToTest.get(0).getDependencySuccessRequirements()[i] == false) {
                     allDependenciesCorrect = false;
                     break; // We can stop the loop if any are wrong, because no matter what else happens, if one dependency is wrong, we have to cancel the test
                 } else if (isRun == TestSuccess.NOTRUN) {
@@ -209,10 +220,13 @@ public class TestManager {
 
             if (!allDependenciesCorrect) {
                 results.get(groupsToTest.get(0).getName()).put(testsToTest.get(0).getName(), new TestResults(TestSuccess.NOTRUN, "Dependencies Not Correct"));
-                testsToTest.remove(0);
-            }
-
-            if (!allDependenciesDone) {
+                testsRun.put(testsToTest.remove(0), TestSuccess.NOTRUN);
+                if (testsToTest.size() == 0) {
+                    groupsToTest.remove(0);
+                }
+                testStarted = false;
+                return;
+            } else if (!allDependenciesDone) {
                 for (Test test : testsToTest.get(0).getDependencies()) {
                     if (!testsRun.containsKey(test) && !testsToTest.contains(test)) {
                         testsToTest.add(1, test);
@@ -277,6 +291,7 @@ public class TestManager {
                     break;
             }
         } catch (AssertionError e) {
+            //System.out.println("\n\n\n\n\n\nFAILURE\n\n\n\n\n\n\n");
             results.get(groupsToTest.get(0).getName()).put(test.getName(), new TestResults(TestSuccess.FAIL, e.getMessage()));
             testsRun.put(test, TestSuccess.FAIL);
             onTestDone();
@@ -363,14 +378,14 @@ public class TestManager {
         for (Entry<String, Map<String, TestResults>> groupEntry : results.entrySet()) {
             try {
                 doc.insertAfterStart(doc.getElement("testGroupList"), getGroupHTMLElement(groupEntry));
-
+                
                 for (Entry<String, TestResults> testResultEntry : groupEntry.getValue().entrySet()) {
                     doc.insertAfterStart(doc.getElement("testGroupList").getElement(0).getElement(2), getTestHTMLFormat(testResultEntry));
                 }
 
 
             } catch (Exception e) {
-                System.out.println("Test result display generation failed:");
+                System.err.println("Test result display generation failed:");
                 e.printStackTrace();
             }
         }
