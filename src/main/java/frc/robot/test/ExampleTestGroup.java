@@ -55,9 +55,9 @@ public class ExampleTestGroup extends SubsystemBaseTestable {
     protected Test[] dependencies = new Test[]{new ExampleTest(), instanceExampleFailingTest};
 
     @Override public Test[] getDependencies() {return dependencies;}
-    @Override public boolean[] getDependencySuccessRequirements() {
+    /*@Override public boolean[] getDependencySuccessRequirements() {
       return new boolean[]{true, false};
-    }
+    }*/
   }
 
   protected class ExampleSuperDependentTest implements Test {

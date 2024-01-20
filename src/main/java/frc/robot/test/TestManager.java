@@ -25,13 +25,9 @@ import frc.robot.Robot;
 public class TestManager {
     /* TODO:
      * Make the test runner behave nicely if the testing is cut off halfway through
-     * Add "Require enabled" method/abstract class
      * Other Utils
      * 
      * Paralalizable (<- spelled wrong):
-     * Test test implementation
-     * 
-     * Test the test test
      */
 
     public enum TestSuccess {
@@ -188,8 +184,8 @@ public class TestManager {
             testsToTest = new LinkedList<Test>(Arrays.asList(testGroup.getTests()));
         }
 
-        if (testsToTest.get(0).getName() == "Example Test") {
-            //System.out.println("it's time");
+        if (testsToTest.get(0).getName() == "Example Dependent Test") {
+            System.out.println("it's time");
         }
 
         if (!testStarted) {
@@ -224,7 +220,7 @@ public class TestManager {
 
             if (!allDependenciesCorrect) {
                 results.get(groupsToTest.get(0).getName()).put(testsToTest.get(0).getName(), new TestResults(TestSuccess.NOTRUN, "Dependencies Not Correct"));
-                testsToTest.remove(0);
+                testsRun.put(testsToTest.remove(0), TestSuccess.NOTRUN);
                 if (testsToTest.size() == 0) {
                     groupsToTest.remove(0);
                 }
