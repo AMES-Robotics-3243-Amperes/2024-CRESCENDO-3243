@@ -47,7 +47,7 @@ public final class Constants {
     public static double kFF = 0;
     public static double kV = 0;
 
-    public static final class IntakePID {
+    public static final class IntakePIDs {
       // :> TODO: Change these to actual PID values when we get the robot
       public static final double touronP = .05;
       public static final double touronI = .002;
