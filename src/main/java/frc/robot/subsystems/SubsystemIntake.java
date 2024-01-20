@@ -35,11 +35,11 @@ public class SubsystemIntake extends SubsystemBase {
   protected final SparkPIDController m_PivotPID;
   // :> Creates the pivot AbsoluteEncoder
   protected final SparkAbsoluteEncoder m_PivotAbsoluteEncoder; 
-
+// 0? Creates IntakeMotor
   protected final CANSparkMax m_IntakeMotor;
-
+// 0? Creates IntakeMotor Relative Encoder. 
   protected final RelativeEncoder m_IntakeRelativeEncoder;
-
+// 0? Creates PIDController
   protected final SparkPIDController m_IntakePID;
 
   // :> Shuffleboard entries for us to be able to tune PIDs live
@@ -66,12 +66,13 @@ public class SubsystemIntake extends SubsystemBase {
 
   /** Creates a new SubsystemIntake. */
   public SubsystemIntake() {
-
+    // ss Sets up Intake Motor, Encoder, and PID
     m_IntakeMotor = new CANSparkMax(IntakeMotorID, CANSparkMax.MotorType.kBrushless);
     m_IntakeRelativeEncoder = m_IntakeMotor.getEncoder();
     m_IntakePID = m_IntakeMotor.getPIDController();
     m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
 
+    // 0? Sets up PID for Intake 
     m_IntakePID.setP(kP);
     m_IntakePID.setI(kI);
     m_IntakePID.setD(kD);
@@ -109,7 +110,7 @@ public class SubsystemIntake extends SubsystemBase {
   }
 
   /**
-    * Sets the PIDValues of the Touron when called
+    * Sets the PIDValues of the Pivot when called
     * @param pidController
     * @param p
     * @param i
@@ -124,16 +125,16 @@ public class SubsystemIntake extends SubsystemBase {
     pidController.setFF(f);
   }
   /**
-    * gets the current position of the Touron
+    * gets the current position of the Pivot
     * Currently only planned to be used for auto if used at all
-    * @return Position of the Touron
+    * @return Position of the Pivot
     * @author :>
     */
   public double getTouronMotorPosition() {
     return m_PivotAbsoluteEncoder.getPosition();
   }
   /**
-   * Gets whether the Touron is at the setPoint
+   * Gets whether the Pivot is at the setPoint
    * @param position
    * @author ss
    */
@@ -141,18 +142,18 @@ public class SubsystemIntake extends SubsystemBase {
     return ((getTouronMotorPosition() / position.angle) > lowerBound) && ((getTouronMotorPosition() / position.angle) < upperBound);
   }
   /**
-    * Sets the position of the Touron based off of an inputted setPoint
+    * Sets the position of the Pivot based off of an inputted setPoint
     * @param position
     * @author :>
     */
   public void setPositionReference(setPoints position) {
     m_PivotPID.setReference(position.angle, ControlType.kPosition);
   }
-
+// 0? Sets velocity of Intake when turned on
   public void turnOnIntake() {
     m_IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
   }
-
+ // 0? Sets velocity of Intake when turned off
   public void turnOffIntake() {
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
