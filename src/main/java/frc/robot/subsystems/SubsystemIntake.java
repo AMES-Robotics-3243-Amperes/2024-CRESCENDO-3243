@@ -118,9 +118,9 @@ public class SubsystemIntake extends SubsystemBase {
     */
   protected void setTouronPIDFValues(SparkPIDController pidController, double p, double i, double d, double f) {
     pidController.setP(p);
-    pidController.setP(i);
-    pidController.setP(d);
-    pidController.setP(f);
+    pidController.setI(i);
+    pidController.setD(d);
+    pidController.setFF(f);
   }
   /**
     * gets the current position of the Touron
