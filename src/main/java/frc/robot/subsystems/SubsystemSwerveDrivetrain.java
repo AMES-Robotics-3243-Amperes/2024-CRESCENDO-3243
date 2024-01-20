@@ -373,12 +373,13 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     public boolean testIsDone() {
       if (response.isDone()) {
         try {
-          assert(response.get() == true);
+          if (response.get() == false) {
+            throw new AssertionError();
+          }
+
           return true;
         } catch (Exception e) {
-          // something unexpected happened. fail test and be done with it.w 
-          assert("Something went wrong getting boolean response" == " ");
-          return true;
+          throw new AssertionError();
         }
       }
 
@@ -441,12 +442,13 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     public boolean testIsDone() {
       if (response.isDone()) {
         try {
-          assert(response.get() == true);
+          if (response.get() == false) {
+            throw new AssertionError();
+          }
+
           return true;
         } catch (Exception e) {
-          // something unexpected happened. fail test and be done with it.w 
-          assert("Something went wrong getting boolean response" == " ");
-          return true;
+          throw new AssertionError();
         }
       }
 
