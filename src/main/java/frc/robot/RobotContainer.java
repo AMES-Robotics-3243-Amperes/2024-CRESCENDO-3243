@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.CommandSwerveTeleopDrive;
+import frc.robot.commands.CommandTeleopIntake;
 import frc.robot.commands.CommandHoldIntake; 
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
@@ -25,28 +26,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // :3 Controler
-  private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
-  public final CommandHoldIntake m_commandIntake = new CommandHoldIntake(m_subsystemIntake);
+  //
+  // :3 Controller
+  //
   private final JoyUtil primaryController = new JoyUtil(JoyUtilConstants.primaryControllerID);
   private final JoyUtil secondaryController = new JoyUtil(JoyUtilConstants.secondaryControllerID);
+  
   //
   // :3 SUBSYSTEMS
   //
-
   private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
-
+  private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
+  
   //
   // :3 COMMANDS
   //
-
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
-
+  public final CommandHoldIntake m_commandIntake = new CommandHoldIntake(m_subsystemIntake);
+  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
     m_subsystemIntake.setDefaultCommand(m_commandIntake);
-
+    m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     try {
       new SubsystemPhotonvision();
     } catch (IOException e) {

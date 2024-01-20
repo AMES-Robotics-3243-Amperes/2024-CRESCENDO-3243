@@ -28,13 +28,33 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class IntakeConstants {
+    // :> TODO: Make this the actual motor id instead of a placeholder
+    public static final int touronMotor = 12;
+    // :> Conversion factor from the motor to the gearbox
+    public static final double touronConversionFactor = 1/64;
+
+    // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
+    // :> Gives the angle at which the touron needs to rotate to for each position
+    public static final double touronSetPoint1 = 0;
+    public static final double touronSetPoint2 = 46;
+    public static final double touronSetPoint3 = 92;
+    
+    // :> TODO: NOTE THESE ARE PLACEHOLDERS
     public static int IntakeMotorID = -999;
     public static double kP = 0;
     public static double kI = 0;
     public static double kD = 0;
     public static double kFF = 0;
     public static double kV = 0;
-    public static int ToronDeployerMotorID = -9098;
+
+    public static final class IntakePID {
+      // :> TODO: Change these to actual PID values when we get the robot
+      public static final double touronP = .05;
+      public static final double touronI = .002;
+      public static final double touronD = .002;
+      public static final double touronFF = .0003;
+  }
+    
   }
   public static class JoyUtilConstants {
     // :3 size of controller deadzone
