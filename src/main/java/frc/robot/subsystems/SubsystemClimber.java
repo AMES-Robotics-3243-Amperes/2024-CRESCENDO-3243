@@ -76,6 +76,9 @@ public class SubsystemClimber extends SubsystemBase {
     if (dPadUp) {
       motorOne.set(MotorSpeeds.kRiseSpeed);
       motorTwo.set(MotorSpeeds.kRiseSpeed);
+
+      motorOneComplete = true;
+      motorTwoComplete = true;
     } 
     
     if (dPadDown) {
