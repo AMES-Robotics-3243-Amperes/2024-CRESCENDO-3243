@@ -35,11 +35,11 @@ public class SubsystemIntake extends SubsystemBase {
   protected final SparkPIDController m_PivotPID;
   // :> Creates the pivot AbsoluteEncoder
   protected final SparkAbsoluteEncoder m_PivotAbsoluteEncoder; 
-// 0? Creates IntakeMotor
+  // 0? Creates IntakeMotor
   protected final CANSparkMax m_IntakeMotor;
-// 0? Creates IntakeMotor Relative Encoder. 
+  // 0? Creates IntakeMotor Relative Encoder. 
   protected final RelativeEncoder m_IntakeRelativeEncoder;
-// 0? Creates PIDController
+  // 0? Creates PIDController
   protected final SparkPIDController m_IntakePID;
 
   // :> Shuffleboard entries for us to be able to tune PIDs live
@@ -77,8 +77,9 @@ public class SubsystemIntake extends SubsystemBase {
     m_IntakePID.setI(kI);
     m_IntakePID.setD(kD);
     m_IntakePID.setFF(kFF);
-
+    // Sets the IntakeMotor to not run on startup
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+
     // :> Gets the absolute encoder from the motor
     m_PivotAbsoluteEncoder = m_PivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
     // :> Gets the PIDController from the motor
@@ -150,11 +151,11 @@ public class SubsystemIntake extends SubsystemBase {
   public void setPositionReference(setPoints position) {
     m_PivotPID.setReference(position.angle, ControlType.kPosition);
   }
-// 0? Sets velocity of Intake when turned on
+  // 0? Sets velocity of Intake when turned on
   public void turnOnIntake() {
     m_IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
   }
- // 0? Sets velocity of Intake when turned off
+  // 0? Sets velocity of Intake when turned off
   public void turnOffIntake() {
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
