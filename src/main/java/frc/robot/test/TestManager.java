@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.utility;
+package frc.robot.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,7 +112,7 @@ public class TestManager {
      * @author H!
      */
     public static void queueGroupToTest(TestGroup toTest) {
-        System.out.println("test Queued");
+        //System.out.println("test Queued");
         groupsToTest.add(toTest);
     }
 
@@ -122,7 +122,7 @@ public class TestManager {
      * @author H!
      */
     public static void init() {
-        System.out.println("init!");
+        //System.out.println("init!");
         groupsToTest.clear();
         testIndex = 0;
         testState = TestState.SETUP;
@@ -189,7 +189,7 @@ public class TestManager {
         }
 
         if (testsToTest.get(0).getName() == "Example Test") {
-            System.out.println("it's time");
+            //System.out.println("it's time");
         }
 
         if (!testStarted) {
@@ -295,7 +295,7 @@ public class TestManager {
                     break;
             }
         } catch (AssertionError e) {
-            System.out.println("\n\n\n\n\n\nFAILURE\n\n\n\n\n\n\n");
+            //System.out.println("\n\n\n\n\n\nFAILURE\n\n\n\n\n\n\n");
             results.get(groupsToTest.get(0).getName()).put(test.getName(), new TestResults(TestSuccess.FAIL, e.getMessage()));
             testsRun.put(test, TestSuccess.FAIL);
             onTestDone();
@@ -389,7 +389,7 @@ public class TestManager {
 
 
             } catch (Exception e) {
-                System.out.println("Test result display generation failed:");
+                System.err.println("Test result display generation failed:");
                 e.printStackTrace();
             }
         }
