@@ -13,10 +13,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DataManager;
 import frc.robot.IMUWrapper;
 import frc.robot.utility.PowerManager;
+import frc.robot.utility.SubsystemBaseTestable;
 import frc.robot.utility.Test;
 import frc.robot.utility.TestUtil;
 import frc.robot.Constants.DriveTrain.DriveConstants;
@@ -28,7 +28,7 @@ import frc.robot.utility.TranslationRateLimiter;
  * 
  * @author :3
  */
-public class SubsystemSwerveDrivetrain extends SubsystemBase {
+public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
 
   // :3 create swerve modules
   private final SubsystemSwerveModule m_frontLeft = new SubsystemSwerveModule(DriveConstants.IDs.kFrontLeftDrivingCanId,
@@ -92,7 +92,7 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
+  public void doPeriodic() {
     m_drivingRateLimiter.changeLimit(DataManager.currentAccelerationConstant.get());
 
     // :3 update odometry and feed that information into DataManager
@@ -350,6 +350,9 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
     return (m_rearRight.getMotorOutputCurrent());
   }
 
+  private EncoderTest m_EncoderTest = new EncoderTest();
+  private MovementTest m_MovementTest = new MovementTest();
+
   private class EncoderTest implements Test {
     private boolean hasRanOneTimeSetup = false;
     private boolean hasRanOneTimeTest = false;
@@ -418,5 +421,69 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
     public Test[] getDependencies() {
       return new Test[0];
     }
+  }
+
+  private class MovementTest implements Test {
+    private boolean hasRanOneTimeTest = false;
+    private Future<Boolean> response;
+
+    @Override
+    public void testPeriodic() {
+      if (!hasRanOneTimeTest) {
+        hasRanOneTimeTest = true;
+        response = TestUtil.askUserBool("Is the robot moving forward and rotating?");
+      }
+
+      driveWithSpeeds(new Translation2d(0.05, 0.0), 0.1, true);
+    }
+
+    @Override
+    public boolean testIsDone() {
+      if (response.isDone()) {
+        try {
+          assert(response.get() == true);
+          return true;
+        } catch (Exception e) {
+          // something unexpected happened. fail test and be done with it.w 
+          assert("Something went wrong getting boolean response" == " ");
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    @Override
+    public void setupPeriodic() {}
+
+    @Override
+    public boolean setupIsDone() {
+      return true;
+    }
+
+    @Override
+    public void closedownPeriodic() {}
+
+    @Override
+    public boolean closedownIsDone() {
+      hasRanOneTimeTest = false;
+
+      return true;
+    }
+
+    @Override
+    public String getName() {
+      return "SubsystemSwerveDrivetrainMovementTest";
+    }
+
+    @Override
+    public Test[] getDependencies() {
+      return new Test[]{ m_EncoderTest };
+    }
+  }
+
+  @Override
+  public Test[] getTests() {
+    return new Test[]{ m_EncoderTest, m_MovementTest };
   }
 }
