@@ -94,9 +94,9 @@ public class SubsystemIntake extends SubsystemBase {
     // 
     // :> Shuffleboard PID Tuning
     //
-    touronP = tab.add("TRN P Value:", touronP).getEntry();
-    touronI = tab.add("TRN I Value:", touronI).getEntry();
-    touronD = tab.add("TRN D Value:", touronD).getEntry();
+    touronP = tab.add("TRN P Value:", Constants.IntakeConstants.IntakePIDs.touronP).getEntry();
+    touronI = tab.add("TRN I Value:", Constants.IntakeConstants.IntakePIDs.touronI).getEntry();
+    touronD = tab.add("TRN D Value:", Constants.IntakeConstants.IntakePIDs.touronD).getEntry();
       
     /* :> Sets the idlemode to break, 
       *   the reason why we do this is to make it so when the intake stops getting input it doesn't flail about
