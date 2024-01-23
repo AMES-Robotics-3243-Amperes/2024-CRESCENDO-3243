@@ -14,20 +14,26 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
+import java.util.concurrent.Future;
+
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants.IntakePIDs;
+import frc.robot.test.Test;
+import frc.robot.test.TestUtil;
+import frc.robot.utility.SubsystemBaseTestable;
 
-public class SubsystemIntake extends SubsystemBase {
+public class SubsystemIntake extends SubsystemBaseTestable {
 
   // :> Creates the pivotMotor
   protected final CANSparkMax m_PivotMotor = new CANSparkMax(Constants.IntakeConstants.touronMotor, MotorType.kBrushless);
@@ -106,7 +112,7 @@ public class SubsystemIntake extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
+  public void doPeriodic() {
     // This method will be called once per scheduler run
   }
 
@@ -158,5 +164,128 @@ public class SubsystemIntake extends SubsystemBase {
   // 0? Sets velocity of Intake when turned off
   public void turnOffIntake() {
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+  }
+
+  private PivotTest m_PivotTest = new PivotTest();
+  private class PivotTest implements Test {
+
+    @Override
+    public void testPeriodic() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'testPeriodic'");
+    }
+
+    @Override
+    public boolean testIsDone() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
+    }
+
+    @Override
+    public void setupPeriodic() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'setupPeriodic'");
+    }
+
+    @Override
+    public boolean setupIsDone() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
+    }
+
+    @Override
+    public void closedownPeriodic() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
+    }
+
+    @Override
+    public boolean closedownIsDone() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
+    }
+
+    @Override
+    public String getName() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getName'");
+    }
+
+    @Override
+    public Test[] getDependencies() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getDependencies'");
+    }
+    
+  }
+
+  private IntakeTest m_IntakeTest = new IntakeTest();
+  private class IntakeTest implements Test {
+
+    Timer timer = new Timer()
+    Future<Boolean> response;
+
+    @Override
+    public void testPeriodic() {
+      // ss confirm from user that everything worked.
+      response = TestUtil.askUserBool("Did the Intake Run for ~5 Seconds");
+      // ss turn on the intake
+      turnOnIntake();
+      // ss wait 5 seconds
+      timer.wait(5000);
+      // ss turn off the intake
+      turnOffIntake();
+    }
+
+    @Override
+    public boolean testIsDone() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
+    }
+
+    @Override
+    public void setupPeriodic() {
+      timer.reset();
+
+    }
+
+    @Override
+    public boolean setupIsDone() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
+    }
+
+    @Override
+    public void closedownPeriodic() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
+    }
+
+    @Override
+    public boolean closedownIsDone() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
+    }
+
+    @Override
+    public String getName() {
+      // TODO Auto-generated method stub
+      return "SampleTest";
+    }
+
+    @Override
+    public Test[] getDependencies() {
+      // TODO Auto-generated method stub
+      return new Test[]{
+        m_PivotTest
+      };
+    }
+
+  }
+
+  @Override
+  public Test[] getTests() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTests'");
   }
 }
