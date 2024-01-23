@@ -222,19 +222,25 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   private IntakeTest m_IntakeTest = new IntakeTest();
   private class IntakeTest implements Test {
 
-    Timer timer = new Timer()
-    Future<Boolean> response;
-
+    Timer timer = new Timer();
+    Future<Boolean> response = null;
+    
     @Override
     public void testPeriodic() {
       // ss confirm from user that everything worked.
+    if(response == null){
       response = TestUtil.askUserBool("Did the Intake Run for ~5 Seconds");
+    }
       // ss turn on the intake
-      turnOnIntake();
+  
       // ss wait 5 seconds
-      timer.wait(5000);
+      if(timer.hasElapsed(5)){
+        turnOffIntake();
+      }
+      else  {turnOnIntake();}
+      
       // ss turn off the intake
-      turnOffIntake();
+     
     }
 
     @Override
