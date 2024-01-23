@@ -29,17 +29,17 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static class IntakeConstants {
     // :> TODO: Make this the actual motor id instead of a placeholder
-    public static final int touronMotor = 12;
+    public static final int fourBarMotor = 12;
     // :> Conversion factor from the motor to the gearbox
-    public static final double touronConversionFactor = 1/64;
+    public static final double fourBarConversionFactor = 1/64;
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations
-    public static final double touronSetPoint1 = 0;
-    public static final double touronSetPoint2 = 0.128;
-    public static final double touronSetPoint3 = 0.256;
+    public static final double fourBarSetPoint1 = 0;
+    public static final double fourBarSetPoint2 = 0.128;
+    public static final double fourBarSetPoint3 = 0.256;
 
-    // ss the bounds for the getTouronAtPosition() function as a ratio
+    // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;
     public static final double upperBound = 1.01;
     
@@ -53,10 +53,10 @@ public final class Constants {
 
     public static final class IntakePIDs {
       // :> TODO: Change these to actual PID values when we get the robot
-      public static final double touronP = .05;
-      public static final double touronI = .002;
-      public static final double touronD = .002;
-      public static final double touronFF = .0003;
+      public static final double fourBarP = .05;
+      public static final double fourBarI = .002;
+      public static final double fourBarD = .002;
+      public static final double fourBarFF = .0003;
   }
     
   }
