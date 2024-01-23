@@ -258,4 +258,26 @@ public final class Constants {
       new Pose3d(new Translation3d(25.0 / 100, -.22, 14.4 / 100), new Rotation3d());
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
   }
+
+  public static final class Plate {
+    public static final int motorID = -999; //TODO fill in number
+    public static final double converstionFactor = 1/45.; // TODO fill in number
+    public static final double allowablePosDif = 0.05;
+    public static final double allowableVelDif = 0.05;
+
+    public static final double manualSpeedFactor = 0.1;
+
+    public static final class PIDValues {
+      public static final double p = 0;
+      public static final double i = 0;
+      public static final double d = 0;
+      public static final double ff = 0;
+    }
+
+    public static final class Positions {
+      public static final double stowed = 0.0; //TODO fill in number
+      public static final double amp = 0.0; //TODO fill in number
+      public static final double speaker = 0.0; //TODO fill in number
+    }
+  }
 }
