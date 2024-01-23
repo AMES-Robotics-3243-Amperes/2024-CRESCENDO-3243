@@ -4,11 +4,11 @@ import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class CommandAutoTouron extends Command {
+public class CommandAutoFourBar extends Command {
   // :> Worth noting the entire point of this command is to be used by another command to set the touron to a setpoint
   protected final SubsystemIntake m_Subsystem;
   protected final setPoints m_SetPoint;
-  public CommandAutoTouron(SubsystemIntake intake, setPoints setPoint) {
+  public CommandAutoFourBar(SubsystemIntake intake, setPoints setPoint) {
     m_Subsystem = intake;
     m_SetPoint = setPoint;
     addRequirements(intake);
@@ -19,7 +19,7 @@ public class CommandAutoTouron extends Command {
   @Override
   public void initialize() {
     // ss Tell the intake to go to the setpoint
-    m_Subsystem.setPositionReference(m_SetPoint);
+    m_Subsystem.setFourBarPositionReference(m_SetPoint);
   }
   @Override
   public void execute() {}
@@ -29,6 +29,6 @@ public class CommandAutoTouron extends Command {
   @Override
   public boolean isFinished() {
     // ss end the command if the 
-    return m_Subsystem.getPivotAtSetPoint(m_SetPoint);
+    return m_Subsystem.getFourBarAtSetPoint(m_SetPoint);
   }
 }

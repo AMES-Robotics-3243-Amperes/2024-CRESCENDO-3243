@@ -30,11 +30,11 @@ import frc.robot.Constants.IntakeConstants.IntakePIDs;
 public class SubsystemIntake extends SubsystemBase {
 
   // :> Creates the pivotMotor
-  protected final CANSparkMax m_PivotMotor = new CANSparkMax(Constants.IntakeConstants.touronMotor, MotorType.kBrushless);
+  protected final CANSparkMax m_fourBarMotor = new CANSparkMax(Constants.IntakeConstants.fourBarMotor, MotorType.kBrushless);
   // :> Creates the pivot PIDController
-  protected final SparkPIDController m_PivotPID;
+  protected final SparkPIDController m_fourBarPID;
   // :> Creates the pivot AbsoluteEncoder
-  protected final SparkAbsoluteEncoder m_PivotAbsoluteEncoder; 
+  protected final SparkAbsoluteEncoder m_fourBarAbsoluteEncoder; 
   // 0? Creates IntakeMotor
   protected final CANSparkMax m_IntakeMotor;
   // 0? Creates IntakeMotor Relative Encoder. 
@@ -43,16 +43,16 @@ public class SubsystemIntake extends SubsystemBase {
   protected final SparkPIDController m_IntakePID;
 
   // :> Shuffleboard entries for us to be able to tune PIDs live
-  protected GenericEntry touronP;
-  protected GenericEntry touronI;
-  protected GenericEntry touronD;
-  protected GenericEntry touronFF;
+  protected GenericEntry fourBarP;
+  protected GenericEntry fourBarI;
+  protected GenericEntry fourBarD;
+  protected GenericEntry fourBarFF;
 
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
-    position1 (Constants.IntakeConstants.touronSetPoint1),
-    position2 (Constants.IntakeConstants.touronSetPoint2),
-    position3 (Constants.IntakeConstants.touronSetPoint3);
+    position1 (Constants.IntakeConstants.fourBarSetPoint1),
+    position2 (Constants.IntakeConstants.fourBarSetPoint2),
+    position3 (Constants.IntakeConstants.fourBarSetPoint3);
 
     public final double angle;
     setPoints(double angle) {
@@ -81,27 +81,27 @@ public class SubsystemIntake extends SubsystemBase {
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
 
     // :> Gets the absolute encoder from the motor
-    m_PivotAbsoluteEncoder = m_PivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    m_fourBarAbsoluteEncoder = m_fourBarMotor.getAbsoluteEncoder(Type.kDutyCycle);
     // :> Gets the PIDController from the motor
-    m_PivotPID = m_PivotMotor.getPIDController();
+    m_fourBarPID = m_fourBarMotor.getPIDController();
     // :> Accounts for the amount of turns it takes for the motor to actually move the intake
-    m_PivotAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.touronConversionFactor);
+    m_fourBarAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.fourBarConversionFactor);
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
-    m_PivotPID.setFeedbackDevice(m_PivotAbsoluteEncoder);
+    m_fourBarPID.setFeedbackDevice(m_fourBarAbsoluteEncoder);
 
-    setPivotPIDFValues(m_PivotPID, IntakePIDs.touronP, IntakePIDs.touronI, IntakePIDs.touronD, IntakePIDs.touronFF);
+    setFourBarPIDFValues(m_fourBarPID, IntakePIDs.fourBarP, IntakePIDs.fourBarI, IntakePIDs.fourBarD, IntakePIDs.fourBarFF);
 
     // 
     // :> Shuffleboard PID Tuning
     //
-    touronP = tab.add("TRN P Value:", Constants.IntakeConstants.IntakePIDs.touronP).getEntry();
-    touronI = tab.add("TRN I Value:", Constants.IntakeConstants.IntakePIDs.touronI).getEntry();
-    touronD = tab.add("TRN D Value:", Constants.IntakeConstants.IntakePIDs.touronD).getEntry();
+    fourBarP = tab.add("TRN P Value:", Constants.IntakeConstants.IntakePIDs.fourBarP).getEntry();
+    fourBarI = tab.add("TRN I Value:", Constants.IntakeConstants.IntakePIDs.fourBarI).getEntry();
+    fourBarD = tab.add("TRN D Value:", Constants.IntakeConstants.IntakePIDs.fourBarD).getEntry();
       
     /* :> Sets the idlemode to break, 
       *   the reason why we do this is to make it so when the intake stops getting input it doesn't flail about
     */
-    m_PivotMotor.setIdleMode(IdleMode.kBrake);
+    m_fourBarMotor.setIdleMode(IdleMode.kBrake);
     
   }
 
@@ -111,7 +111,7 @@ public class SubsystemIntake extends SubsystemBase {
   }
 
   /**
-    * Sets the PIDValues of the Pivot when called
+    * Sets the PIDValues of the fourBar when called
     * @param pidController
     * @param p
     * @param i
@@ -119,37 +119,37 @@ public class SubsystemIntake extends SubsystemBase {
     * @param f
     * @author :>
     */
-  protected void setPivotPIDFValues(SparkPIDController pidController, double p, double i, double d, double f) {
+  protected void setFourBarPIDFValues(SparkPIDController pidController, double p, double i, double d, double f) {
     pidController.setP(p);
     pidController.setI(i);
     pidController.setD(d);
     pidController.setFF(f);
   }
   /**
-    * gets the current position of the Pivot
+    * gets the current position of the fourBar
     * Currently only planned to be used for auto if used at all
-    * ss I used it to tell if the Pivot is at the setpoint
-    * @return Position of the Pivot
+    * ss I used it to tell if the fourBar is at the setpoint
+    * @return Position of the fourBar
     * @author :>
     */
-  public double getPivotMotorPosition() {
-    return m_PivotAbsoluteEncoder.getPosition();
+  public double getFourBarMotorPosition() {
+    return m_fourBarAbsoluteEncoder.getPosition();
   }
   /**
-   * Gets whether the Pivot is at the setPoint
+   * Gets whether the fourBar is at the setPoint
    * @param position
    * @author ss
    */
-  public boolean getPivotAtSetPoint(setPoints position) {
-    return ((getPivotMotorPosition() / position.angle) > lowerBound) && ((getPivotMotorPosition() / position.angle) < upperBound);
+  public boolean getFourBarAtSetPoint(setPoints position) {
+    return ((getFourBarMotorPosition() / position.angle) > lowerBound) && ((getFourBarMotorPosition() / position.angle) < upperBound);
   }
   /**
-    * Sets the position of the Pivot based off of an inputted setPoint
+    * Sets the position of the fourBar based off of an inputted setPoint
     * @param position
     * @author :>
     */
-  public void setPositionReference(setPoints position) {
-    m_PivotPID.setReference(position.angle, ControlType.kPosition);
+  public void setFourBarPositionReference(setPoints position) {
+    m_fourBarPID.setReference(position.angle, ControlType.kPosition);
   }
   // 0? Sets velocity of Intake when turned on
   public void turnOnIntake() {
