@@ -11,6 +11,10 @@ import frc.robot.commands.CommandSwerveTeleopDrive;
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
+import frc.robot.subsystems.SubsystemClimber;
+import frc.robot.commands.CommandSwerveTeleopDrive;
+import frc.robot.commands.CommandClimber;
+import frc.robot.test.ExampleTestGroup;
 
 import java.io.IOException;
 
@@ -34,6 +38,7 @@ public class RobotContainer {
 
   private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
   private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
+  private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
 
   //
   // :3 COMMANDS
@@ -42,6 +47,7 @@ public class RobotContainer {
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
+  private final CommandClimber m_CommandClimber = new CommandClimber(m_SubsystemClimber, primaryController);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
