@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.IntakeConstants.*;
 
 import java.util.concurrent.Future;
@@ -94,15 +93,18 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_fourBarAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.fourBarConversionFactor);
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
     m_fourBarPID.setFeedbackDevice(m_fourBarAbsoluteEncoder);
-
-    setFourBarPIDFValues(m_fourBarPID, IntakePIDs.fourBarP, IntakePIDs.fourBarI, IntakePIDs.fourBarD, IntakePIDs.fourBarFF);
+   
+    setPIDValues(m_fourBarPID, IntakePIDs.fourBarP, IntakePIDs.fourBarI, IntakePIDs.fourBarD, IntakePIDs.fourBarFF);
 
     // 
     // :> Shuffleboard PID Tuning
     //
+   
     fourBarP = tab.add("TRN P Value:", Constants.IntakeConstants.IntakePIDs.fourBarP).getEntry();
     fourBarI = tab.add("TRN I Value:", Constants.IntakeConstants.IntakePIDs.fourBarI).getEntry();
     fourBarD = tab.add("TRN D Value:", Constants.IntakeConstants.IntakePIDs.fourBarD).getEntry();
+
+    
       
     /* :> Sets the idlemode to break, 
       *   the reason why we do this is to make it so when the intake stops getting input it doesn't flail about
@@ -114,6 +116,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   @Override
   public void doPeriodic() {
     // This method will be called once per scheduler run
+    // 0? Sets PID Values, updates when changed. 
+    m_fourBarPID.setP(fourBarP.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarP));
+    m_fourBarPID.setI(fourBarI.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarI));
+    m_fourBarPID.setD(fourBarD.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarD));
   }
 
   /**
@@ -125,7 +131,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     * @param f
     * @author :>
     */
-  protected void setFourBarPIDFValues(SparkPIDController pidController, double p, double i, double d, double f) {
+  protected void setPIDValues(SparkPIDController pidController, double p, double i, double d, double f) {
     pidController.setP(p);
     pidController.setI(i);
     pidController.setD(d);
