@@ -291,4 +291,10 @@ public final class Constants {
       new Pose3d(new Translation3d(25.0 / 100, -.22, 14.4 / 100), new Rotation3d());
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
   }
+
+  public static final class ShooterConstants {
+    
+    public static final double ampShootSpeed = 0.5;
+    public static final double speakerShootSpeed = 0.5;
+  }
 }

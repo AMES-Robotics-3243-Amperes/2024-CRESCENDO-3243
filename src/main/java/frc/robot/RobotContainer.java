@@ -5,8 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
+import frc.robot.commands.CommandShooterTeleopAmp;
+import frc.robot.commands.CommandShooterTeleopSpeaker;
 import frc.robot.commands.CommandSwerveTeleopDrive;
 import frc.robot.subsystems.SubsystemPhotonvision;
+import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemClimber;
 import frc.robot.commands.CommandSwerveTeleopDrive;
@@ -34,14 +37,16 @@ public class RobotContainer {
   //
 
   private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
+  private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
   private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
-  //private final ExampleTestGroup m_ExampleTestGroup = new ExampleTestGroup();
 
   //
   // :3 COMMANDS
-  //
+  // 
 
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
+  private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
+  private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
   private final CommandClimber m_CommandClimber = new CommandClimber(m_SubsystemClimber, primaryController);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -67,7 +72,12 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    // && Toggle amp shooting
+    secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
+    // && toggle speaker shooting
+    secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
