@@ -25,6 +25,9 @@ public class JoyUtil extends CommandXboxController {
   private final double leftTriggerRightStickMultiplier, rightTriggerRightStickMultiplier;
   private final SlewRateLimiter leftXRateLimiter, leftYRateLimiter, rightXRateLimiter, rightYRateLimiter;
 
+  // && Bryce is a nerd haha
+  // && Bryce L
+
   // <> these are here so that Triggers aren't being created periodically (every 20 ms)
   private final Trigger povDownLeftTrigger = povDownLeft();
   private final Trigger povDownRightTrigger = povDownRight();

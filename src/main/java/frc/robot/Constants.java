@@ -27,6 +27,39 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class IntakeConstants {
+    // :> TODO: Make this the actual motor id instead of a placeholder
+    public static final int fourBarMotor = 12;
+    // :> Conversion factor from the motor to the gearbox
+    public static final double fourBarConversionFactor = 1/64;
+
+    // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
+    // ss These are in Rotations
+    public static final double fourBarSetPoint1 = 0;
+    public static final double fourBarSetPoint2 = 0.128;
+    public static final double fourBarSetPoint3 = 0.256;
+
+    // ss the bounds for the getFourBarAtPosition() function as a ratio
+    public static final double lowerBound = 0.99;
+    public static final double upperBound = 1.01;
+    
+    // :> TODO: NOTE THESE ARE PLACEHOLDERS
+    public static final int IntakeMotorID = -999;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kFF = 0;
+    public static final double kV = 0;
+
+    public static final class IntakePIDs {
+      // :> TODO: Change these to actual PID values when we get the robot
+      public static final double fourBarP = .05;
+      public static final double fourBarI = .002;
+      public static final double fourBarD = .002;
+      public static final double fourBarFF = .0003;
+  }
+    
+  }
   public static class JoyUtilConstants {
     // :3 size of controller deadzone
     public static final double kDeadzone = 0.12;
@@ -171,10 +204,10 @@ public final class Constants {
 
       // :> This entire next section is utilized by PowerManager to manage the robots speed/acceleration
       // :3 speed damper (flat constant supplied speed is multiplied by)
-      public static final double kDrivingSpeedDamper = 4.5; // :3 meters per second
-      public static final double kSlowDrivingSpeedDamper = 4;
+      public static final double kDrivingSpeedDamper = 1.2; // :3 meters per second
+      public static final double kSlowDrivingSpeedDamper = 0.7;
       // :> Speed Damper for the rotation of the robot
-      public static final double kAngularSpeedDamper = 2.5 * Math.PI; // :3 radians per second
+      public static final double kAngularSpeedDamper = 0.7 * Math.PI; // :3 radians per second
 
       // :3 the max physical speed of the modules
       // :3 THIS IS NOT THE MAX DRIVING SPEED (but it can and will limit it)
@@ -196,16 +229,16 @@ public final class Constants {
       public static final class IDs {
 
         // :3 driving ids
-        public static final int kFrontLeftDrivingCanId = 3;
-        public static final int kRearLeftDrivingCanId = 2;
-        public static final int kFrontRightDrivingCanId = 7;
-        public static final int kRearRightDrivingCanId = 6;
+        public static final int kFrontLeftDrivingCanId = 4;
+        public static final int kRearLeftDrivingCanId = 6;
+        public static final int kFrontRightDrivingCanId = 2;
+        public static final int kRearRightDrivingCanId = 8;
 
         // :3 turning ids
-        public static final int kFrontLeftTurningCanId = 4;
-        public static final int kRearLeftTurningCanId = 1;
-        public static final int kFrontRightTurningCanId = 8;
-        public static final int kRearRightTurningCanId = 5;
+        public static final int kFrontLeftTurningCanId = 3;
+        public static final int kRearLeftTurningCanId = 5;
+        public static final int kFrontRightTurningCanId = 1;
+        public static final int kRearRightTurningCanId = 7;
       }
 
       // :3 absolute encoder offsets (should be multiples of pi / 2
@@ -221,9 +254,9 @@ public final class Constants {
       public static final class ChassisKinematics {
 
         // :3 distance between centers of right and left wheels on robot
-        public static final double kRobotWidth = Units.inchesToMeters(15);
+        public static final double kRobotWidth = Units.inchesToMeters(26);
         // :3 distance between front and back wheels on robot
-        public static final double kRobotLength = Units.inchesToMeters(15);
+        public static final double kRobotLength = Units.inchesToMeters(26);
 
         // :3 kinematics (defined with above constants)
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
@@ -290,5 +323,12 @@ public final class Constants {
     public static final Pose3d cameraPosition =
       new Pose3d(new Translation3d(25.0 / 100, -.22, 14.4 / 100), new Rotation3d());
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
+  }
+
+
+  public static final class ShooterConstants {
+    
+    public static final double ampShootSpeed = 0.5;
+    public static final double speakerShootSpeed = 0.5;
   }
 }
