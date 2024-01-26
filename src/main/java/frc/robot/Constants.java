@@ -27,6 +27,39 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class IntakeConstants {
+    // :> TODO: Make this the actual motor id instead of a placeholder
+    public static final int fourBarMotor = 12;
+    // :> Conversion factor from the motor to the gearbox
+    public static final double fourBarConversionFactor = 1/64;
+
+    // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
+    // ss These are in Rotations
+    public static final double fourBarSetPoint1 = 0;
+    public static final double fourBarSetPoint2 = 0.128;
+    public static final double fourBarSetPoint3 = 0.256;
+
+    // ss the bounds for the getFourBarAtPosition() function as a ratio
+    public static final double lowerBound = 0.99;
+    public static final double upperBound = 1.01;
+    
+    // :> TODO: NOTE THESE ARE PLACEHOLDERS
+    public static final int IntakeMotorID = -999;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kFF = 0;
+    public static final double kV = 0;
+
+    public static final class IntakePIDs {
+      // :> TODO: Change these to actual PID values when we get the robot
+      public static final double fourBarP = .05;
+      public static final double fourBarI = .002;
+      public static final double fourBarD = .002;
+      public static final double fourBarFF = .0003;
+  }
+    
+  }
   public static class JoyUtilConstants {
     // :3 size of controller deadzone
     public static final double kDeadzone = 0.12;
@@ -291,6 +324,7 @@ public final class Constants {
       new Pose3d(new Translation3d(25.0 / 100, -.22, 14.4 / 100), new Rotation3d());
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
   }
+
 
   public static final class ShooterConstants {
     
