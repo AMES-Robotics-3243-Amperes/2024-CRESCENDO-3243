@@ -3,7 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
+/*
+ * Done, all notes are started with :>
+ * Remove everything once you are done
+ * No notes made in command
+ */
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
@@ -21,7 +25,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.CommandMovePlateToPosition;
 import frc.robot.utility.SubsystemBaseTestable;
 import frc.robot.utility.Test;
@@ -91,12 +94,19 @@ public class SubsystemPlate extends SubsystemBaseTestable {
     setPosition(position.position);
   }
 
-
+  /**
+   * Returns the current position of the plate as a number of rotations.
+   * @author H!
+   */
   public double getNumericPosition() {
     return encoder.getPosition();
   }
-
-  public Position getDiscreetPosition() {
+  /**
+   * Returns the current position of the plate as a positional enum {@link Position}.
+   * @return A {@link Position} repersenting the position, or null if not near any of them.
+   * @author H!
+   */
+  public Position getDiscretePosition() {
     if (Math.abs(encoder.getVelocity()) < allowableVelDif) {
       if (Math.abs(encoder.getPosition() - Position.kStowed.position) < allowablePosDif) {
         return Position.kStowed;
@@ -173,7 +183,7 @@ public class SubsystemPlate extends SubsystemBaseTestable {
     @Override public void setupPeriodic() {CommandScheduler.getInstance().cancelAll(); command.schedule(); timer.restart();}
     @Override public boolean setupIsDone() {return true;}
     @Override public void closedownPeriodic() {  
-      TestUtil.assertBool(SubsystemPlate.this.getDiscreetPosition() == setpoint, "Command ended in the wrong place according to encoders");
+      TestUtil.assertBool(SubsystemPlate.this.getDiscretePosition() == setpoint, "Command ended in the wrong place according to encoders");
       if (atCorrectPosition == null) {
         atCorrectPosition = TestUtil.askUserBool("Is the plate at the " + setpoint.niceName + " position?");
       }
