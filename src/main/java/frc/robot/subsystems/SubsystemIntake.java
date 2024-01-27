@@ -27,9 +27,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.networktables.GenericEntry;
-import frc.robot.Constants;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.IntakeConstants.IntakePIDs;
 import frc.robot.test.Test;
 import frc.robot.test.TestUtil;
 import frc.robot.utility.SubsystemBaseTestable;
@@ -37,7 +34,7 @@ import frc.robot.utility.SubsystemBaseTestable;
 public class SubsystemIntake extends SubsystemBaseTestable {
 
   // :> Creates the pivotMotor
-  protected final CANSparkMax m_fourBarMotor = new CANSparkMax(Constants.IntakeConstants.fourBarMotor, MotorType.kBrushless);
+  protected final CANSparkMax m_fourBarMotor = new CANSparkMax(fourBarMotor, MotorType.kBrushless);
   // :> Creates the pivot PIDController
   protected final SparkPIDController m_fourBarPID;
   // :> Creates the pivot AbsoluteEncoder
@@ -50,8 +47,8 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected final SparkPIDController m_IntakePID;
 
   // :> Limit Switches!
-  protected final DigitalInput maxLimitSwitch = new DigitalInput(Constants.IntakeConstants.IntakeLimitSwitches.limitSwitchMax);
-  protected final DigitalInput minLimitSwitch = new DigitalInput(Constants.IntakeConstants.IntakeLimitSwitches.limitSwitchMin);
+  protected final DigitalInput maxLimitSwitch = new DigitalInput(IntakeLimitSwitches.limitSwitchMax);
+  protected final DigitalInput minLimitSwitch = new DigitalInput(IntakeLimitSwitches.limitSwitchMin);
   // :> Shuffleboard entries for us to be able to tune PIDs live
   protected GenericEntry fourBarP;
   protected GenericEntry fourBarI;
@@ -60,9 +57,9 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
-    position1 (Constants.IntakeConstants.fourBarSetPoint1),
-    position2 (Constants.IntakeConstants.fourBarSetPoint2),
-    position3 (Constants.IntakeConstants.fourBarSetPoint3);
+    position1 (fourBarSetPoint1),
+    position2 (fourBarSetPoint2),
+    position3 (fourBarSetPoint3);
 
     public final double angle;
     setPoints(double angle) {
@@ -83,10 +80,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
 
     // 0? Sets up PID for Intake 
-    m_IntakePID.setP(kP);
-    m_IntakePID.setI(kI);
-    m_IntakePID.setD(kD);
-    m_IntakePID.setFF(kFF);
+    m_IntakePID.setP(IntakePIDs.kP);
+    m_IntakePID.setI(IntakePIDs.kI);
+    m_IntakePID.setD(IntakePIDs.kD);
+    m_IntakePID.setFF(IntakePIDs.kFF);
     // Sets the IntakeMotor to not run on startup
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
 
@@ -95,19 +92,19 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     // :> Gets the PIDController from the motor
     m_fourBarPID = m_fourBarMotor.getPIDController();
     // :> Accounts for the amount of turns it takes for the motor to actually move the intake
-    m_fourBarAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.fourBarConversionFactor);
+    m_fourBarAbsoluteEncoder.setPositionConversionFactor(fourBarConversionFactor);
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
     m_fourBarPID.setFeedbackDevice(m_fourBarAbsoluteEncoder);
    
-    setPIDValues(m_fourBarPID, IntakePIDs.fourBarP, IntakePIDs.fourBarI, IntakePIDs.fourBarD, IntakePIDs.fourBarFF);
+    setPIDValues(m_fourBarPID, FourBarPIDs.fourBarP, FourBarPIDs.fourBarI, FourBarPIDs.fourBarD, FourBarPIDs.fourBarFF);
 
     // 
     // :> Shuffleboard PID Tuning
     //
    
-    fourBarP = tab.add("FRBR P Value:", Constants.IntakeConstants.IntakePIDs.fourBarP).getEntry();
-    fourBarI = tab.add("FRBR I Value:", Constants.IntakeConstants.IntakePIDs.fourBarI).getEntry();
-    fourBarD = tab.add("FRBR D Value:", Constants.IntakeConstants.IntakePIDs.fourBarD).getEntry();
+    fourBarP = tab.add("FRBR P Value:", FourBarPIDs.fourBarP).getEntry();
+    fourBarI = tab.add("FRBR I Value:", FourBarPIDs.fourBarI).getEntry();
+    fourBarD = tab.add("FRBR D Value:", FourBarPIDs.fourBarD).getEntry();
 
     
       
@@ -122,13 +119,13 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   public void doPeriodic() {
     // This method will be called once per scheduler run
     // 0? Sets PID Values, updates when changed. 
-    m_fourBarPID.setP(fourBarP.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarP));
-    m_fourBarPID.setI(fourBarI.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarI));
-    m_fourBarPID.setD(fourBarD.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarD));
+    m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
+    m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
+    m_fourBarPID.setD(fourBarD.getDouble(FourBarPIDs.fourBarD));
 
     // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
     if (maxLimitSwitch.get()) {
-      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (IntakeConstants.fourBarSetPoint3-IntakeConstants.fourBarSetPoint1)));
+      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (fourBarSetPoint3 - fourBarSetPoint1)));
     }
     if (minLimitSwitch.get()) {
       m_fourBarAbsoluteEncoder.setZeroOffset(getFourBarMotorPosition());
@@ -178,7 +175,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   }
   // 0? Sets velocity of Intake when turned on
   public void turnOnIntake() {
-    m_IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
+    m_IntakePID.setReference(IntakePIDs.kV, CANSparkMax.ControlType.kVelocity);
   }
   // 0? Sets velocity of Intake when turned off
   public void turnOffIntake() {

@@ -45,21 +45,30 @@ public final class Constants {
     
     // :> TODO: NOTE THESE ARE PLACEHOLDERS
     public static final int IntakeMotorID = -999;
-    public static final double kP = 0;
-    public static final double kI = 0;
-    public static final double kD = 0;
-    public static final double kFF = 0;
-    public static final double kV = 0;
 
     public static final class IntakePIDs {
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kV = 0;
+    }
+
+    public static final class FourBarPIDs {
       // :> TODO: Change these to actual PID values when we get the robot
       public static final double fourBarP = .05;
       public static final double fourBarI = .002;
       public static final double fourBarD = .002;
       public static final double fourBarFF = .0003;
+    }
+
+    // ss I think these are the ids for the limit switches? I just put some values in to stop some errors
+    public static final class IntakeLimitSwitches {
+      public static final int limitSwitchMax = 0;
+      public static final int limitSwitchMin = 0;
+    }
   }
-    
-  }
+
   public static class JoyUtilConstants {
     // :3 size of controller deadzone
     public static final double kDeadzone = 0.12;
