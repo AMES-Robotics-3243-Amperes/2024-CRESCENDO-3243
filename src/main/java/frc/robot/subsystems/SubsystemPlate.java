@@ -27,8 +27,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.CommandMovePlateToPosition;
 import frc.robot.utility.SubsystemBaseTestable;
-import frc.robot.utility.Test;
-import frc.robot.utility.TestUtil;
+import frc.robot.test.Test;
+import frc.robot.test.TestUtil;
 
 public class SubsystemPlate extends SubsystemBaseTestable {
   protected CANSparkMax motor;
