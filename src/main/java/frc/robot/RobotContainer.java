@@ -35,31 +35,25 @@ public class RobotContainer {
   //
   // :3 Controller
   //
+
   private final JoyUtil primaryController = new JoyUtil(JoyUtilConstants.primaryControllerID);
   private final JoyUtil secondaryController = new JoyUtil(JoyUtilConstants.secondaryControllerID);
   
   //
   // :3 SUBSYSTEMS
   //
-  private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
-
-  private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
   
-
+  private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
+  private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
   private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
-
   private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
 
   //
   // :3 COMMANDS
-
   //
+
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
-  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
-
-  // 
-
- 
+  private final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
 

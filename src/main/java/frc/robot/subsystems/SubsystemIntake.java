@@ -30,6 +30,9 @@ import frc.robot.utility.SubsystemBaseTestable;
 
 public class SubsystemIntake extends SubsystemBaseTestable {
 
+  // ss Represents whether the Intake is on or off
+  protected boolean m_IntakeState = false;
+
   // :> Creates the pivotMotor
   protected final CANSparkMax m_fourBarMotor = new CANSparkMax(fourBarMotor, MotorType.kBrushless);
   // :> Creates the pivot PIDController
@@ -127,6 +130,12 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     if (minLimitSwitch.get()) {
       m_fourBarAbsoluteEncoder.setZeroOffset(getFourBarMotorPosition());
     }
+
+    if (m_IntakeState) {
+      m_IntakePID.setReference(IntakePIDs.kV, ControlType.kVelocity);
+    } else {
+      m_IntakePID.setReference(0, ControlType.kVelocity);
+    }
   }
 
   /**
@@ -170,14 +179,32 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   public void setFourBarPositionReference(setPoints position) {
     m_fourBarPID.setReference(position.angle, ControlType.kPosition);
   }
-  // 0? Sets velocity of Intake when turned on
+  /**
+   * turns the intake on (velocity set in periodic) 
+   * @author ss
+   */
   public void turnOnIntake() {
-    m_IntakePID.setReference(IntakePIDs.kV, CANSparkMax.ControlType.kVelocity);
+    m_IntakeState = true;
   }
-  // 0? Sets velocity of Intake when turned off
+  /**
+   * Turns off the intake (velocity set in periodic)
+   * @author ss
+   */
   public void turnOffIntake() {
-    m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+    m_IntakeState = false;
   }
+  /**
+   * Toggles the intake and returns the NEW state of the intake (velocity set in periodic)
+   * @return the NEW state of the intake (true is on, false is off)
+   */
+  public boolean toggleIntake() {
+    m_IntakeState = !m_IntakeState;
+    return m_IntakeState;
+  }
+
+
+
+
 
   private PivotTest m_PivotTest = new PivotTest();
   private class PivotTest implements Test {
