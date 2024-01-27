@@ -57,9 +57,9 @@ public final class Constants {
       public static final double fourBarI = .002;
       public static final double fourBarD = .002;
       public static final double fourBarFF = .0003;
+    }
   }
-    
-  }
+
   public static class JoyUtilConstants {
     // :3 size of controller deadzone
     public static final double kDeadzone = 0.12;
@@ -345,6 +345,7 @@ public final class Constants {
       public static final double amp = 0.0; //TODO fill in number
       public static final double speaker = 0.0; //TODO fill in number
     }
+  }
 
   public static final class ShooterConstants {
     
