@@ -21,12 +21,14 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.IntakePIDs;
 import frc.robot.test.Test;
 import frc.robot.test.TestUtil;
@@ -47,6 +49,9 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   // 0? Creates PIDController
   protected final SparkPIDController m_IntakePID;
 
+  // :> Limit Switches!
+  protected final DigitalInput maxLimitSwitch = new DigitalInput(Constants.IntakeConstants.IntakeLimitSwitches.limitSwitchMax);
+  protected final DigitalInput minLimitSwitch = new DigitalInput(Constants.IntakeConstants.IntakeLimitSwitches.limitSwitchMin);
   // :> Shuffleboard entries for us to be able to tune PIDs live
   protected GenericEntry fourBarP;
   protected GenericEntry fourBarI;
@@ -100,9 +105,9 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     // :> Shuffleboard PID Tuning
     //
    
-    fourBarP = tab.add("TRN P Value:", Constants.IntakeConstants.IntakePIDs.fourBarP).getEntry();
-    fourBarI = tab.add("TRN I Value:", Constants.IntakeConstants.IntakePIDs.fourBarI).getEntry();
-    fourBarD = tab.add("TRN D Value:", Constants.IntakeConstants.IntakePIDs.fourBarD).getEntry();
+    fourBarP = tab.add("FRBR P Value:", Constants.IntakeConstants.IntakePIDs.fourBarP).getEntry();
+    fourBarI = tab.add("FRBR I Value:", Constants.IntakeConstants.IntakePIDs.fourBarI).getEntry();
+    fourBarD = tab.add("FRBR D Value:", Constants.IntakeConstants.IntakePIDs.fourBarD).getEntry();
 
     
       
@@ -120,6 +125,14 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_fourBarPID.setP(fourBarP.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarP));
     m_fourBarPID.setI(fourBarI.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarI));
     m_fourBarPID.setD(fourBarD.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarD));
+
+    // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
+    if (maxLimitSwitch.get()) {
+      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (IntakeConstants.fourBarSetPoint3-IntakeConstants.fourBarSetPoint1)));
+    }
+    if (minLimitSwitch.get()) {
+      m_fourBarAbsoluteEncoder.setZeroOffset(getFourBarMotorPosition());
+    }
   }
 
   /**
