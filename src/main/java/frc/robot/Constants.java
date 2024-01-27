@@ -28,13 +28,15 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class IntakeConstants {
+    // :> TODO: NOTE THESE ARE PLACEHOLDERS
+    public static final int IntakeMotorID = -999;
     // :> TODO: Make this the actual motor id instead of a placeholder
     public static final int fourBarMotor = 12;
     // :> Conversion factor from the motor to the gearbox
     public static final double fourBarConversionFactor = 1/64;
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
-    // ss These are in Rotations
+    // ss These are in Rotations, NOT DEGREES OR RADIANS
     public static final double fourBarSetPoint1 = 0;
     public static final double fourBarSetPoint2 = 0.128;
     public static final double fourBarSetPoint3 = 0.256;
@@ -43,10 +45,8 @@ public final class Constants {
     public static final double lowerBound = 0.99;
     public static final double upperBound = 1.01;
     
-    // :> TODO: NOTE THESE ARE PLACEHOLDERS
-    public static final int IntakeMotorID = -999;
-
     public static final class IntakePIDs {
+      // ss TODO: Tune the PIDs
       public static final double kP = 0;
       public static final double kI = 0;
       public static final double kD = 0;
