@@ -11,6 +11,7 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemClimber;
 import frc.robot.commands.CommandSwerveTeleopDrive;
 import frc.robot.commands.CommandClimber;
+import frc.robot.test.ExampleTestGroup;
 
 import java.io.IOException;
 
@@ -34,6 +35,7 @@ public class RobotContainer {
 
   private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
   private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
+  //private final ExampleTestGroup m_ExampleTestGroup = new ExampleTestGroup();
 
   //
   // :3 COMMANDS
