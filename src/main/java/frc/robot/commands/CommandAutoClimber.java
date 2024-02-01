@@ -12,9 +12,13 @@ public class CommandAutoClimber extends Command {
   // ££ Subsystem
   SubsystemClimber m_subsystemClimber;
 
-  // ££ Limit Switche values
+  // ££ Limit Switch values
   DigitalInput limitSwitch;
   boolean limitSwitchTripped = false;
+  boolean finished = false;
+
+  // ££ Checks if the command is done
+  boolean command_done = false;
 
 
   /** Creates a new CommandAutoClimber. */
@@ -41,7 +45,7 @@ public class CommandAutoClimber extends Command {
     if (!limitSwitchTripped) {
       m_subsystemClimber.runClimber(true, false);
     } else {
-      m_subsystemClimber.runClimber(false, true);
+      command_done = m_subsystemClimber.runClimber(false, true);
     }
   }
 
@@ -52,6 +56,10 @@ public class CommandAutoClimber extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (command_done) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

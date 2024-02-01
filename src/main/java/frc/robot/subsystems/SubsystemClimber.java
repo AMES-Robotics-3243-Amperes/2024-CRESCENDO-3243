@@ -64,7 +64,7 @@ public class SubsystemClimber extends SubsystemBase {
     motorTwoController.setReference(position, ControlType.kPosition);
   }
 
-  public void runClimber(boolean dPadUp, boolean dPadDown) {
+  public boolean runClimber(boolean dPadUp, boolean dPadDown) {
     if (motorOne.getOutputCurrent() > MotorCurrentLimit) {
       motorOneComplete = true;
     }
@@ -93,10 +93,13 @@ public class SubsystemClimber extends SubsystemBase {
 
     if (motorOneComplete && motorTwoComplete) {
       double currentRotations = motorOneRelativeEncoder.getPosition();
-      double targetPositon = currentRotations - kPositionOffset;
+      double targetPosition = currentRotations - kPositionOffset;
 
-      setMotorPositionTarget(targetPositon);
+      setMotorPositionTarget(targetPosition);
+      return true;
     }
+
+    return false;
   }
 
   public void setPIDValues(SparkPIDController PIDController, double p, double i, double d, double ff) {
