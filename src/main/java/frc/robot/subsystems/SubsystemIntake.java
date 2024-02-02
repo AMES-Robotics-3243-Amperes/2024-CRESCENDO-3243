@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.networktables.GenericEntry;
+import frc.robot.Constants.IntakeConstants.FourBarPIDs;
+import frc.robot.Constants.IntakeConstants.IntakeLimitSwitches;
+import frc.robot.Constants.IntakeConstants.IntakePIDs;
 import frc.robot.test.Test;
 import frc.robot.test.TestUtil;
 import frc.robot.utility.SubsystemBaseTestable;
@@ -57,7 +60,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
-    position1 (fourBarSetPoint1),
+    position1 (fourBarSetPoint1),//TODO rename please? :point_right: :point_left: :pleading:
     position2 (fourBarSetPoint2),
     position3 (fourBarSetPoint3);
 

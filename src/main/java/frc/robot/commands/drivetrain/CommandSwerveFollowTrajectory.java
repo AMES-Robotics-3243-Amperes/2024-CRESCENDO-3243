@@ -38,6 +38,10 @@ public class CommandSwerveFollowTrajectory extends Command {
     addRequirements(m_subsystem);
   }
 
+  public CommandSwerveFollowTrajectory(SubsystemSwerveDrivetrain subsystem, Trajectory trajectory) {
+    // Unimplemented
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
