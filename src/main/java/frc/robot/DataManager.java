@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -7,6 +9,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utility.PowerManager;
+import edu.wpi.first.wpilibj.I2C;
 
 /** <b>Stores all of the data that is shared between systems, especially positions.</b>
  * 
@@ -174,6 +177,31 @@ public class DataManager {
             return (PowerManager.getDriveSpeedDamper());
         }
     }
+
+    public static class NoteStorageSensor implements Entry<Boolean> {
+        ColorSensorV3 colorSensor;
+        boolean hasNote = false;
+
+        public NoteStorageSensor() {
+            colorSensor = new ColorSensorV3(I2C.Port.kMXP);
+        }
+
+        @Override
+        public Boolean get() {
+            int proximity = colorSensor.getProximity();
+
+            if (proximity < Constants.ColorSensor.emptyDistance) {
+                hasNote = false;
+            }
+
+            if (proximity > Constants.ColorSensor.filledDistance) {
+                hasNote = true;
+            }
+
+            return hasNote;
+        }
+    }
+
     //#########################################################
     //                        ENTRIES
     //#########################################################
