@@ -261,7 +261,15 @@ public final class Constants {
 
   public static final class ShooterConstants {
     
+    // && The target speeds for the speaker and the amp (range will be based on these)
+    // && TODO: put in actual, reasonable numbers for all of the things below
     public static final double ampShootSpeed = 0.5;
     public static final double speakerShootSpeed = 0.5;
+    public static final double stopShootSpeed = 0.5;
+    
+    // && The range of shooter speeds that are "acceptable" on either side of the target speed 
+    public static final double ampSpeedRange = 1;
+    public static final double speakerSpeedRange = 1;
+    public static final double stopSpeedRange = 1;
   }
 }
