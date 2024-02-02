@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SubsystemIntake;
 
-public class CommandAutoRunIntake extends Command {
+public class CommandIntakeRunForTime extends Command {
 
   protected final SubsystemIntake m_SubsystemIntake;
   protected final Timer m_Timer = new Timer();
@@ -20,7 +20,7 @@ public class CommandAutoRunIntake extends Command {
    * @param time The amount of time, in SECONDS, to run the intake for
    * @author ss
    */
-  public CommandAutoRunIntake(SubsystemIntake subsystemIntake, double time) {
+  public CommandIntakeRunForTime(SubsystemIntake subsystemIntake, double time) {
     m_SubsystemIntake = subsystemIntake;
     m_Time = time;
     // Use addRequirements() here to declare subsystem dependencies.

@@ -1,15 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
-public class CommandTeleopIntake extends Command {
+public class CommandIntakeTeleop extends Command {
 
   private final JoyUtil m_Controller;
   protected final SubsystemIntake m_Subsystem;
 
   /** Creates a new command. */
-  public CommandTeleopIntake(SubsystemIntake intake, JoyUtil controller) {
+  public CommandIntakeTeleop(SubsystemIntake intake, JoyUtil controller) {
     m_Controller = controller;
     m_Subsystem = intake;
     addRequirements(intake);

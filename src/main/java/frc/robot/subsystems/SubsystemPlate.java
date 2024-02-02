@@ -25,8 +25,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.CommandMovePlateToPosition;
 import frc.robot.utility.SubsystemBaseTestable;
+import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.test.Test;
 import frc.robot.test.TestUtil;
 
@@ -175,7 +175,7 @@ public class SubsystemPlate extends SubsystemBaseTestable {
 
     public SetpointCommandTest(Position setpoint) {
       this.setpoint = setpoint;
-      command = new CommandMovePlateToPosition(SubsystemPlate.this, setpoint);
+      command = new CommandPlateMoveToPosition(SubsystemPlate.this, setpoint);
     }
 
     @Override public void testPeriodic() { TestUtil.assertBool(!timer.hasElapsed(5.), "Took too long"); }

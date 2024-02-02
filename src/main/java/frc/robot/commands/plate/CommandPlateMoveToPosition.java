@@ -2,17 +2,17 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.plate;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemPlate.Position;
 
-public class CommandMovePlateToPosition extends Command {
+public class CommandPlateMoveToPosition extends Command {
   SubsystemPlate m_subsystem;
   SubsystemPlate.Position m_position;
 
-  public CommandMovePlateToPosition(SubsystemPlate subsystem, Position position) {
+  public CommandPlateMoveToPosition(SubsystemPlate subsystem, Position position) {
     this.m_subsystem = subsystem;
     this.m_position = position;
 

@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.SubsystemIntake;
@@ -11,11 +11,12 @@ import frc.robot.subsystems.SubsystemIntake;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
-// ss Just a command to access the TurnOffIntake Method of SubsystemIntake
-public class CommandAutoTurnOffIntake extends InstantCommand {
+// ss calls the toggleIntake method of SubsystemIntake
+public class CommandIntakeToggle extends InstantCommand {
 
   protected final SubsystemIntake m_SubsystemIntake;
-  public CommandAutoTurnOffIntake(SubsystemIntake subsystemIntake) {
+  
+  public CommandIntakeToggle(SubsystemIntake subsystemIntake) {
     m_SubsystemIntake = subsystemIntake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_SubsystemIntake);
@@ -24,6 +25,6 @@ public class CommandAutoTurnOffIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_SubsystemIntake.turnOffIntake();
+    m_SubsystemIntake.toggleIntake();
   }
 }

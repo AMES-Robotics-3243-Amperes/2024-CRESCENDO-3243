@@ -5,17 +5,16 @@
 package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
-import frc.robot.commands.CommandShooterTeleopAmp;
-import frc.robot.commands.CommandShooterTeleopSpeaker;
-import frc.robot.commands.CommandSwerveTeleopDrive;
-import frc.robot.commands.CommandTeleopIntake;
+import frc.robot.commands.climber.CommandClimberTeleop;
+import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
+import frc.robot.commands.intake.CommandIntakeTeleop;
+import frc.robot.commands.shooter.CommandShooterTeleopAmp;
+import frc.robot.commands.shooter.CommandShooterTeleopSpeaker;
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemClimber;
-import frc.robot.commands.CommandSwerveTeleopDrive;
-import frc.robot.commands.CommandClimber;
 import frc.robot.test.ExampleTestGroup;
 
 import java.io.IOException;
@@ -53,11 +52,11 @@ public class RobotContainer {
   //
 
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
-  private final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
+  private final CommandIntakeTeleop m_teleopCommandIntake = new CommandIntakeTeleop(m_subsystemIntake, secondaryController);
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
 
-  private final CommandClimber m_CommandClimber = new CommandClimber(m_SubsystemClimber, primaryController);
+  private final CommandClimberTeleop m_CommandClimber = new CommandClimberTeleop(m_SubsystemClimber, primaryController);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

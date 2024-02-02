@@ -1,14 +1,14 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class CommandAutoFourBar extends Command {
+public class CommandIntakeMoveFourBar extends Command {
   // :> Worth noting the entire point of this command is to be used by another command to set the FourBar to a setpoint
   protected final SubsystemIntake m_Subsystem;
   protected final setPoints m_SetPoint;
-  public CommandAutoFourBar(SubsystemIntake intake, setPoints setPoint) {
+  public CommandIntakeMoveFourBar(SubsystemIntake intake, setPoints setPoint) {
     m_Subsystem = intake;
     m_SetPoint = setPoint;
     addRequirements(intake);

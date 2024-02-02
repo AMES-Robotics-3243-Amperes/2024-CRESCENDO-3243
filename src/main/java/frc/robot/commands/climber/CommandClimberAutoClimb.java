@@ -2,25 +2,31 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SubsystemClimber;
-import frc.robot.JoyUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class CommandClimber extends Command {
-
+public class CommandClimberAutoClimb extends Command {
   // ££ Subsystem
   SubsystemClimber m_subsystemClimber;
 
-  // ££ Controller
-  JoyUtil m_controller;
+  // ££ Limit Switch values
+  DigitalInput limitSwitch;
+  boolean limitSwitchTripped = false;
+  boolean finished = false;
 
-  /** Creates a new ClimberCommand. */
-  public CommandClimber(SubsystemClimber subsystem, JoyUtil controller) {
+  // ££ Checks if the command is done
+  boolean command_done = false;
+
+
+  /** Creates a new CommandAutoClimber. */
+  public CommandClimberAutoClimb(SubsystemClimber subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_subsystemClimber = subsystem;
-    m_controller = controller;
+    
+    limitSwitch = new DigitalInput(0);
 
     addRequirements(subsystem);
   }
@@ -32,10 +38,15 @@ public class CommandClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean dPadUp = m_controller.getPOVUp();
-    boolean dPadDown = m_controller.getPOVDown();
+    if (limitSwitch.get()) {
+      limitSwitchTripped = true;
+    }
 
-    m_subsystemClimber.runClimber(dPadUp, dPadDown);
+    if (!limitSwitchTripped) {
+      m_subsystemClimber.runClimber(true, false);
+    } else {
+      command_done = m_subsystemClimber.runClimber(false, true);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +56,10 @@ public class CommandClimber extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (command_done) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
