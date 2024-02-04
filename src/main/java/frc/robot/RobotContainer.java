@@ -5,22 +5,21 @@
 package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
-import frc.robot.commands.CommandShooterTeleopAmp;
-import frc.robot.commands.CommandShooterTeleopSpeaker;
+import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.commands.CommandSwerveFollowTrajectory;
 import frc.robot.commands.CommandSwerveTeleopDrive;
-import frc.robot.commands.CommandTeleopIntake;
 import frc.robot.subsystems.SubsystemPhotonvision;
-import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
-import frc.robot.subsystems.SubsystemIntake;
-import frc.robot.subsystems.SubsystemClimber;
-import frc.robot.commands.CommandSwerveTeleopDrive;
-import frc.robot.commands.CommandClimber;
-import frc.robot.test.ExampleTestGroup;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -35,41 +34,34 @@ public class RobotContainer {
   //
   // :3 Controller
   //
+
   private final JoyUtil primaryController = new JoyUtil(JoyUtilConstants.primaryControllerID);
   private final JoyUtil secondaryController = new JoyUtil(JoyUtilConstants.secondaryControllerID);
   
   //
   // :3 SUBSYSTEMS
   //
+
   private final SubsystemSwerveDrivetrain m_SubsystemSwerveDrivetrain = new SubsystemSwerveDrivetrain();
-
-  private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
-  
-
+  /*private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
   private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
-
-  private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
+  private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();*/
 
   //
   // :3 COMMANDS
-
   //
+
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
-  public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
-
-  // 
-
- 
+  /*public final CommandTeleopIntake m_teleopCommandIntake = new CommandTeleopIntake(m_subsystemIntake, secondaryController);
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
-
-  private final CommandClimber m_CommandClimber = new CommandClimber(m_SubsystemClimber, primaryController);
+  private final CommandClimber m_CommandClimber = new CommandClimber(m_SubsystemClimber, primaryController);*/
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
-    m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
+   // m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     try {
       new SubsystemPhotonvision();
     } catch (IOException e) {
@@ -90,10 +82,29 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    Pose2d start = new Pose2d(0, 0, new Rotation2d(0));
+
+    List<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
+    interiorWaypoints.add(new Translation2d(0, 0.5));
+    interiorWaypoints.add(new Translation2d(0.1, 0.5));
+    interiorWaypoints.add(new Translation2d(0, -0.5));
+    interiorWaypoints.add(new Translation2d(-0.1, -0.5));
+
+    Pose2d end = new Pose2d(0, 0, Rotation2d.fromRadians(Math.PI));
+
+    CommandSwerveFollowTrajectory m_followCommand = new CommandSwerveFollowTrajectory(
+      m_SubsystemSwerveDrivetrain, 
+      TrajectoryGenerator.generateTrajectory(start, 
+        interiorWaypoints,
+        end,
+        AutoConstants.kTrajectoryConfig));
+
+    primaryController.a().whileTrue(m_followCommand);
+
     // && Toggle amp shooting
-    secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
+    /*secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting
-    secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
+    secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);*/
   }
 
   /**

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 import java.util.concurrent.Future;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,10 +16,10 @@ import frc.robot.DataManager;
 import frc.robot.IMUWrapper;
 import frc.robot.utility.PowerManager;
 import frc.robot.utility.SubsystemBaseTestable;
-import frc.robot.utility.Test;
-import frc.robot.utility.TestUtil;
 import frc.robot.Constants.DriveTrain.DriveConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.test.Test;
+import frc.robot.test.TestUtil;
 import frc.robot.utility.TranslationRateLimiter;
 
 /**
@@ -56,10 +55,8 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     new SlewRateLimiter(DriveConstants.kMaxRotationAcceleration, -DriveConstants.kMaxRotationAcceleration, 0);
 
   // :3 setpoint pid and driving rate limiter
-  private PIDController m_setpointXPidController = AutoConstants.kSetpointPID;
-  private PIDController m_setpointYPidController = AutoConstants.kSetpointPID;
   private TranslationRateLimiter m_setpointPidGoalRateLimiter =
-    new TranslationRateLimiter(getPosition(), AutoConstants.kMaxSetpointVelocity);
+    new TranslationRateLimiter(getPosition(), AutoConstants.kMaxSetpointAcceleration);
   private TranslationRateLimiter m_drivingRateLimiter =
     new TranslationRateLimiter(new Translation2d(), DataManager.currentAccelerationConstant.get());
 
@@ -83,10 +80,6 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     m_rotationPidControllerRadians.enableContinuousInput(-Math.PI, Math.PI);
     resetRotationPID();
 
-    // :3 configure setpoint pids
-    m_setpointXPidController.setIntegratorRange(AutoConstants.kSetpointMinIGain, AutoConstants.kSetpointMaxIGain);
-    m_setpointYPidController.setIntegratorRange(AutoConstants.kSetpointMinIGain, AutoConstants.kSetpointMaxIGain);
-
     // :3 reset module driving encoders
     resetModuleDrivingEncoders();
   }
@@ -94,7 +87,6 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
   @Override
   public void doPeriodic() {
     m_drivingRateLimiter.changeLimit(DataManager.currentAccelerationConstant.get());
-
     // :3 update odometry and feed that information into DataManager
     m_odometry.update(m_imuWrapper.getYaw(), getModulePositions());
     DataManager.currentRobotPose.updateWithOdometry(m_odometry.getPoseMeters());
@@ -109,12 +101,9 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     // :3 initialize movement speeds
     if (m_fieldSetpoint != null) {
       Translation2d fixedVelocitySetpoint =
-        m_setpointPidGoalRateLimiter.calculate(m_fieldSetpoint.minus(getPosition()));
-      double xGoal = fixedVelocitySetpoint.getX();
-      double yGoal = fixedVelocitySetpoint.getY();
-
-      rawXSpeed = m_setpointXPidController.calculate(getPosition().getX(), xGoal);
-      rawYSpeed = m_setpointYPidController.calculate(getPosition().getY(), yGoal);
+        m_setpointPidGoalRateLimiter.calculate(getPosition().minus(m_fieldSetpoint).rotateBy(Rotation2d.fromDegrees(-90)));
+      rawXSpeed = fixedVelocitySetpoint.getX() * AutoConstants.kSetpointVelocityScalar;
+      rawYSpeed = fixedVelocitySetpoint.getY() * AutoConstants.kSetpointVelocityScalar;
 
       double speed = Math.sqrt(rawXSpeed * rawXSpeed + rawYSpeed * rawYSpeed);
       if (speed > AutoConstants.kMaxSetpointVelocity) {
@@ -132,7 +121,7 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     // :3 initialize rotation speeds
     if (m_rotationSetpoint != null) {
       rawRotationSpeed =
-        m_rotationPidControllerRadians.calculate(getHeading().getRadians(), m_rotationSetpoint.getRadians());
+        -m_rotationPidControllerRadians.calculate(getHeading().getRadians(), m_rotationSetpoint.getRadians());
     } else if (m_turnSpeedRadians != null) {
       rawRotationSpeed = m_turnSpeedRadians;
     }
@@ -160,8 +149,6 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
       resetRotationPID();
     }
     if (m_fieldSetpoint == null) {
-      m_setpointXPidController.reset();
-      m_setpointYPidController.reset();
       m_setpointPidGoalRateLimiter.reset(getPosition());
     }
 
