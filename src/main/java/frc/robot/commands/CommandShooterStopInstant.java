@@ -2,17 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.shooter;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.SubsystemShooter;
 
-public class CommandShooterStop extends Command {
+public class CommandShooterStopInstant extends Command {
   public SubsystemShooter m_SubsystemShooter;
 
-  /** Creates a new CommandShooterStop. */
-  public CommandShooterStop(SubsystemShooter subsystemShooter) {
+  /** Creates a new CommandShooterStopInstant. */
+  public CommandShooterStopInstant(SubsystemShooter subsystemShooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     
     m_SubsystemShooter = subsystemShooter;
@@ -35,13 +34,6 @@ public class CommandShooterStop extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    double flyWheelSpeed = m_SubsystemShooter.getFlywheelSpeed();
-
-    if (Math.abs(flyWheelSpeed - Constants.ShooterConstants.stopShootSpeed) < Constants.ShooterConstants.stopSpeedRange) {
-     return true;
-    }  else {
-      return false;
-    }
+    return true;
   }
 }
