@@ -28,6 +28,14 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  /**
+   * Constants pertaining to physical parameters of the robot.
+   */
+  public static final class RobotConstants {
+    public static final double speakerRange = 2.0;//TODO Fake number
+    public static final double frameWidth = Units.inchesToMeters(26);
+  }
+
   public static final class FieldConstants {
     /* 
      * :> Worth noting I'm defining forwards to be facing towards Red Alliance (For example: Facing ID 4 )
