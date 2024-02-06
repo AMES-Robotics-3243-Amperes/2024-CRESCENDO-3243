@@ -47,14 +47,37 @@ public class DataManager {
     }
 
     public static class FieldPoses {
-        // :> From 1-5
-        public static Pose2d getNotePositions(int a) {
+        // :> From 1-5, field left to field right
+        public static Pose2d getNotePositions(int arrayPosition) {
             if (DriverStation.getAlliance().isPresent()) {
                 if (DriverStation.getAlliance().get() == Alliance.Red) {
-                    return null;
+                    return Constants.FieldConstants.noteRedPositions[arrayPosition];
                 }
-                return null;
+                return Constants.FieldConstants.noteBluePositions[arrayPosition];
             }
+            // :> Please make something to catch this at the other end
+            return null;
+        }
+        
+        public static Pose2d getAmpPosition() {
+            if (DriverStation.getAlliance().isPresent()) {
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    return Constants.FieldConstants.redAmp;
+                }
+                return Constants.FieldConstants.blueAmp;
+            }
+            // :> Please catchi this on the other side
+            return null;
+        }
+
+        public static Pose2d getSpeakerPosition() {
+            if (DriverStation.getAlliance().isPresent()) {
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    return Constants.FieldConstants.redSpeakerCenterReference;
+                }
+                return Constants.FieldConstants.blueSpeakerCenterReference;
+            }
+            // :> Please catch this on the other side
             return null;
         }
     }

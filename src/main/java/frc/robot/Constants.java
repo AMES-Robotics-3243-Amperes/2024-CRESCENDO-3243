@@ -19,6 +19,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -72,7 +73,8 @@ public final class Constants {
     public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
     public static Pose2d redAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
 
-
+    public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote, middleBlueWingNote, rightBlueWingNote, middleFieldNote1, middleFieldNote2};
+    public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote, middleRedWingNote, rightRedWingNote, middleFieldNote1, middleFieldNote2};
   }
 
   public static class IntakeConstants {
