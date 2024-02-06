@@ -73,8 +73,6 @@ public final class Constants {
     public static Pose2d redAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
 
 
-
-
   }
 
   public static class IntakeConstants {
