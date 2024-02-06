@@ -81,8 +81,8 @@ public final class Constants {
     public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
     public static Pose2d redAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
 
-    public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote, middleBlueWingNote, rightBlueWingNote, middleFieldNote1, middleFieldNote2};
-    public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote, middleRedWingNote, rightRedWingNote, middleFieldNote1, middleFieldNote2};
+    public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote, middleBlueWingNote, rightBlueWingNote, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
+    public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote, middleRedWingNote, rightRedWingNote, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
   }
 
   public static class IntakeConstants {
