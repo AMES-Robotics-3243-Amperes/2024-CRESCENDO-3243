@@ -7,6 +7,7 @@ package frc.robot;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -27,6 +28,50 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class FieldConstants {
+    /* 
+     * :> Worth noting I'm defining forwards to be facing towards Red Alliance (For example: Facing ID 4 )
+     * 0,0 is also the bottom left corner of the field looking top down with blue alliance on your left
+     * All positions are based off this graph: https://www.desmos.com/calculator/77yiven4dn
+     * Positive X is forwards towards red alliance. Positive Y is towards left when you are facing the red alliance
+     * Merrick was silly and so I will be doing everything in terms of artificially defined constants
+    */ 
+
+    public static double fieldHeight = 8.02;
+    public static double fieldWidth = 16.54;
+    // :> I don't know why he did it this way but heres an artificial constant that I'm extracting off of
+    public static double merrickFieldConstant = (2.5399986284);
+
+    // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach them from, we only need the x and y
+    public static Pose2d leftBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (2 * (.57 * merrickFieldConstant))), new Rotation2d(9));
+    public static Pose2d middleBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (.57 * merrickFieldConstant)), new Rotation2d(0));
+    public static Pose2d rightBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), (fieldHeight / 2), new Rotation2d(0));
+    
+    public static Pose2d leftRedWingNote = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d middleRedWingNote = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d rightRedWingNote = new Pose2d(1, 1, new Rotation2d(1));
+
+    public static Pose2d middleFieldNote1 = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d middleFieldNote2 = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d middleFieldNote3 = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d middleFieldNote4 = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d middleFieldNote5 = new Pose2d(1, 1, new Rotation2d(1));
+
+    public static Pose2d blueSpeakerCenterReference = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d redSpeakerCenterReference = new Pose2d(1, 1, new Rotation2d(1));
+
+    // :> Worth noting (teehee) these are going to the be 
+    public static Pose2d blueAmp = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d redAmp = new Pose2d(1, 1, new Rotation2d(1));
+
+    // :> Worth noting (teehee) these probably will these probably won't be used
+    public static Pose2d blueLoadingZone = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d redLoadingZone = new Pose2d(1, 1, new Rotation2d(1));
+
+
+
+  }
+  
   public static class IntakeConstants {
     // :> TODO: NOTE THESE ARE PLACEHOLDERS
     public static final int IntakeMotorID = -999;
