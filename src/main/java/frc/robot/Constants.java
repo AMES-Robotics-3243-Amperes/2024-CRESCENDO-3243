@@ -35,6 +35,7 @@ public final class Constants {
      * All positions are based off this graph: https://www.desmos.com/calculator/77yiven4dn
      * Positive X is forwards towards red alliance. Positive Y is towards left when you are facing the red alliance
      * Merrick was silly and so I will be doing everything in terms of artificially defined constants
+     * Note: we are in meters
     */ 
 
     public static double fieldHeight = 8.02;
@@ -42,36 +43,40 @@ public final class Constants {
     // :> I don't know why he did it this way but heres an artificial constant that I'm extracting off of
     public static double merrickFieldConstant = (2.5399986284);
 
-    // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach them from, we only need the x and y
+    // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
     public static Pose2d leftBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (2 * (.57 * merrickFieldConstant))), new Rotation2d(9));
     public static Pose2d middleBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (.57 * merrickFieldConstant)), new Rotation2d(0));
     public static Pose2d rightBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), (fieldHeight / 2), new Rotation2d(0));
     
-    public static Pose2d leftRedWingNote = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d middleRedWingNote = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d rightRedWingNote = new Pose2d(1, 1, new Rotation2d(1));
+    public static Pose2d leftRedWingNote = new Pose2d((1.14 * merrickFieldConstant), ((fieldHeight/2)-(2*(.57 * merrickFieldConstant))), new Rotation2d(0));
+    public static Pose2d middleRedWingNote = new Pose2d((1.14 * merrickFieldConstant), ((fieldHeight/2)-(.57 * merrickFieldConstant)), new Rotation2d(1));
+    public static Pose2d rightRedWingNote = new Pose2d((1.14 * merrickFieldConstant), ((fieldHeight/2)), new Rotation2d(0));
 
-    public static Pose2d middleFieldNote1 = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d middleFieldNote2 = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d middleFieldNote3 = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d middleFieldNote4 = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d middleFieldNote5 = new Pose2d(1, 1, new Rotation2d(1));
+    // :> Going from left to right
+    public static Pose2d middleFieldNote1 = new Pose2d((fieldWidth/2), (.2964*merrickFieldConstant), new Rotation2d(0));
+    public static Pose2d middleFieldNote2 = new Pose2d((fieldWidth/2), ((.2964+.66)*merrickFieldConstant), new Rotation2d(0));
+    public static Pose2d middleFieldNote3 = new Pose2d((fieldWidth/2), ((.2964+(2*.66))*merrickFieldConstant), new Rotation2d(0));
+    public static Pose2d middleFieldNote4 = new Pose2d((fieldWidth/2), ((.2964+(3*.66))*merrickFieldConstant), new Rotation2d(0));
+    public static Pose2d middleFieldNote5 = new Pose2d((fieldWidth/2), ((.2964+(4*.66))*merrickFieldConstant), new Rotation2d(0));
+    // :> I swear Merrick just pulls numbers out of a hat
+    // :> Merrick should really become a mathematician with all the random constants and numbers he pulls out of the ether
+    // :> I really hope I typed these all in correctly or we are going to have a repeat of last years incident with Bryce
 
-    public static Pose2d blueSpeakerCenterReference = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d redSpeakerCenterReference = new Pose2d(1, 1, new Rotation2d(1));
 
-    // :> Worth noting (teehee) these are going to the be 
-    public static Pose2d blueAmp = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d redAmp = new Pose2d(1, 1, new Rotation2d(1));
+    // :> This is a reference for shooting, it is the center of the speaker relative to the field
+    // :> Worth noting I took all these measurements myself using the field onshape layout
+    public static Pose2d blueSpeakerCenterReference = new Pose2d((0.4572 / 2), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
+    public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
 
-    // :> Worth noting (teehee) these probably will these probably won't be used
-    public static Pose2d blueLoadingZone = new Pose2d(1, 1, new Rotation2d(1));
-    public static Pose2d redLoadingZone = new Pose2d(1, 1, new Rotation2d(1));
+    // :> Worth noting (teehee) these are going to the be used for mainly alligning to the amp as we score into it
+    public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
+    public static Pose2d redAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
+
 
 
 
   }
-  
+
   public static class IntakeConstants {
     // :> TODO: NOTE THESE ARE PLACEHOLDERS
     public static final int IntakeMotorID = -999;
