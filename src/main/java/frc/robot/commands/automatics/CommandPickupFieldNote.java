@@ -10,10 +10,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
+import frc.robot.commands.intake.CommandIntakeMoveFourBar;
+import frc.robot.commands.intake.CommandIntakeOff;
+import frc.robot.commands.intake.CommandIntakeOn;
+import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -21,7 +26,7 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CommandPickupFieldNote extends SequentialCommandGroup {
   /** Creates a new CommandPickupFieldNote. */
-  public CommandPickupFieldNote(SubsystemSwerveDrivetrain drivetrain, int targetNote) {
+  public CommandPickupFieldNote(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, int targetNote) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -31,7 +36,7 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
     Translation2d targetLocation = target.getTranslation();
 
     Translation2d movement = targetLocation.minus(startLocation);
-    Rotation2d overNoteDirection = new Rotation2d(movement.getX(), movement.getY());
+    Rotation2d overNoteDirection = new Rotation2d(-movement.getX(), -movement.getY());
 
     double preparatoryDistance = Constants.RobotConstants.frameWidth*Math.sqrt(2)/2. + 0.05; // Should be a little over around half the frame diagonal width
 
@@ -41,9 +46,17 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
     );
 
     addCommands(
+      new ParallelCommandGroup(
+        new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
+          start, between, new Pose2d(target.getTranslation(), overNoteDirection)
+        ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
+        new CommandIntakeOn(intake),
+        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.position1)
+      ),
       new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
         start, between, new Pose2d(target.getTranslation(), overNoteDirection)
-      ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig))
+      ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
+      new CommandIntakeOff(intake)
     );
   }
 }

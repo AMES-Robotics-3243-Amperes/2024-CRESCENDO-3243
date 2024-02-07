@@ -39,7 +39,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
   public CommandScoreInSpeaker(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemPlate plate) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Translation2d speakerLocation = Constants.FieldConstants.blueAmp.getTranslation();// TODO Alliance choice
+    Translation2d speakerLocation = DataManager.FieldPoses.getSpeakerPosition().getTranslation();// TODO Alliance choice
     Translation2d robotLocation = DataManager.currentRobotPose.get().toPose2d().getTranslation();
     /** Unit vector repersenting the direction from the speaker's center to the current robot position. Will break if the robot is somehow exactly on the speaker. */
     Translation2d speakerToRobotDirection = robotLocation.minus(speakerLocation).div(robotLocation.minus(speakerLocation).getNorm());
@@ -51,7 +51,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
-          DataManager.currentRobotPose.get().toPose2d(), launchPose// TODO fill in speaker position
+          DataManager.currentRobotPose.get().toPose2d(), launchPose
         ), AutoConstants.kTrajectoryConfig)),
         new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.position3),// TODO I have no idea if this is the right setpoint
         new CommandShooterSpinUpSpeaker(shooter),

@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.commands.climber.CommandClimberAutoClimb;
 import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
@@ -26,7 +27,7 @@ public class CommandClimb extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
-        DataManager.currentRobotPose.get().toPose2d(), new Pose2d()// TODO fill in stage position
+        DataManager.currentRobotPose.get().toPose2d(), new Pose2d()//TODO we need a get stage position command
       ), AutoConstants.kTrajectoryConfig)),
       new CommandClimberAutoClimb(climber)
     );
