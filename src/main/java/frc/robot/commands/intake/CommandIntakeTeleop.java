@@ -25,13 +25,13 @@ public class CommandIntakeTeleop extends Command {
     // :> Checks which setpoint the driver wants to input
     // :> Note do not press multiple of these at the same time :(
     if (m_Controller.getPOVLeft()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.position1);
+      m_Subsystem.setFourBarPositionReference(setPoints.fourBarNotDeployedPosition);
     }
     if (m_Controller.getPOVDown()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.position2);
+      m_Subsystem.setFourBarPositionReference(setPoints.fourBarHalfDeployedPosition);
     }
     if (m_Controller.getPOVRight()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.position3);
+      m_Subsystem.setFourBarPositionReference(setPoints.fourBarFullyDeployedPosition);
     }
     // ss Activates and Deactivates the Intake when the A button is pressed or unpressed
     if (m_Controller.getAButton()) {

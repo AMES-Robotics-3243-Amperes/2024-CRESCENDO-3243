@@ -6,7 +6,6 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -78,6 +77,16 @@ public class DataManager {
                 return Constants.FieldConstants.blueSpeakerCenterReference;
             }
             // :> Please catch this on the other side
+            return null;
+        }
+        public static Pose2d getStagePositions(int arrayPosition) {
+            if (DriverStation.getAlliance().isPresent()) {
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    return Constants.FieldConstants.stageRedPositions[arrayPosition];
+                }
+                return Constants.FieldConstants.stageBluePositions[arrayPosition];
+            }
+            // :> Please make something to catch this at the other end
             return null;
         }
     }

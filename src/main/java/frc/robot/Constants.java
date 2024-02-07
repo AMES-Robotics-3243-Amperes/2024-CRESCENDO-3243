@@ -81,8 +81,19 @@ public final class Constants {
     public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
     public static Pose2d redAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
 
+    public static Pose2d blueStagePosition1 = new Pose2d(4.481,  (fieldHeight-3.339), new Rotation2d(0));
+    public static Pose2d blueStagePosition2 = new Pose2d(4.553, (fieldHeight-4.937), new Rotation2d(0));
+    public static Pose2d blueStagePosition3 = new Pose2d(5.762, (fieldHeight-4.103), new Rotation2d(0));
+
+
+    public static Pose2d redStagePosition1 = new Pose2d(12.16, (fieldHeight-3.339), new Rotation2d(0));
+    public static Pose2d redStagePosition2 = new Pose2d(12.065, (fieldHeight-4.937), new Rotation2d(0));
+    public static Pose2d redStagePosition3 = new Pose2d(10.78, (fieldHeight-4.1), new Rotation2d(0));
+
     public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote, middleBlueWingNote, rightBlueWingNote, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
     public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote, middleRedWingNote, rightRedWingNote, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
+    public static Pose2d[] stageRedPositions = new Pose2d[]{redStagePosition1, redStagePosition2, redStagePosition3};  
+    public static Pose2d[] stageBluePositions = new Pose2d[]{blueStagePosition1, blueStagePosition2, blueStagePosition3}; 
   }
 
   public static class IntakeConstants {
@@ -95,9 +106,9 @@ public final class Constants {
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations, NOT DEGREES OR RADIANS
-    public static final double fourBarSetPoint1 = 0;
-    public static final double fourBarSetPoint2 = 0.128;
-    public static final double fourBarSetPoint3 = 0.256;
+    public static final double fourBarUndeployedSetPoint = 0;
+    public static final double fourBarHalfDeployedSetPoint = 0.128;
+    public static final double fourBarFullyDeployedSetPoint = 0.256;
 
     // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;

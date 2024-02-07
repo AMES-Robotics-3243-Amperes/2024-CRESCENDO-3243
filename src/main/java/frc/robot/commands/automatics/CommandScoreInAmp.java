@@ -41,7 +41,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
         new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
           DataManager.currentRobotPose.get().toPose2d(), DataManager.FieldPoses.getAmpPosition()
         ), AutoConstants.kTrajectoryConfig)),
-        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.position2),// TODO I have no idea if this is the right setpoint
+        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarHalfDeployedPosition),// TODO I have no idea if this is the right setpoint
         new CommandShooterSpinUpAmp(shooter),
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kAmp)
       ),

@@ -53,7 +53,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
         new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
           DataManager.currentRobotPose.get().toPose2d(), launchPose
         ), AutoConstants.kTrajectoryConfig)),
-        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.position3),// TODO I have no idea if this is the right setpoint
+        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarFullyDeployedPosition),// TODO I have no idea if this is the right setpoint
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kSpeaker)
       ),

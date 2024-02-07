@@ -51,7 +51,7 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
           start, between, new Pose2d(target.getTranslation(), overNoteDirection)
         ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
         new CommandIntakeOn(intake),
-        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.position1)
+        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition)
       ),
       new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
         start, between, new Pose2d(target.getTranslation(), overNoteDirection)
