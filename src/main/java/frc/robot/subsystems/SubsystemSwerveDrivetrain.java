@@ -78,6 +78,7 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     m_odometry.update(m_imu.getYaw(), getModulePositions());
+    DataManager.currentRobotPose.updateWithOdometry(m_odometry.getPoseMeters());
 
     PowerManager.frontLeftDrivetrainMotorPresentCurrent = m_frontLeft.getMotorOutputCurrent();
     PowerManager.frontRightDrivetrainMotorPresentCurrent = m_frontRight.getMotorOutputCurrent();
