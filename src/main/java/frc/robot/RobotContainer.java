@@ -6,7 +6,9 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.commands.CommandSwerveDriveToPointCommand;
 import frc.robot.commands.CommandSwerveFollowTrajectory;
+import frc.robot.commands.CommandSwerveFollowTrajectoryFluid;
 import frc.robot.commands.CommandSwerveTeleopDrive;
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
@@ -82,15 +84,18 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    Pose2d start = new Pose2d(0, 0, new Rotation2d(0));
+    Pose2d start = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
 
     List<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
-    interiorWaypoints.add(new Translation2d(0, 0.5));
-    interiorWaypoints.add(new Translation2d(0.1, 0.5));
-    interiorWaypoints.add(new Translation2d(0, -0.5));
-    interiorWaypoints.add(new Translation2d(-0.1, -0.5));
+    interiorWaypoints.add(new Translation2d(0, -2));
+    interiorWaypoints.add(new Translation2d(-1, -2));
+    interiorWaypoints.add(new Translation2d(-1, -2.2));
+    interiorWaypoints.add(new Translation2d(-1.5, -2));
+    
+    interiorWaypoints.add(new Translation2d(-1, -2));
+    interiorWaypoints.add(new Translation2d(0, 1));
 
-    Pose2d end = new Pose2d(0, 0, Rotation2d.fromRadians(Math.PI));
+    Pose2d end = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
 
     CommandSwerveFollowTrajectory m_followCommand = new CommandSwerveFollowTrajectory(
       m_SubsystemSwerveDrivetrain, 
@@ -99,7 +104,16 @@ public class RobotContainer {
         end,
         AutoConstants.kTrajectoryConfig));
 
+    CommandSwerveFollowTrajectoryFluid m_followCommandFLuid = new CommandSwerveFollowTrajectoryFluid(
+      m_SubsystemSwerveDrivetrain, 
+      TrajectoryGenerator.generateTrajectory(start, 
+        interiorWaypoints,
+        end,
+        AutoConstants.kTrajectoryConfig));
+
     primaryController.a().whileTrue(m_followCommand);
+    primaryController.b().whileTrue(m_followCommandFLuid);
+    primaryController.x().whileTrue(new CommandSwerveDriveToPointCommand(m_SubsystemSwerveDrivetrain, start));
 
     // && Toggle amp shooting
     /*secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);

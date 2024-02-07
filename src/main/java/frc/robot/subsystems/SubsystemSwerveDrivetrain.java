@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -89,7 +90,9 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
     m_drivingRateLimiter.changeLimit(DataManager.currentAccelerationConstant.get());
     // :3 update odometry and feed that information into DataManager
     m_odometry.update(m_imuWrapper.getYaw(), getModulePositions());
-    DataManager.currentRobotPose.updateWithOdometry(m_odometry.getPoseMeters());
+
+    Translation2d odometryTranslation = m_odometry.getPoseMeters().getTranslation();
+    DataManager.currentRobotPose.updateWithOdometry(new Pose2d(odometryTranslation, m_imuWrapper.getYaw()));
 
     // :3 these are the raw speeds of the robot,
     // and will be assigned in the next 2 if statements
