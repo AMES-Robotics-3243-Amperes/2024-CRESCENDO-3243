@@ -68,10 +68,17 @@ public final class Constants {
       // ££ Sets the current at which the motors will stop running on the descent
       public static final double MotorCurrentLimit = 50.0;
 
+      // ££ Sets how many rotations the motors need to complete to be fully extended
+      public static final double motorPositionLimit = 50.0;
+
       public static final class IDs {
         // ££ Climber ids
         public static final int kMotorOne = 9;
         public static final int kMotorTwo = 10;
+
+        // ££ Limit switch ids
+        public static final int kSwitchOne = 0;
+        public static final int kSwitchTwo = 1;
       }
 
       public static final class MotorSpeeds {
