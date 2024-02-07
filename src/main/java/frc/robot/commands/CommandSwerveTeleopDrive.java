@@ -5,8 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveTrain.DriveConstants;
+import frc.robot.Constants.DriveTrain.DriveConstants.ChassisKinematics;
 import frc.robot.DataManager;
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
@@ -20,7 +23,7 @@ public class CommandSwerveTeleopDrive extends Command {
   private final JoyUtil m_controller;
 
   // :3 teleop driving should be reversed depending on field side
-  private boolean reverse = true;
+  private boolean reverse = false;
 
   /**
    * Creates a new SwerveTeleopCommand.
@@ -42,17 +45,27 @@ public class CommandSwerveTeleopDrive extends Command {
     // :3 get x and y speeds
     double xSpeed = -m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
     double ySpeed = -m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    Translation2d speeds = new Translation2d(xSpeed, ySpeed);
+
+    // TODO: let the driver do robot relative :3
+    speeds.rotateBy(DataManager.currentRobotPose.get().getRotation().toRotation2d().times(-1));
 
     // :3 get rotation speed
     double controllerRightX = m_controller.getRightX();
     double rotationSpeed = controllerRightX * DriveConstants.kAngularSpeedDamper;
 
     // :3 drive with those speeds
-    m_SubsystemSwerveDrivetrain.driveWithSpeeds(new Translation2d(xSpeed, ySpeed), rotationSpeed, true);
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speeds.getX(), speeds.getY(), rotationSpeed);
+    SwerveModuleState[] moduleStates = ChassisKinematics.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    m_SubsystemSwerveDrivetrain.setModuleStates(moduleStates);
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+    SwerveModuleState[] moduleStates = ChassisKinematics.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    m_SubsystemSwerveDrivetrain.setModuleStates(moduleStates);
+  }
 
   @Override
   public boolean isFinished() {

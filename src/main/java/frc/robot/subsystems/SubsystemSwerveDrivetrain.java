@@ -1,34 +1,27 @@
 package frc.robot.subsystems;
-import java.util.concurrent.Future;
-
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.DataManager;
 import frc.robot.IMUWrapper;
-import frc.robot.utility.PowerManager;
-import frc.robot.utility.SubsystemBaseTestable;
 import frc.robot.Constants.DriveTrain.DriveConstants;
-import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
-import frc.robot.test.Test;
-import frc.robot.test.TestUtil;
-import frc.robot.utility.TranslationRateLimiter;
+import frc.robot.Constants.DriveTrain.DriveConstants.ChassisKinematics;
+import frc.robot.utility.PowerManager;
 
 /**
  * Subsystem for a swerve drivetrain
  * 
  * @author :3
  */
-public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
+public class SubsystemSwerveDrivetrain extends SubsystemBase {
 
   // :3 create swerve modules
   private final SubsystemSwerveModule m_frontLeft = new SubsystemSwerveModule(DriveConstants.IDs.kFrontLeftDrivingCanId,
@@ -42,30 +35,12 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
 
   private final SubsystemSwerveModule m_rearRight = new SubsystemSwerveModule(DriveConstants.IDs.kRearRightDrivingCanId,
     DriveConstants.IDs.kRearRightTurningCanId, DriveConstants.ModuleOffsets.kBackRightOffset);
-  // :3 driving speeds/information
-  private Translation2d m_speeds;
-  private Boolean m_drivingFieldRelative;
-  private Double m_turnSpeedRadians;
-
-  private Translation2d m_fieldSetpoint;
-  private Rotation2d m_rotationSetpoint;
-
-  // :3 rotation pid and rate limit
-  private ProfiledPIDController m_rotationPidControllerRadians = AutoConstants.kTurningPID;
-  private SlewRateLimiter m_roatationLimiter =
-    new SlewRateLimiter(DriveConstants.kMaxRotationAcceleration, -DriveConstants.kMaxRotationAcceleration, 0);
-
-  // :3 setpoint pid and driving rate limiter
-  private TranslationRateLimiter m_setpointPidGoalRateLimiter =
-    new TranslationRateLimiter(getPosition(), AutoConstants.kMaxSetpointAcceleration);
-  private TranslationRateLimiter m_drivingRateLimiter =
-    new TranslationRateLimiter(new Translation2d(), DataManager.currentAccelerationConstant.get());
-
-  // :3 imu
-  private final IMUWrapper m_imuWrapper = new IMUWrapper();
 
   /** :3 odometry for tracking robot pose */
   SwerveDriveOdometry m_odometry;
+
+  // :3 imu for odometry
+  IMUWrapper m_imu = new IMUWrapper();
 
   /**
    * Creates a new DriveSubsystem.
@@ -74,154 +49,46 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
    */
   public SubsystemSwerveDrivetrain() {
     // :3 initialize odometry
-    m_odometry = new SwerveDriveOdometry(DriveConstants.ChassisKinematics.kDriveKinematics,
+    m_odometry = new SwerveDriveOdometry(ChassisKinematics.kDriveKinematics,
       DataManager.currentRobotPose.get().getRotation().toRotation2d(), getModulePositions());
-
-    // :3 configure turning pid
-    m_rotationPidControllerRadians.enableContinuousInput(-Math.PI, Math.PI);
-    resetRotationPID();
 
     // :3 reset module driving encoders
     resetModuleDrivingEncoders();
   }
 
+  /**
+   * @param trajectory the {@link Trajectory} to follow. see {@link TrajectoryGenerator} for creating trajectories.
+   * 
+   * @return A command that follows the provided trajectory
+   * 
+   * @author :3
+   */
+  public SwerveControllerCommand createTrajectoryFollowCommand(Trajectory trajectory) {
+    return new SwerveControllerCommand(trajectory,
+      () -> { return DataManager.currentRobotPose.get().toPose2d(); },
+      ChassisKinematics.kDriveKinematics,
+      new PIDController(0, 0, 0),
+      new PIDController(0, 0, 0),
+      new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0, 0)),
+      () -> { return trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getRotation(); },
+      this::setModuleStates,
+      this);
+  }
+
   @Override
-  public void doPeriodic() {
-    m_drivingRateLimiter.changeLimit(DataManager.currentAccelerationConstant.get());
-    // :3 update odometry and feed that information into DataManager
-    m_odometry.update(m_imuWrapper.getYaw(), getModulePositions());
+  public void periodic() {
+    m_odometry.update(m_imu.getYaw(), getModulePositions());
 
-    Translation2d odometryTranslation = m_odometry.getPoseMeters().getTranslation();
-    DataManager.currentRobotPose.updateWithOdometry(new Pose2d(odometryTranslation, m_imuWrapper.getYaw()));
-
-    // :3 these are the raw speeds of the robot,
-    // and will be assigned in the next 2 if statements
-    double rawXSpeed = 0.0;
-    double rawYSpeed = 0.0;
-    double rawRotationSpeed = 0.0;
-    boolean fieldRelative = false;
-
-    // :3 initialize movement speeds
-    if (m_fieldSetpoint != null) {
-      Translation2d fixedVelocitySetpoint =
-        m_setpointPidGoalRateLimiter.calculate(getPosition().minus(m_fieldSetpoint).rotateBy(Rotation2d.fromDegrees(-90)));
-      rawXSpeed = fixedVelocitySetpoint.getX() * AutoConstants.kSetpointVelocityScalar;
-      rawYSpeed = fixedVelocitySetpoint.getY() * AutoConstants.kSetpointVelocityScalar;
-
-      double speed = Math.sqrt(rawXSpeed * rawXSpeed + rawYSpeed * rawYSpeed);
-      if (speed > AutoConstants.kMaxSetpointVelocity) {
-        rawXSpeed *= (AutoConstants.kMaxSetpointVelocity / speed);
-        rawYSpeed *= (AutoConstants.kMaxSetpointVelocity / speed);
-      }
-
-      fieldRelative = true;
-    } else if (m_speeds != null && m_drivingFieldRelative != null) {
-      rawXSpeed = m_speeds.getX();
-      rawYSpeed = m_speeds.getY();
-      fieldRelative = m_drivingFieldRelative;
-    }
-
-    // :3 initialize rotation speeds
-    if (m_rotationSetpoint != null) {
-      rawRotationSpeed =
-        -m_rotationPidControllerRadians.calculate(getHeading().getRadians(), m_rotationSetpoint.getRadians());
-    } else if (m_turnSpeedRadians != null) {
-      rawRotationSpeed = m_turnSpeedRadians;
-    }
-
-    // :3 convert to field relative speeds for rate limiting
-    double rawFieldRelativeXSpeed;
-    double rawFieldRelativeYSpeed;
-    if (!fieldRelative) {
-      rawFieldRelativeXSpeed = rawXSpeed * getHeading().getCos() - rawYSpeed * getHeading().getSin();
-      rawFieldRelativeYSpeed = rawXSpeed * getHeading().getSin() + rawYSpeed * getHeading().getCos();
-    } else {
-      rawFieldRelativeXSpeed = rawXSpeed;
-      rawFieldRelativeYSpeed = rawYSpeed;
-    }
-    
-    // :3 rate limit
-    rawRotationSpeed = m_roatationLimiter.calculate(rawRotationSpeed);
-    Translation2d rawFieldRelativeSpeeds = 
-      m_drivingRateLimiter.calculate(new Translation2d(rawFieldRelativeXSpeed, rawFieldRelativeYSpeed));
-    rawFieldRelativeXSpeed = rawFieldRelativeSpeeds.getX();
-    rawFieldRelativeYSpeed = rawFieldRelativeSpeeds.getY();
-
-    // :3 reset pids
-    if (m_rotationSetpoint == null) {
-      resetRotationPID();
-    }
-    if (m_fieldSetpoint == null) {
-      m_setpointPidGoalRateLimiter.reset(getPosition());
-    }
-
-    // :3 get module states
-    SwerveModuleState[] swerveModuleStates = DriveConstants.ChassisKinematics.kDriveKinematics.toSwerveModuleStates(
-      ChassisSpeeds.fromFieldRelativeSpeeds(rawFieldRelativeXSpeed, rawFieldRelativeYSpeed, rawRotationSpeed, getHeading()));
-
-    setModuleStates(swerveModuleStates);
-
-    // :> Sets the power manager variables equal to the current current outputs
-    PowerManager.frontLeftDrivetrainMotorPresentCurrent = getDriveFrontLeftCurrent();
-    PowerManager.frontRightDrivetrainMotorPresentCurrent = getDriveFrontRightCurrent();
-    PowerManager.rearLeftDrivetrainMotorPresentCurrent = getDriveRearLeftCurrent();
-    PowerManager.rearRightDrivetrainMotorPresentCurrent = getDriveRearRightCurrent();
-
-  }
-
-  /**
-   * Sets the speeds the robot should drive at.
-   * Nulls are okay and will be used as 0's.
-   *
-   * @param speeds a vector representing the speeds of the robot
-   * @param rotationSpeed angular rate of the robot in radians
-   * @param drivingFieldRelative whether the provided x and y speeds are relative to the field
-   * 
-   * @author :3
-   */
-  public void driveWithSpeeds(Translation2d speeds, Double rotationSpeed, Boolean drivingFieldRelative) {
-    m_speeds = speeds;
-    m_turnSpeedRadians = rotationSpeed;
-    m_drivingFieldRelative = drivingFieldRelative;
-
-    // :3 if something's being controlled with speeds, null the setpoints
-    if (speeds != null) {
-      m_fieldSetpoint = null;
-    }
-
-    if (rotationSpeed != null) {
-      m_rotationSetpoint = null;
-    }
-  }
-
-  /**
-   * drive the robot with setpoints
-   *
-   * @param xSpeed speed of the robot in the x direction (forward)
-   * @param ySpeed speed of the robot in the y direction (sideways)
-   * @param rotation or goal of field relative driving
-   * @param fieldRelative whether the provided x and y speeds are relative to the field
-   * 
-   * @author :3
-   */
-  public void driveWithSetpoint(Translation2d fieldSetpoint, Rotation2d rotationSetpoint) {
-    m_fieldSetpoint = fieldSetpoint;
-    m_rotationSetpoint = rotationSetpoint;
-
-    // :3 if something's being controlled with setpoints, null the speeds
-    if (fieldSetpoint != null) {
-      m_speeds = null;
-    }
-
-    if (rotationSetpoint != null) {
-      m_turnSpeedRadians = null;
-    }
+    PowerManager.frontLeftDrivetrainMotorPresentCurrent = m_frontLeft.getMotorOutputCurrent();
+    PowerManager.frontRightDrivetrainMotorPresentCurrent = m_frontRight.getMotorOutputCurrent();
+    PowerManager.rearLeftDrivetrainMotorPresentCurrent = m_rearLeft.getMotorOutputCurrent();
+    PowerManager.rearRightDrivetrainMotorPresentCurrent = m_rearRight.getMotorOutputCurrent();
   }
 
   /**
    * Set the swerve modules' desired states
    *
-   * @param desiredStates the desired {@link SwerveModuleState}s
+   * @param desiredStates the desired {@link SwerveModuleState}s (front left, front right, rear left, rear right)
    * 
    * @author :3
    */
@@ -261,221 +128,11 @@ public class SubsystemSwerveDrivetrain extends SubsystemBaseTestable {
   }
 
   /**
-   * Private helper function
-   * 
-   * @return the robot's heading
-   * 
-   * @author :3
-   */
-  private Rotation2d getHeading() {
-    double rawAngleRadians = DataManager.currentRobotPose.get().getRotation().toRotation2d().getRadians();
-    return Rotation2d.fromRadians(MathUtil.angleModulus(rawAngleRadians));
-  }
-
-  /**
-   * Private helper function
-   * 
-   * @return the robot's position
-   * 
-   * @author :3
-   */
-  private Translation2d getPosition() {
-    return DataManager.currentRobotPose.get().getTranslation().toTranslation2d();
-  }
-
-  /**
    * @return if the motors are at safe temperatures
    * 
    * @author :3
    */
   public boolean getMotorsOkTemperature() {
     return !(m_frontLeft.isTooHot() || m_frontRight.isTooHot() || m_rearLeft.isTooHot() || m_rearRight.isTooHot());
-  }
-
-  /**
-   * resets the rotation pid
-   * 
-   * @author :3
-   */
-  private void resetRotationPID() {
-    m_rotationPidControllerRadians.reset(getHeading().getRadians());
-  }
-
-  /*  :> The reason why I'm doing all of this is because only SubsystemSwerve has access to all the motors directly
-   *  I'll be using these in periodic to set motor currents in power manager to make fail safes and redirect current.
-  */
-  /**
-   * @return frontLeft Motors current output at a given moment
-   *
-   * @author :>
-  */
-  public double getDriveFrontLeftCurrent() {
-    return (m_frontLeft.getMotorOutputCurrent());
-  }
-
-  /**
-   * @return frontRight Motors current output at a given moment
-   *
-   * @author :>
-  */
-  public double getDriveFrontRightCurrent() {
-    return (m_frontRight.getMotorOutputCurrent());
-  }
-
-  /**
-   * @return rearLeft Motors current output at a given moment
-   *
-   * @author :>
-  */
-  public double getDriveRearLeftCurrent() {
-    return (m_rearLeft.getMotorOutputCurrent());
-  }
-
-  /**
-   * @return rearRight Motors current output at a given moment
-   *
-   * @author :>
-  */
-  public double getDriveRearRightCurrent() {
-    return (m_rearRight.getMotorOutputCurrent());
-  }
-
-  private EncoderTest m_EncoderTest = new EncoderTest();
-  private MovementTest m_MovementTest = new MovementTest();
-
-  private class EncoderTest implements Test {
-    private boolean hasRanOneTimeSetup = false;
-    private boolean hasRanOneTimeTest = false;
-    private Timer timer = new Timer();
-    private Future<Boolean> response;
-
-    @Override
-    public void testPeriodic() {
-      if (!hasRanOneTimeTest) {
-        hasRanOneTimeTest = true;
-        response = TestUtil.askUserBool("Are the robot's wheels all pointing in the same direction?");
-      }
-
-      driveWithSpeeds(new Translation2d(0.0, 0.0), 0.0, true);
-    }
-
-    @Override
-    public boolean testIsDone() {
-      if (response.isDone()) {
-        try {
-          if (response.get() == false) {
-            throw new AssertionError();
-          }
-
-          return true;
-        } catch (Exception e) {
-          throw new AssertionError();
-        }
-      }
-
-      return false;
-    }
-
-    @Override
-    public void setupPeriodic() {
-      if (!hasRanOneTimeSetup) {
-        timer.reset();
-        timer.start();
-        hasRanOneTimeSetup = true;
-      }
-
-      driveWithSpeeds(new Translation2d(0.1, 0.0), 0.0, true);
-    }
-
-    @Override
-    public boolean setupIsDone() {
-      return timer.hasElapsed(1);
-    }
-
-    @Override
-    public void closedownPeriodic() {}
-
-    @Override
-    public boolean closedownIsDone() {
-      hasRanOneTimeSetup = false;
-      hasRanOneTimeTest = false;
-
-      return true;
-    }
-
-    @Override
-    public String getName() {
-      return "SubsystemSwerveDrivetrainEncoderTest";
-    }
-
-    @Override
-    public Test[] getDependencies() {
-      return new Test[0];
-    }
-  }
-
-  private class MovementTest implements Test {
-    private boolean hasRanOneTimeTest = false;
-    private Future<Boolean> response;
-
-    @Override
-    public void testPeriodic() {
-      if (!hasRanOneTimeTest) {
-        hasRanOneTimeTest = true;
-        response = TestUtil.askUserBool("Is the robot moving forward and rotating?");
-      }
-
-      driveWithSpeeds(new Translation2d(0.05, 0.0), 0.1, true);
-    }
-
-    @Override
-    public boolean testIsDone() {
-      if (response.isDone()) {
-        try {
-          if (response.get() == false) {
-            throw new AssertionError();
-          }
-
-          return true;
-        } catch (Exception e) {
-          throw new AssertionError();
-        }
-      }
-
-      return false;
-    }
-
-    @Override
-    public void setupPeriodic() {}
-
-    @Override
-    public boolean setupIsDone() {
-      return true;
-    }
-
-    @Override
-    public void closedownPeriodic() {}
-
-    @Override
-    public boolean closedownIsDone() {
-      hasRanOneTimeTest = false;
-
-      return true;
-    }
-
-    @Override
-    public String getName() {
-      return "SubsystemSwerveDrivetrainMovementTest";
-    }
-
-    @Override
-    public Test[] getDependencies() {
-      return new Test[]{ m_EncoderTest };
-    }
-  }
-
-  @Override
-  public Test[] getTests() {
-    return new Test[]{ m_EncoderTest, m_MovementTest };
   }
 }
