@@ -1,15 +1,20 @@
 package frc.robot;
 
+import java.sql.Driver;
+
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utility.PowerManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /** <b>Stores all of the data that is shared between systems, especially positions.</b>
  * 
@@ -41,7 +46,41 @@ public class DataManager {
         T get();
     }
 
+    public static class FieldPoses {
+        // :> From 1-5, field left to field right
+        public static Pose2d getNotePositions(int arrayPosition) {
+            if (DriverStation.getAlliance().isPresent()) {
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    return Constants.FieldConstants.noteRedPositions[arrayPosition];
+                }
+                return Constants.FieldConstants.noteBluePositions[arrayPosition];
+            }
+            // :> Please make something to catch this at the other end
+            return null;
+        }
+        
+        public static Pose2d getAmpPosition() {
+            if (DriverStation.getAlliance().isPresent()) {
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    return Constants.FieldConstants.redAmp;
+                }
+                return Constants.FieldConstants.blueAmp;
+            }
+            // :> Please catchi this on the other side
+            return null;
+        }
 
+        public static Pose2d getSpeakerPosition() {
+            if (DriverStation.getAlliance().isPresent()) {
+                if (DriverStation.getAlliance().get() == Alliance.Red) {
+                    return Constants.FieldConstants.redSpeakerCenterReference;
+                }
+                return Constants.FieldConstants.blueSpeakerCenterReference;
+            }
+            // :> Please catch this on the other side
+            return null;
+        }
+    }
     /** An {@link Entry} that can be set using a set method
      * @author H!
      */
@@ -158,6 +197,8 @@ public class DataManager {
 
             m_robotPoseIsCurrent = false;
         }
+
+       
 
         public void updateWithVision(Pose3d visionEstimate, double ambiguity) {
             m_latestPhotonPose = visionEstimate;

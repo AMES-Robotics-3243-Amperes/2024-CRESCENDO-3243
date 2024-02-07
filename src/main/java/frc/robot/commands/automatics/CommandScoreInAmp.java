@@ -17,7 +17,7 @@ import frc.robot.commands.intake.CommandIntakeMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpAmp;
-import frc.robot.commands.shooter.CommandShooterStop;
+import frc.robot.commands.shooter.CommandShooterStopInstant;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemShooter;
@@ -46,7 +46,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kAmp)
       ),
       new CommandIntakeRunForTime(intake, 0.5),// TODO switch for a sensor aware indexing command
-      new CommandShooterStop(shooter)// TODO switch for an instant 'begin to stop' command
+      new CommandShooterStopInstant(shooter)
     );
   }
 }
