@@ -9,38 +9,33 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
 /**
  * A command that allows the robot to follow a Trajectory. This command
- * is setup in a way that it is not prone to drift from the correct
- * path, but will lag behind the trajectory as it drives. For an alternative
- * that is more concerned with speed and precision but is prone to drift,
- * see {@link CommandSwerveFollowTrajectoryFluid}.
+ * is setup in a way that prioritizes speed and precision, but is prone to
+ * drift from the correct path. For an alternative that does not experience
+ * drift but may lag behind the trajectory, see {@link CommandSwerveFollowTrajectory}.
  * 
  * @author :3
  */
-public class CommandSwerveFollowTrajectory extends Command {
+public class CommandSwerveFollowTrajectoryFluid extends Command {
   Timer m_timer = new Timer();
   Rotation2d m_desiredRotation;
   Trajectory m_trajectory;
   SubsystemSwerveDrivetrain m_subsystem;
 
   /**
-   * Creates a new CommandSwerveFollowTrajectory.
+   * Creates a new CommandSwerveFollowTrajectoryFluid.
    * 
    * @param subsystem The {@link SubsystemSwerveDrivetrain} to follow the trajectory with
    * @param trajectory The {@link Trajectory} to follow. See {@link TrajectoryGenerator} for making Trajectories.
    * 
    * @author :3
    */
-  public CommandSwerveFollowTrajectory(SubsystemSwerveDrivetrain subsystem, Trajectory trajectory) {
+  public CommandSwerveFollowTrajectoryFluid(SubsystemSwerveDrivetrain subsystem, Trajectory trajectory) {
     m_subsystem = subsystem;
     m_trajectory = trajectory;
     m_desiredRotation = m_trajectory.sample(m_trajectory.getTotalTimeSeconds()).poseMeters.getRotation();
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_subsystem);
-  }
-
-  public CommandSwerveFollowTrajectory(SubsystemSwerveDrivetrain subsystem, Trajectory trajectory) {
-    // Unimplemented TODO
   }
 
   // Called when the command is initially scheduled.
@@ -54,8 +49,27 @@ public class CommandSwerveFollowTrajectory extends Command {
   @Override
   public void execute() {
     double currentTime = m_timer.get();
-    var desiredState = m_trajectory.sample(currentTime);
-    m_subsystem.driveWithSetpoint(desiredState.poseMeters.getTranslation(), desiredState.poseMeters.getRotation());
+    var currentState = m_trajectory.sample(currentTime);
+
+    final double two_loop_time = 0.002;
+    var nextState = m_trajectory.sample(currentTime + two_loop_time);
+
+    Translation2d unitVelocity = nextState.poseMeters.getTranslation().minus(currentState.poseMeters.getTranslation());
+    double directionNorm = unitVelocity.getNorm();
+    unitVelocity = unitVelocity.div(directionNorm).rotateBy(Rotation2d.fromDegrees(90));
+
+    // :3 if the position doesn't change from one state to the next, a division by zero happens
+    // and the robot hurls itself to the nearest wall with no regard to the saftey of itself,
+    // the building it's in, or the people in it. yes, I realized this the hard way
+    final double normIsZeroRange = 0.002;
+    if (Math.abs(directionNorm) < normIsZeroRange) {
+      unitVelocity = new Translation2d();
+    }
+
+    Rotation2d rotationChange = nextState.poseMeters.getRotation().minus(currentState.poseMeters.getRotation());
+    double rotationSpeed = rotationChange.getRadians() / two_loop_time;
+
+    m_subsystem.driveWithSpeeds(unitVelocity.times(currentState.velocityMetersPerSecond), rotationSpeed, true);
   }
 
   // Called once the command ends or is interrupted.
