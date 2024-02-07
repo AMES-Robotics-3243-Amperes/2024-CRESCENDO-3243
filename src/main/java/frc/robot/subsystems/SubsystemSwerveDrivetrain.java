@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.DataManager;
 import frc.robot.IMUWrapper;
 import frc.robot.Constants.DriveTrain.DriveConstants;
+import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.ChassisKinematics;
 import frc.robot.utility.PowerManager;
 
@@ -68,9 +69,10 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
     return new SwerveControllerCommand(trajectory,
       () -> { return DataManager.currentRobotPose.get().toPose2d(); },
       ChassisKinematics.kDriveKinematics,
-      new PIDController(0, 0, 0),
-      new PIDController(0, 0, 0),
-      new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0, 0)),
+      new PIDController(0.1, 0, 0),
+      new PIDController(0.1, 0, 0),
+      new ProfiledPIDController(AutoConstants.kTuringP, AutoConstants.kTurningI, AutoConstants.kTurningD,
+        new TrapezoidProfile.Constraints(0, 0)),
       () -> { return trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getRotation(); },
       this::setModuleStates,
       this);

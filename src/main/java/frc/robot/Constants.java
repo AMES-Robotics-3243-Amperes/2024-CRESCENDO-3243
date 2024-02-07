@@ -277,9 +277,9 @@ public final class Constants {
         public static final double kMaxAngularVelocityRadians = 2;
         public static final double kMaxAngularAccelerationRadians = 4;
 
-        public static final double kTuringP = 2;
+        public static final double kTuringP = 0.0;
         public static final double kTurningI = 0;
-        public static final double kTurningD = 0.2;
+        public static final double kTurningD = 0.01;
 
         public static final TrapezoidProfile.Constraints kTurningConfig =
           new TrapezoidProfile.Constraints(kMaxAngularVelocityRadians, kMaxAngularAccelerationRadians);
@@ -289,8 +289,7 @@ public final class Constants {
 
         // :3 driving setpoint stuff
         public static final double kMaxSetpointVelocity = 2;
-        public static final double kMaxSetpointAcceleration = 9;
-        public static final double kSetpointVelocityScalar = 7.5;
+        public static final double kMaxSetpointAcceleration = 1;
 
         public static final TrajectoryConfig kTrajectoryConfig =
           new TrajectoryConfig(kMaxSetpointVelocity, kMaxSetpointAcceleration);
