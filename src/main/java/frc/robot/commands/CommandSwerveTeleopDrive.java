@@ -23,7 +23,7 @@ public class CommandSwerveTeleopDrive extends Command {
   private final JoyUtil m_controller;
 
   // :3 teleop driving should be reversed depending on field side
-  private boolean reverse = false;
+  private boolean reverse = true;
 
   /**
    * Creates a new SwerveTeleopCommand.
@@ -48,7 +48,7 @@ public class CommandSwerveTeleopDrive extends Command {
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
     // TODO: let the driver do robot relative :3
-    speeds.rotateBy(DataManager.currentRobotPose.get().getRotation().toRotation2d().times(-1));
+    speeds = speeds.rotateBy(DataManager.currentRobotPose.get().toPose2d().getRotation().times(-1));
 
     // :3 get rotation speed
     double controllerRightX = m_controller.getRightX();

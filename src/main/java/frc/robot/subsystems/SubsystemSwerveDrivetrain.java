@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -135,5 +136,14 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
    */
   public boolean getMotorsOkTemperature() {
     return !(m_frontLeft.isTooHot() || m_frontRight.isTooHot() || m_rearLeft.isTooHot() || m_rearRight.isTooHot());
+  }
+
+  /**
+   * @return the heading reported by the gyro
+   * 
+   * @author :3
+   */
+  public Rotation2d getGyroHeading() {
+    return m_imu.getYaw();
   }
 }
