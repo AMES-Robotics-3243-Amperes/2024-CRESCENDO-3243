@@ -375,4 +375,5 @@ public final class Constants {
     public static final int emptyDistance = 0;//H! TODO make this the real number
     public static final int filledDistance = 1;//H! TODO make this the real number
   }
+ 
 }

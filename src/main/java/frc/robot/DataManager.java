@@ -180,7 +180,7 @@ public class DataManager {
 
     public static class NoteStorageSensor implements Entry<Boolean> {
         ColorSensorV3 colorSensor;
-        boolean hasNote = false;
+      
 
         public NoteStorageSensor() {
             colorSensor = new ColorSensorV3(I2C.Port.kMXP);
@@ -188,17 +188,9 @@ public class DataManager {
 
         @Override
         public Boolean get() {
-            int proximity = colorSensor.getProximity();
+     
+            return colorSensor.getProximity() > Constants.ColorSensor.filledDistance;
 
-            if (proximity < Constants.ColorSensor.emptyDistance) {
-                hasNote = false;
-            }
-
-            if (proximity > Constants.ColorSensor.filledDistance) {
-                hasNote = true;
-            }
-
-            return hasNote;
         }
     }
 
@@ -209,6 +201,7 @@ public class DataManager {
     public static CurrentRobotPose currentRobotPose = new CurrentRobotPose();
     public static AccelerationConstant currentAccelerationConstant = new AccelerationConstant();
     public static VelocityConstant currentVelocityConstant = new VelocityConstant();
+    public static NoteStorageSensor currentNoteStorageSensor = new NoteStorageSensor();
     //#########################################################
     //               INITIALIZATION AND RUNTIME
     //#########################################################
