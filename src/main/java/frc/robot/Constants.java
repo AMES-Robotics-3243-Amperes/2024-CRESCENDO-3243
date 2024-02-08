@@ -33,7 +33,7 @@ public final class Constants {
    * Constants pertaining to physical parameters of the robot.
    */
   public static final class RobotConstants {
-    public static final double speakerRange = 2.0;//TODO Fake number
+    public static final double speakerRange = Units.inchesToMeters(72);// Inexact number, measurement is needed
     public static final double frameWidth = Units.inchesToMeters(26);
   }
 
@@ -115,16 +115,16 @@ public final class Constants {
     public static final double upperBound = 1.01;
     
     public static final class IntakePIDs {
-      // ss TODO: Tune the PIDs
-      public static final double kP = 0;
+      // ss todo: Tune the PIDs
+      public static final double kP = 0.01;
       public static final double kI = 0;
       public static final double kD = 0;
-      public static final double kFF = 0;
-      public static final double kV = 0;
+      public static final double kFF = 0.01;
+      public static final double kV = 1;
     }
 
     public static final class FourBarPIDs {
-      // :> TODO: Change these to actual PID values when we get the robot
+      // :> todo: Change these to actual PID values when we get the robot
       public static final double fourBarP = .05;
       public static final double fourBarI = .002;
       public static final double fourBarD = .002;
@@ -395,15 +395,14 @@ public final class Constants {
     //&& These are the constants for the LEDSubsystem.
     //&& They can be moved to JSON later, I just don't know how to do that yet.
 
-    //&& TODO: Set the correct value for the PWM port, because I don't know if 0 is correct.
+    //&& todo: Set the correct value for the PWM port, because I don't know if 0 is correct.
     public static final int pwmPort = 0;
   }
   public static final class PhotonVision {
     //TODO replace placeholders (maybe done H!)
     public static final String cameraName = "Backward_Global_Camera";
 
-    // :> TODO Replace this with the 2024 field file when season starts
-    public static final String fieldLayoutPath = "./2023-JailbreakJamboree-AprilTagLayout.json";
+    public static final String fieldLayoutPath = ""; // H! this isn't actually used; instead a built in file is used.
     // :> TODO Replace this position with the actual position on the new chassis once season starts
     public static final Pose3d cameraPosition =
       new Pose3d(new Translation3d(25.0 / 100, -.22, 14.4 / 100), new Rotation3d());
@@ -412,33 +411,34 @@ public final class Constants {
 
   public static final class Plate {
     public static final int motorID = -999; //TODO fill in number
-    public static final double converstionFactor = 1/45.; // TODO fill in number
+    public static final double converstionFactor = 1/45.; // todo fill in number
     public static final double allowablePosDif = 0.05;
     public static final double allowableVelDif = 0.05;
 
     public static final double manualSpeedFactor = 0.1;
 
     public static final class PIDValues {
-      public static final double p = 0;
+      public static final double p = 0.01;
       public static final double i = 0;
       public static final double d = 0;
-      public static final double ff = 0;
+      public static final double ff = 0.01;
     }
 
     public static final class Positions {
-      public static final double stowed = 0.0; //TODO fill in number
-      public static final double amp = 0.0; //TODO fill in number
-      public static final double speaker = 0.0; //TODO fill in number
+      public static final double stowed = 0.0; //TODO fill in numbers
+      public static final double amp = 0.0;
+      public static final double speaker = 0.0;
     }
   }
 
   public static final class ShooterConstants {
     
     // && The target speeds for the speaker and the amp (range will be based on these)
-    // && TODO: put in actual, reasonable numbers for all of the things below
-    public static final double ampShootSpeed = 0.5;
-    public static final double speakerShootSpeed = 0.5;
-    public static final double stopShootSpeed = 0.5;
+    // && todo: put in actual, reasonable numbers for all of the things below
+    // H! the above should be done, but the numbers are currently untested
+    public static final double ampShootSpeed = 5;
+    public static final double speakerShootSpeed = 60;
+    public static final double stopShootSpeed = 0.0;
     
     // && The range of shooter speeds that are "acceptable" on either side of the target speed 
     public static final double ampSpeedRange = 1;
@@ -448,8 +448,8 @@ public final class Constants {
 
   public static final class ColorSensor {
     // H! Larger is closer
-    public static final int emptyDistance = 0;//H! TODO make this the real number
-    public static final int filledDistance = 1;//H! TODO make this the real number
+    public static final int emptyDistance = 600;//H! TODO tune these
+    public static final int filledDistance = 800;
   }
  
 }

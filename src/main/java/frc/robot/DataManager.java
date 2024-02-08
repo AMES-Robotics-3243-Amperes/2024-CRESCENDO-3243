@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.sql.Driver;
-
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -157,7 +155,7 @@ public class DataManager {
          * Creates a new {@link CurrentRobotPose} object
          */
         public CurrentRobotPose() {
-            // TODO add anything that is needed here
+            // todo add anything that is needed here //H! is this a real todo?
         }
 
         @Override

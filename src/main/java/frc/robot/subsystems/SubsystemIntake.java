@@ -69,7 +69,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
-    fourBarNotDeployedPosition (fourBarUndeployedSetPoint),//TODO rename please? :point_right: :point_left: :pleading:
+    fourBarNotDeployedPosition (fourBarUndeployedSetPoint),// rename please? :point_right: :point_left: :pleading:
     fourBarHalfDeployedPosition (fourBarHalfDeployedSetPoint), // Done, *blushes*
     fourBarFullyDeployedPosition (fourBarFullyDeployedSetPoint);
 
@@ -249,49 +249,49 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public void testPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testPeriodic'");
     }
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
     }
 
     @Override
     public void setupPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupPeriodic'");
     }
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'getName'");
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'getDependencies'");
     }
     
@@ -323,7 +323,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
     }
 
@@ -335,31 +335,31 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return "SampleTest";
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return new Test[]{
         m_PivotTest
       };
@@ -369,7 +369,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
   @Override
   public Test[] getTests() {
-    // TODO Auto-generated method stub
+    // Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getTests'");
   }
 }

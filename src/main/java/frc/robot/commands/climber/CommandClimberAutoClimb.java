@@ -5,12 +5,7 @@
 package frc.robot.commands.climber;
 
 import frc.robot.subsystems.SubsystemClimber;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
-
-import static frc.robot.Constants.Climber.ClimberConstants.*;
-
-import com.revrobotics.RelativeEncoder;
 
 public class CommandClimberAutoClimb extends Command {
   // ££ Subsystem
