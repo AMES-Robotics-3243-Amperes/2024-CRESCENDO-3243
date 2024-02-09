@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-
-
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -21,12 +18,14 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.networktables.GenericEntry;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants.FourBarPIDs;
+import frc.robot.Constants.IntakeConstants.IntakeLimitSwitches;
 import frc.robot.Constants.IntakeConstants.IntakePIDs;
 import frc.robot.test.Test;
 import frc.robot.test.TestUtil;
@@ -34,8 +33,11 @@ import frc.robot.utility.SubsystemBaseTestable;
 
 public class SubsystemIntake extends SubsystemBaseTestable {
 
+  // ss Represents whether the Intake is on or off
+  protected boolean m_IntakeState = false;
+
   // :> Creates the pivotMotor
-  protected final CANSparkMax m_fourBarMotor = new CANSparkMax(Constants.IntakeConstants.fourBarMotor, MotorType.kBrushless);
+  protected final CANSparkMax m_fourBarMotor = new CANSparkMax(fourBarMotor, MotorType.kBrushless);
   // :> Creates the pivot PIDController
   protected final SparkPIDController m_fourBarPID;
   // :> Creates the pivot AbsoluteEncoder
@@ -47,17 +49,29 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   // 0? Creates PIDController
   protected final SparkPIDController m_IntakePID;
 
+  // :> Limit Switches!
+  protected final DigitalInput maxLimitSwitch = new DigitalInput(IntakeLimitSwitches.limitSwitchMax);
+  protected final DigitalInput minLimitSwitch = new DigitalInput(IntakeLimitSwitches.limitSwitchMin);
   // :> Shuffleboard entries for us to be able to tune PIDs live
   protected GenericEntry fourBarP;
   protected GenericEntry fourBarI;
   protected GenericEntry fourBarD;
   protected GenericEntry fourBarFF;
 
+  protected double fourBarPCurrentState;
+  protected double fourBarPPreviosuState;
+  protected double fourBarICurrentState;
+  protected double fourBarIPreviosuState;
+  protected double fourBarDCurrentState;
+  protected double fourBarDPreviosuState;
+  protected double fourBarFCurrentState;
+  protected double fourBarFPreviosuState;
+
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
-    position1 (Constants.IntakeConstants.fourBarSetPoint1),
-    position2 (Constants.IntakeConstants.fourBarSetPoint2),
-    position3 (Constants.IntakeConstants.fourBarSetPoint3);
+    fourBarNotDeployedPosition (fourBarUndeployedSetPoint),// rename please? :point_right: :point_left: :pleading:
+    fourBarHalfDeployedPosition (fourBarHalfDeployedSetPoint), // Done, *blushes*
+    fourBarFullyDeployedPosition (fourBarFullyDeployedSetPoint);
 
     public final double angle;
     setPoints(double angle) {
@@ -78,10 +92,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
 
     // 0? Sets up PID for Intake 
-    m_IntakePID.setP(kP);
-    m_IntakePID.setI(kI);
-    m_IntakePID.setD(kD);
-    m_IntakePID.setFF(kFF);
+    m_IntakePID.setP(IntakePIDs.kP);
+    m_IntakePID.setI(IntakePIDs.kI);
+    m_IntakePID.setD(IntakePIDs.kD);
+    m_IntakePID.setFF(IntakePIDs.kFF);
     // Sets the IntakeMotor to not run on startup
     m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
 
@@ -90,19 +104,19 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     // :> Gets the PIDController from the motor
     m_fourBarPID = m_fourBarMotor.getPIDController();
     // :> Accounts for the amount of turns it takes for the motor to actually move the intake
-    m_fourBarAbsoluteEncoder.setPositionConversionFactor(Constants.IntakeConstants.fourBarConversionFactor);
+    m_fourBarAbsoluteEncoder.setPositionConversionFactor(fourBarConversionFactor);
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
     m_fourBarPID.setFeedbackDevice(m_fourBarAbsoluteEncoder);
    
-    setPIDValues(m_fourBarPID, IntakePIDs.fourBarP, IntakePIDs.fourBarI, IntakePIDs.fourBarD, IntakePIDs.fourBarFF);
+    setPIDValues(m_fourBarPID, FourBarPIDs.fourBarP, FourBarPIDs.fourBarI, FourBarPIDs.fourBarD, FourBarPIDs.fourBarFF);
 
     // 
     // :> Shuffleboard PID Tuning
     //
    
-    fourBarP = tab.add("TRN P Value:", Constants.IntakeConstants.IntakePIDs.fourBarP).getEntry();
-    fourBarI = tab.add("TRN I Value:", Constants.IntakeConstants.IntakePIDs.fourBarI).getEntry();
-    fourBarD = tab.add("TRN D Value:", Constants.IntakeConstants.IntakePIDs.fourBarD).getEntry();
+    fourBarP = tab.add("FRBR P Value:", FourBarPIDs.fourBarP).getEntry();
+    fourBarI = tab.add("FRBR I Value:", FourBarPIDs.fourBarI).getEntry();
+    fourBarD = tab.add("FRBR D Value:", FourBarPIDs.fourBarD).getEntry();
 
     
       
@@ -116,10 +130,50 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   @Override
   public void doPeriodic() {
     // This method will be called once per scheduler run
+
+    // :> Sets the current state of the shuffleboard inputs
+    fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);
+    fourBarICurrentState = fourBarI.getDouble(FourBarPIDs.fourBarI);
+    fourBarDCurrentState = fourBarD.getDouble(FourBarPIDs.fourBarD);
+    fourBarFCurrentState = fourBarFF.getDouble(FourBarPIDs.fourBarFF);
+
     // 0? Sets PID Values, updates when changed. 
-    m_fourBarPID.setP(fourBarP.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarP));
-    m_fourBarPID.setI(fourBarI.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarI));
-    m_fourBarPID.setD(fourBarD.getDouble(Constants.IntakeConstants.IntakePIDs.fourBarD));
+    m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
+    m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
+    m_fourBarPID.setD(fourBarD.getDouble(FourBarPIDs.fourBarD));
+
+    // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
+    if (maxLimitSwitch.get()) {
+      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (fourBarFullyDeployedSetPoint - fourBarUndeployedSetPoint)));
+    }
+    if (minLimitSwitch.get()) {
+      m_fourBarAbsoluteEncoder.setZeroOffset(getFourBarMotorPosition());
+    }
+
+    if (m_IntakeState) {
+      m_IntakePID.setReference(IntakePIDs.kV, ControlType.kVelocity);
+    } else {
+      m_IntakePID.setReference(0, ControlType.kVelocity);
+    }
+
+    if (fourBarPPreviosuState != fourBarPCurrentState) {
+      m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
+    }
+    if (fourBarIPreviosuState != fourBarICurrentState) {
+      m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
+      
+    }
+    if (fourBarDPreviosuState != fourBarDCurrentState) {
+      m_fourBarPID.setD(fourBarD.getDouble(FourBarPIDs.fourBarD));
+    }
+    if (fourBarFPreviosuState != fourBarFCurrentState) {
+      m_fourBarPID.setFF(fourBarFF.getDouble(FourBarPIDs.fourBarFF));
+    }
+
+    fourBarPPreviosuState = fourBarPCurrentState;
+    fourBarIPreviosuState = fourBarICurrentState;
+    fourBarDPreviosuState = fourBarDCurrentState;
+    fourBarFPreviosuState = fourBarFCurrentState;
   }
 
   /**
@@ -163,63 +217,81 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   public void setFourBarPositionReference(setPoints position) {
     m_fourBarPID.setReference(position.angle, ControlType.kPosition);
   }
-  // 0? Sets velocity of Intake when turned on
+  /**
+   * turns the intake on (velocity set in periodic) 
+   * @author ss
+   */
   public void turnOnIntake() {
-    m_IntakePID.setReference(kV, CANSparkMax.ControlType.kVelocity);
+    m_IntakeState = true;
   }
-  // 0? Sets velocity of Intake when turned off
+  /**
+   * Turns off the intake (velocity set in periodic)
+   * @author ss
+   */
   public void turnOffIntake() {
-    m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+    m_IntakeState = false;
   }
+  /**
+   * Toggles the intake and returns the NEW state of the intake (velocity set in periodic)
+   * @return the NEW state of the intake (true is on, false is off)
+   */
+  public boolean toggleIntake() {
+    m_IntakeState = !m_IntakeState;
+    return m_IntakeState;
+  }
+
+
+
+
 
   private PivotTest m_PivotTest = new PivotTest();
   private class PivotTest implements Test {
 
     @Override
     public void testPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testPeriodic'");
     }
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
     }
 
     @Override
     public void setupPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupPeriodic'");
     }
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'getName'");
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'getDependencies'");
     }
     
@@ -251,7 +323,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
     }
 
@@ -263,31 +335,31 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return "SampleTest";
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return new Test[]{
         m_PivotTest
       };
@@ -297,7 +369,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
   @Override
   public Test[] getTests() {
-    // TODO Auto-generated method stub
+    // Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getTests'");
   }
 }

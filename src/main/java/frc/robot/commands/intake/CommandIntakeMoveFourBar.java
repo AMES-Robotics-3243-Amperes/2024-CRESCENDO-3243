@@ -1,14 +1,14 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class CommandAutoFourBar extends Command {
-  // :> Worth noting the entire point of this command is to be used by another command to set the touron to a setpoint
+public class CommandIntakeMoveFourBar extends Command {
+  // :> Worth noting the entire point of this command is to be used by another command to set the FourBar to a setpoint
   protected final SubsystemIntake m_Subsystem;
   protected final setPoints m_SetPoint;
-  public CommandAutoFourBar(SubsystemIntake intake, setPoints setPoint) {
+  public CommandIntakeMoveFourBar(SubsystemIntake intake, setPoints setPoint) {
     m_Subsystem = intake;
     m_SetPoint = setPoint;
     addRequirements(intake);
@@ -28,7 +28,7 @@ public class CommandAutoFourBar extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // ss end the command if the 
+    // ss end the command if the FourBar is at the SetPoint
     return m_Subsystem.getFourBarAtSetPoint(m_SetPoint);
   }
 }

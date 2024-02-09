@@ -127,4 +127,26 @@ public class TestUtil {
     }
 
 
+    /**
+     * Asserts that the boolean should be true, and throws an error if it is not.
+     * @param shouldBeTrue A boolean to test
+     * @param message The error message to pair with the {@link AssertionError}
+     * 
+     * @author H!
+     */
+    public static void assertBool(boolean shouldBeTrue, String message) {
+        if (!shouldBeTrue) {
+            throw new AssertionError(message);
+        }
+    }
+
+    /**
+     * Asserts that the boolean should be true, and throws an error if it is not. The message given is "Assertion failed".
+     * @param shouldBeTrue A boolean to test
+     * 
+     * @author H!
+     */
+    public static void assertBool(boolean shouldBeTrue) {  assertBool(shouldBeTrue, "Assertion failed");  }
+
+
 }

@@ -32,6 +32,13 @@ public class SubsystemShooter extends SubsystemBase {
     flywheelPID.setReference(velocity, ControlType.kVelocity);
 
   }
+
+  // && Method to detect the flywheel speed
+  public double getFlywheelSpeed(){
+    double flyWheelSpeed = flywheelMotor.getEncoder().getVelocity();
+    return flyWheelSpeed;
+  }
+
   // && Method to stop the flywheel
   public void stopFlywheel(){
     flywheelMotor.set(0.0);
@@ -46,7 +53,7 @@ public class SubsystemShooter extends SubsystemBase {
     flywheelPID.setD(0);
   }
 
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
