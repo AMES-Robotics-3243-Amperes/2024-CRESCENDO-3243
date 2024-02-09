@@ -17,7 +17,6 @@ import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
-import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpSpeaker;
 import frc.robot.commands.shooter.CommandShooterStopInstant;

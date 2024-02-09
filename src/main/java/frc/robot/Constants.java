@@ -96,10 +96,8 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    // :> TODO: NOTE THESE ARE PLACEHOLDERS
-    public static final int IntakeMotorID = 13;
-    // :> TODO: Make this the actual motor id instead of a placeholder
-    public static final int fourBarMotor = 12;
+    public static final int IntakeMotorID = 12;
+    public static final int fourBarMotor = 11;
     // :> Conversion factor from the motor to the gearbox
     public static final double fourBarConversionFactor = 1/64;
 
@@ -448,7 +446,7 @@ public final class Constants {
 
   public static final class ColorSensor {
     // H! Larger is closer
-    public static final int emptyDistance = 600;//H! TODO tune these
+    public static final int emptyDistance = 600;//H! todo tune these
     public static final int filledDistance = 800;
   }
  

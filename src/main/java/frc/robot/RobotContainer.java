@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
-import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandIntakeTeleop;
@@ -22,14 +21,6 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemClimber;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -71,7 +62,7 @@ public class RobotContainer {
   //private final CommandShooterStop m_CommandShooterStop = new CommandShooterStop(m_SubsystemShooter);
 
   private final CommandClimberTeleop m_CommandClimberTeleop = new CommandClimberTeleop(m_SubsystemClimber, primaryController);
-  private final CommandPlateTeleop m_commandPlateTeleop = new CommandPlateTeleop(m_subsystemPlate, secondaryController);
+  //private final CommandPlateTeleop m_commandPlateTeleop = new CommandPlateTeleop(m_subsystemPlate, secondaryController);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -79,7 +70,7 @@ public class RobotContainer {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
     m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     m_SubsystemClimber.setDefaultCommand(m_CommandClimberTeleop);
-    m_subsystemPlate.setDefaultCommand(m_commandPlateTeleop);
+    //m_subsystemPlate.setDefaultCommand(m_commandPlateTeleop);
     try {
       new SubsystemPhotonvision();
     } catch (IOException e) {

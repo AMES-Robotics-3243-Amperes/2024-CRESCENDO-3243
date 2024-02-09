@@ -14,11 +14,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class SubsystemShooter extends SubsystemBase {
   /** Creates a new SubsystemShooter. */
 
-  private CANSparkMax flywheelMotorLeft = new CANSparkMax(0, MotorType.kBrushless);
-  //TODO: set the device ID to whatever the device ID is
+  private CANSparkMax flywheelMotorLeft = new CANSparkMax(31, MotorType.kBrushless);
 
-  private CANSparkMax flywheelMotorRight = new CANSparkMax( 0, MotorType.kBrushless);
-  //TODO: set the device ID to whatever the device ID is
+  private CANSparkMax flywheelMotorRight = new CANSparkMax( 32, MotorType.kBrushless);
  
   // && Declares PID object
   private SparkPIDController flywheelPID;
