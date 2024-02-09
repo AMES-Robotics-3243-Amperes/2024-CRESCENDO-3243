@@ -14,7 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class SubsystemShooter extends SubsystemBase {
   /** Creates a new SubsystemShooter. */
 
-  private CANSparkMax flywheelMotor = new CANSparkMax(0, MotorType.kBrushless);
+  private CANSparkMax flywheelMotorLeft = new CANSparkMax(0, MotorType.kBrushless);
+  //TODO: set the device ID to whatever the device ID is
+
+  private CANSparkMax flywheelMotorRight = new CANSparkMax( 0, MotorType.kBrushless);
   //TODO: set the device ID to whatever the device ID is
  
   // && Declares PID object
@@ -22,11 +25,19 @@ public class SubsystemShooter extends SubsystemBase {
 
   public SubsystemShooter() {
 
-    flywheelPID = flywheelMotor.getPIDController();
+    flywheelPID = flywheelMotorLeft.getPIDController();
 
     setFlywheelPID();
 
+    setFollow();
+
   }
+
+  // && Method to set right motor to follow left motor
+  public void setFollow(){
+    flywheelMotorRight.follow(flywheelMotorLeft);
+  }
+
   // && Method to set flywheel speed
   public void setFlywheelSpeed(double velocity){
     flywheelPID.setReference(velocity, ControlType.kVelocity);
@@ -35,13 +46,13 @@ public class SubsystemShooter extends SubsystemBase {
 
   // && Method to detect the flywheel speed
   public double getFlywheelSpeed(){
-    double flyWheelSpeed = flywheelMotor.getEncoder().getVelocity();
+    double flyWheelSpeed = flywheelMotorLeft.getEncoder().getVelocity();
     return flyWheelSpeed;
   }
 
   // && Method to stop the flywheel
   public void stopFlywheel(){
-    flywheelMotor.set(0.0);
+    flywheelMotorLeft.set(0.0);
     
   }
 

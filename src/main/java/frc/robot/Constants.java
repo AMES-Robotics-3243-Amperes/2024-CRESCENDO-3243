@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -200,10 +199,10 @@ public final class Constants {
 
       public static final class ClimberPIDFF {
         // ££ Sets the P, I, D, and FF values for the climber motors when they're pulling the robot up
-        public static final double kP = 0.1;
-        public static final double kI = 0.1;
-        public static final double kD = 0.1;
-        public static final double kFF = 0.1;
+        public static final double kP = 0.01;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kFF = 0.01;
       }
 
       // ££ Sets the positional reference value
@@ -224,7 +223,7 @@ public final class Constants {
 
       // :3 idle modes
       public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
-      public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
+      public static final IdleMode kTurningMotorIdleMode = IdleMode.kCoast;
 
       // :3 current limits
       public static final int kDrivingMotorCurrentLimit = 50; // :3 amps
@@ -240,7 +239,7 @@ public final class Constants {
         public static final double kDrivingMinOutput = -1;
         public static final double kDrivingMaxOutput = 1;
 
-        public static final double kTurningP = 0.225;
+        public static final double kTurningP = 0.3;
         public static final double kTurningI = 0;
         public static final double kTurningD = 0;
         public static final double kTurningFF = 0;
@@ -289,10 +288,11 @@ public final class Constants {
 
       // :> This entire next section is utilized by PowerManager to manage the robots speed/acceleration
       // :3 speed damper (flat constant supplied speed is multiplied by)
-      public static final double kDrivingSpeedDamper = 1.2; // :3 meters per second
-      public static final double kSlowDrivingSpeedDamper = 0.7;
+      public static final double kDrivingSpeedDamper = 2.5; // :3 meters per second
+      public static final double kSlowDrivingSpeedDamper = 0.8;
+
       // :> Speed Damper for the rotation of the robot
-      public static final double kAngularSpeedDamper = 0.7 * Math.PI; // :3 radians per second
+      public static final double kAngularSpeedDamper = 1.4 * Math.PI; // :3 radians per second
 
       // :3 the max physical speed of the modules
       // :3 THIS IS NOT THE MAX DRIVING SPEED (but it can and will limit it)
@@ -305,7 +305,7 @@ public final class Constants {
         * PowerManager uses these constants to control how much power the robot is drawing
       */
       public static final double kMaxRotationAcceleration = 3 * Math.PI; // (radians)
-      public static final double kMaxDrivingAcceleration = 9;
+      public static final double kMaxDrivingAcceleration = 12;
 
       // :3 if the gyro is reversed
       public static final boolean kGyroReversed = false;
@@ -329,10 +329,10 @@ public final class Constants {
       // :3 absolute encoder offsets (should be multiples of pi / 2
       // :3 if the encoders were zeroed properly in rev client)
       public static final class ModuleOffsets {
-        public static final Rotation2d kFrontLeftOffset = Rotation2d.fromRadians(Math.PI * 0.5);
-        public static final Rotation2d kFrontRightOffset = Rotation2d.fromRadians(Math.PI);
-        public static final Rotation2d kBackLeftOffset = Rotation2d.fromRadians(0);
-        public static final Rotation2d kBackRightOffset = Rotation2d.fromRadians(Math.PI * 1.5);
+        public static final Rotation2d kFrontLeftOffset = Rotation2d.fromRadians(-Math.PI * 0.5);
+        public static final Rotation2d kFrontRightOffset = Rotation2d.fromRadians(0);
+        public static final Rotation2d kBackLeftOffset = Rotation2d.fromRadians(Math.PI);
+        public static final Rotation2d kBackRightOffset = Rotation2d.fromRadians(Math.PI * 0.5);
       }
 
       // :3 things involving the physical setup of the chassis
@@ -360,11 +360,11 @@ public final class Constants {
       public static final class AutoConstants {
         // :3 turning stuff
         public static final double kMaxAngularVelocityRadians = 2;
-        public static final double kMaxAngularAccelerationRadians = 4;
+        public static final double kMaxAngularAccelerationRadians = 2.5;
 
-        public static final double kTuringP = 7;
-        public static final double kTurningI = 0;
-        public static final double kTurningD = 0;
+        public static final double kTuringP = 2.5;
+        public static final double kTurningI = 0.1;
+        public static final double kTurningD = 0.08;
 
         public static final TrapezoidProfile.Constraints kTurningConfig =
           new TrapezoidProfile.Constraints(kMaxAngularVelocityRadians, kMaxAngularAccelerationRadians);
@@ -373,20 +373,15 @@ public final class Constants {
           new ProfiledPIDController(kTuringP, kTurningI, kTurningD, kTurningConfig);
 
         // :3 driving setpoint stuff
-        public static final double kMaxSetpointVelocity = 0.8;
-        public static final double kMaxSetpointAcceleration = 0.6;
+        public static final double kMaxDrivingVelocity = 3.5;
+        public static final double kMaxDrivingAcceleration = 2;
 
-        public static final double kSetpointP = 1.5;
-        public static final double kSetpointI = 0;
-        public static final double kSetpointD = 0;
-
-        public static final double kSetpointMaxIGain = 1;
-        public static final double kSetpointMinIGain = -kSetpointMaxIGain;
-
-        public static final PIDController kSetpointPID = new PIDController(kSetpointP, kSetpointI, kSetpointD);
+        public static final double kTrajectoryP = 0.2;
+        public static final double kTrajectoryI = 0.005;
+        public static final double kTrajectoryD = 0.01;
 
         public static final TrajectoryConfig kTrajectoryConfig =
-          new TrajectoryConfig(kMaxSetpointVelocity, kMaxSetpointAcceleration);
+          new TrajectoryConfig(kMaxDrivingVelocity, kMaxDrivingAcceleration);
       }
     }
   }
@@ -400,7 +395,7 @@ public final class Constants {
   }
   public static final class PhotonVision {
     //TODO replace placeholders (maybe done H!)
-    public static final String cameraName = "Backward_Global_Camera";
+    public static final String cameraName = "Microsoft_LifeCam_HD-3000";
 
     public static final String fieldLayoutPath = ""; // H! this isn't actually used; instead a built in file is used.
     // :> TODO Replace this position with the actual position on the new chassis once season starts
@@ -433,6 +428,11 @@ public final class Constants {
 
   public static final class ShooterConstants {
     
+    public static final int leftMotorID = 0;
+    public static final int rightMotorID = 0;
+
+    
+
     // && The target speeds for the speaker and the amp (range will be based on these)
     // && todo: put in actual, reasonable numbers for all of the things below
     // H! the above should be done, but the numbers are currently untested

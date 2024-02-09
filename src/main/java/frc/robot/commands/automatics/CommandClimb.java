@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.DataManager;
 import frc.robot.commands.climber.CommandClimberAutoClimb;
-import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
 import frc.robot.subsystems.SubsystemClimber;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
@@ -24,7 +23,7 @@ public class CommandClimb extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
+      drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
         DataManager.currentRobotPose.get().toPose2d(), DataManager.FieldPoses.getStagePositions(0) // todo: this is a guess as to the best stage position
       ), AutoConstants.kTrajectoryConfig)),
       new CommandClimberAutoClimb(climber)

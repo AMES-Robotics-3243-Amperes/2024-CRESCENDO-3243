@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.DataManager;
-import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeOff;
 import frc.robot.commands.intake.CommandIntakeOn;
@@ -47,13 +46,13 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
 
     addCommands(
       new ParallelCommandGroup(
-        new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
+        drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
           start, between, new Pose2d(target.getTranslation(), overNoteDirection)
         ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
         new CommandIntakeOn(intake),
         new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarFullyDeployedPosition)
       ),
-      new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
+      drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
         start, between, new Pose2d(target.getTranslation(), overNoteDirection)
       ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
       new CommandIntakeOff(intake)

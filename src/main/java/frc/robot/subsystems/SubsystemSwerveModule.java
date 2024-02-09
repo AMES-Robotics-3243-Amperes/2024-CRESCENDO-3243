@@ -115,18 +115,18 @@ public class SubsystemSwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // :3 apply wheel angular offset
-    SwerveModuleState correctedDesiredState = new SwerveModuleState();
+    SwerveModuleState correctedState = new SwerveModuleState();
 
-    correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-    correctedDesiredState.angle = desiredState.angle.plus(m_wheelOffset);
+    correctedState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
+    correctedState.angle = desiredState.angle.plus(m_wheelOffset);
 
     // :3 optimize state to avoid turning more than 90 degrees
-    Rotation2d currentAngle = new Rotation2d(m_turningEncoder.getPosition());
-    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState, currentAngle);
+    Rotation2d currentAngle = Rotation2d.fromRadians(m_turningEncoder.getPosition());
+    SwerveModuleState optimizedState = SwerveModuleState.optimize(correctedState, currentAngle);
 
     // :3 command driving
-    m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-    m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+    m_drivingPIDController.setReference(optimizedState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+    m_turningPIDController.setReference(optimizedState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
   }
 
   /**
