@@ -184,12 +184,12 @@ public final class Constants {
 
       public static final class IDs {
         // ££ Climber ids
-        public static final int kMotorOne = 9;
-        public static final int kMotorTwo = 10;
+        public static final int kMotorOne = 21;
+        public static final int kMotorTwo = 22;
 
         // ££ Limit switch ids
-        public static final int kSwitchOne = 0;
-        public static final int kSwitchTwo = 1;
+        public static final int kSwitchOne = 2;
+        public static final int kSwitchTwo = 3;
       }
 
       public static final class MotorSpeeds {
