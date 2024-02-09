@@ -58,6 +58,22 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected GenericEntry fourBarD;
   protected GenericEntry fourBarFF;
 
+  protected GenericEntry intakeP;
+  protected GenericEntry intakeI;
+  protected GenericEntry intakeD;
+  protected GenericEntry intakeFF;
+
+  protected GenericEntry intakePos;
+
+  protected double intakePCurrent;
+  protected double intakeICurrent;
+  protected double intakeDCurrent;
+  protected double intakeFFCurrent;
+  protected double intakePPrevious;
+  protected double intakeIPrevious;
+  protected double intakeDPrevious;
+  protected double intakeFFPrevious;
+
   protected double fourBarPCurrentState;
   protected double fourBarPPreviosuState;
   protected double fourBarICurrentState;
@@ -117,6 +133,15 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     fourBarP = tab.add("FRBR P Value:", FourBarPIDs.fourBarP).getEntry();
     fourBarI = tab.add("FRBR I Value:", FourBarPIDs.fourBarI).getEntry();
     fourBarD = tab.add("FRBR D Value:", FourBarPIDs.fourBarD).getEntry();
+    fourBarFF = tab.add("FRBR FF Value:", FourBarPIDs.fourBarFF).getEntry();
+
+    intakeP = tab.add("intake P Value:", IntakePIDs.kP).getEntry();
+    intakeI = tab.add("intake I Value:", IntakePIDs.kI).getEntry();
+    intakeD = tab.add("intake D Value:", IntakePIDs.kD).getEntry();
+    intakeFF = tab.add("intake FF Value:", IntakePIDs.kFF).getEntry();
+
+    intakePos = tab.add("Intake Position", m_IntakeRelativeEncoder.getPosition()).getEntry();
+
 
     
       
@@ -137,10 +162,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     fourBarDCurrentState = fourBarD.getDouble(FourBarPIDs.fourBarD);
     fourBarFCurrentState = fourBarFF.getDouble(FourBarPIDs.fourBarFF);
 
-    // 0? Sets PID Values, updates when changed. 
-    m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
-    m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
-    m_fourBarPID.setD(fourBarD.getDouble(FourBarPIDs.fourBarD));
+    intakePCurrent = intakeP.getDouble(IntakePIDs.kP);
+    intakeICurrent = intakeI.getDouble(IntakePIDs.kI);
+    intakeDCurrent = intakeD.getDouble(IntakePIDs.kD);
+    intakeFFCurrent = intakeFF.getDouble(IntakePIDs.kFF);
 
     // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
     if (maxLimitSwitch.get()) {
@@ -161,7 +186,6 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     }
     if (fourBarIPreviosuState != fourBarICurrentState) {
       m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
-      
     }
     if (fourBarDPreviosuState != fourBarDCurrentState) {
       m_fourBarPID.setD(fourBarD.getDouble(FourBarPIDs.fourBarD));
@@ -170,10 +194,27 @@ public class SubsystemIntake extends SubsystemBaseTestable {
       m_fourBarPID.setFF(fourBarFF.getDouble(FourBarPIDs.fourBarFF));
     }
 
+    if (intakePPrevious != intakePCurrent) {
+      m_IntakePID.setP(intakeP.getDouble(IntakePIDs.kP));
+    }
+    if (intakeIPrevious != intakeICurrent) {
+      m_IntakePID.setI(intakeI.getDouble(IntakePIDs.kI));
+    }
+    if (intakeDPrevious != intakeDCurrent) {
+      m_IntakePID.setD(intakeD.getDouble(IntakePIDs.kD));
+    }
+    if (intakeFFPrevious != intakeFFCurrent) {
+      m_IntakePID.setFF(intakeFF.getDouble(IntakePIDs.kFF));
+    }
+
     fourBarPPreviosuState = fourBarPCurrentState;
     fourBarIPreviosuState = fourBarICurrentState;
     fourBarDPreviosuState = fourBarDCurrentState;
     fourBarFPreviosuState = fourBarFCurrentState;
+    intakePPrevious = intakePCurrent;
+    intakeIPrevious = intakeICurrent;
+    intakeDPrevious = intakeDCurrent;
+    intakeFFPrevious = intakeFFCurrent;
   }
 
   /**

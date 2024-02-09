@@ -72,12 +72,13 @@ public class RobotContainer {
     m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     m_SubsystemClimber.setDefaultCommand(m_CommandClimberTeleop);
     //m_subsystemPlate.setDefaultCommand(m_commandPlateTeleop);
+    /*
     try {
       new SubsystemPhotonvision();
     } catch (IOException e) {
       System.out.println("ruh roh, camera moment");
     }
-
+    */
     // Configure the trigger bindings
     configureBindings();
   }

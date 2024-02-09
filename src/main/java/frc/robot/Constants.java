@@ -113,10 +113,10 @@ public final class Constants {
     
     public static final class IntakePIDs {
       // ss todo: Tune the PIDs
-      public static final double kP = 0.3;
-      public static final double kI = 0.01;
+      public static final double kP = 0.005;
+      public static final double kI = 0.00;
       public static final double kD = 0;
-      public static final double kFF = 0.01;
+      public static final double kFF = 0.00;
       public static final double kV = 1;
     }
 
@@ -130,8 +130,8 @@ public final class Constants {
 
     // ss I think these are the ids for the limit switches? I just put some values in to stop some errors
     public static final class IntakeLimitSwitches {
-      public static final int limitSwitchMax = 1;
-      public static final int limitSwitchMin = 2;
+      public static final int limitSwitchMax = 4;
+      public static final int limitSwitchMin = 5;
     }
   }
 
