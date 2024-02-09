@@ -59,6 +59,10 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   }
 
   /**
+   * Allows for creation of trajectory follow commands.
+   * 
+   * The robot faces (1, 0).
+   * 
    * @param trajectory the {@link Trajectory} to follow. see {@link TrajectoryGenerator} for creating trajectories.
    * 
    * @return A command that follows the provided trajectory
@@ -69,8 +73,8 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
     return new SwerveControllerCommand(trajectory,
       () -> { return DataManager.currentRobotPose.get().toPose2d(); },
       ChassisKinematics.kDriveKinematics,
-      new PIDController(0.1, 0, 0),
-      new PIDController(0.1, 0, 0),
+      new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
+      new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
       new ProfiledPIDController(AutoConstants.kTuringP, AutoConstants.kTurningI, AutoConstants.kTurningD,
         new TrapezoidProfile.Constraints(0, 0)),
       () -> { return trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getRotation(); },

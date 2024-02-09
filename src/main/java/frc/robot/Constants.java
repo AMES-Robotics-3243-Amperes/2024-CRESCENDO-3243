@@ -137,7 +137,7 @@ public final class Constants {
       public static final double kTurningEncoderPositionPIDMaxInput = Math.PI * 2; // :3 radians
 
       // :3 idle modes
-      public static final IdleMode kDrivingMotorIdleMode = IdleMode.kCoast;
+      public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
       public static final IdleMode kTurningMotorIdleMode = IdleMode.kCoast;
 
       // :3 current limits
@@ -244,10 +244,10 @@ public final class Constants {
       // :3 absolute encoder offsets (should be multiples of pi / 2
       // :3 if the encoders were zeroed properly in rev client)
       public static final class ModuleOffsets {
-        public static final Rotation2d kFrontLeftOffset = Rotation2d.fromRadians(Math.PI * 0.5);
-        public static final Rotation2d kFrontRightOffset = Rotation2d.fromRadians(Math.PI);
-        public static final Rotation2d kBackLeftOffset = Rotation2d.fromRadians(0);
-        public static final Rotation2d kBackRightOffset = Rotation2d.fromRadians(Math.PI * 1.5);
+        public static final Rotation2d kFrontLeftOffset = Rotation2d.fromRadians(-Math.PI * 0.5);
+        public static final Rotation2d kFrontRightOffset = Rotation2d.fromRadians(0);
+        public static final Rotation2d kBackLeftOffset = Rotation2d.fromRadians(Math.PI);
+        public static final Rotation2d kBackRightOffset = Rotation2d.fromRadians(Math.PI * 0.5);
       }
 
       // :3 things involving the physical setup of the chassis
@@ -275,11 +275,11 @@ public final class Constants {
       public static final class AutoConstants {
         // :3 turning stuff
         public static final double kMaxAngularVelocityRadians = 2;
-        public static final double kMaxAngularAccelerationRadians = 4;
+        public static final double kMaxAngularAccelerationRadians = 2.5;
 
-        public static final double kTuringP = 0.0;
-        public static final double kTurningI = 0;
-        public static final double kTurningD = 0.01;
+        public static final double kTuringP = 2.5;
+        public static final double kTurningI = 0.1;
+        public static final double kTurningD = 0.08;
 
         public static final TrapezoidProfile.Constraints kTurningConfig =
           new TrapezoidProfile.Constraints(kMaxAngularVelocityRadians, kMaxAngularAccelerationRadians);
@@ -288,11 +288,15 @@ public final class Constants {
           new ProfiledPIDController(kTuringP, kTurningI, kTurningD, kTurningConfig);
 
         // :3 driving setpoint stuff
-        public static final double kMaxSetpointVelocity = 2;
-        public static final double kMaxSetpointAcceleration = 1;
+        public static final double kMaxDrivingVelocity = 3.5;
+        public static final double kMaxDrivingAcceleration = 2;
+
+        public static final double kTrajectoryP = 0.2;
+        public static final double kTrajectoryI = 0.005;
+        public static final double kTrajectoryD = 0.01;
 
         public static final TrajectoryConfig kTrajectoryConfig =
-          new TrajectoryConfig(kMaxSetpointVelocity, kMaxSetpointAcceleration);
+          new TrajectoryConfig(kMaxDrivingVelocity, kMaxDrivingAcceleration);
       }
     }
   }

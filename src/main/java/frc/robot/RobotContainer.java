@@ -84,8 +84,12 @@ public class RobotContainer {
     Pose2d start = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
 
     List<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
-    interiorWaypoints.add(new Translation2d(0, 1));
     interiorWaypoints.add(new Translation2d(1, 1));
+    interiorWaypoints.add(new Translation2d(-1, 1));
+    interiorWaypoints.add(new Translation2d(-1, -1));
+    interiorWaypoints.add(new Translation2d(1, -1));
+    interiorWaypoints.add(new Translation2d(2, 0));
+    interiorWaypoints.add(new Translation2d(-2, 0));
 
     Pose2d end = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
 

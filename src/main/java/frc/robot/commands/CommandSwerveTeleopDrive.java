@@ -43,8 +43,8 @@ public class CommandSwerveTeleopDrive extends Command {
   @Override
   public void execute() {
     // :3 get x and y speeds
-    double xSpeed = -m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
-    double ySpeed = -m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double xSpeed = m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double ySpeed = m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
     // TODO: let the driver do robot relative :3
@@ -52,7 +52,7 @@ public class CommandSwerveTeleopDrive extends Command {
 
     // :3 get rotation speed
     double controllerRightX = m_controller.getRightX();
-    double rotationSpeed = controllerRightX * DriveConstants.kAngularSpeedDamper;
+    double rotationSpeed = -controllerRightX * DriveConstants.kAngularSpeedDamper;
 
     // :3 drive with those speeds
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speeds.getX(), speeds.getY(), rotationSpeed);
