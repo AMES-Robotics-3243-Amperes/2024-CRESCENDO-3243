@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
+import frc.robot.commands.automatics.CommandScoreInAmp;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
 import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
@@ -48,7 +49,7 @@ public class RobotContainer {
   private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
   private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
   private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
-  private final SubsystemPlate m_subsystemPlate = new SubsystemPlate();
+  //private final SubsystemPlate m_subsystemPlate = new SubsystemPlate();
 
   //
   // :3 COMMANDS
@@ -96,6 +97,9 @@ public class RobotContainer {
     secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting
     secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
+
+    primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
+    primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
   }
 
   /**
@@ -106,9 +110,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
       new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, 0),
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_subsystemPlate),
+      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter),
       new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, 1),
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_subsystemPlate)
+      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter)
     );
   }
 }

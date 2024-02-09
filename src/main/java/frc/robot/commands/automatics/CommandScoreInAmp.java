@@ -47,4 +47,20 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
       new CommandShooterStopInstant(shooter)
     );
   }
+
+  public CommandScoreInAmp(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter) {
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    addCommands(
+      new ParallelCommandGroup(
+        drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
+          DataManager.currentRobotPose.get().toPose2d(), DataManager.FieldPoses.getAmpPosition()
+        ), AutoConstants.kTrajectoryConfig)),
+        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),
+        new CommandShooterSpinUpAmp(shooter)
+      ),
+      new CommandIntakeNoteNotSensed(intake),
+      new CommandShooterStopInstant(shooter)
+    );
+  }
 }

@@ -402,7 +402,7 @@ public final class Constants {
   }
 
   public static final class Plate {
-    public static final int motorID = -999; //TODO fill in number
+    public static final int motorID = -999; //todo fill in number
     public static final double converstionFactor = 1/45.; // todo fill in number
     public static final double allowablePosDif = 0.05;
     public static final double allowableVelDif = 0.05;
