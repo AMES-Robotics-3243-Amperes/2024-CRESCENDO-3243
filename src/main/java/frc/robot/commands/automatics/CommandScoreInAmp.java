@@ -11,10 +11,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
-import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
-import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpAmp;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
@@ -38,7 +36,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
+        drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
           DataManager.currentRobotPose.get().toPose2d(), DataManager.FieldPoses.getAmpPosition()
         ), AutoConstants.kTrajectoryConfig)),
         new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),

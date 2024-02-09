@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
-import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
@@ -51,7 +50,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
 
     addCommands(
       new ParallelCommandGroup(
-        new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
+        drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
           DataManager.currentRobotPose.get().toPose2d(), launchPose
         ), AutoConstants.kTrajectoryConfig)),
         new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),
