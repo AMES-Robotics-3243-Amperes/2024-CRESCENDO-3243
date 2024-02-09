@@ -358,6 +358,11 @@ public final class Constants {
 
   public static final class ShooterConstants {
     
+    public static final int leftMotorID = 0;
+    public static final int rightMotorID = 0;
+
+    
+
     // && The target speeds for the speaker and the amp (range will be based on these)
     // && TODO: put in actual, reasonable numbers for all of the things below
     public static final double ampShootSpeed = 0.5;
