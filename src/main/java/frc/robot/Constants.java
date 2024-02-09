@@ -200,10 +200,10 @@ public final class Constants {
 
       public static final class ClimberPIDFF {
         // ££ Sets the P, I, D, and FF values for the climber motors when they're pulling the robot up
-        public static final double kP = 0.1;
-        public static final double kI = 0.1;
-        public static final double kD = 0.1;
-        public static final double kFF = 0.1;
+        public static final double kP = 0.01;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kFF = 0.01;
       }
 
       // ££ Sets the positional reference value
