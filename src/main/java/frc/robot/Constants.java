@@ -98,7 +98,7 @@ public final class Constants {
 
   public static class IntakeConstants {
     // :> TODO: NOTE THESE ARE PLACEHOLDERS
-    public static final int IntakeMotorID = -999;
+    public static final int IntakeMotorID = 13;
     // :> TODO: Make this the actual motor id instead of a placeholder
     public static final int fourBarMotor = 12;
     // :> Conversion factor from the motor to the gearbox
@@ -116,8 +116,8 @@ public final class Constants {
     
     public static final class IntakePIDs {
       // ss todo: Tune the PIDs
-      public static final double kP = 0.01;
-      public static final double kI = 0;
+      public static final double kP = 0.3;
+      public static final double kI = 0.01;
       public static final double kD = 0;
       public static final double kFF = 0.01;
       public static final double kV = 1;
@@ -125,16 +125,16 @@ public final class Constants {
 
     public static final class FourBarPIDs {
       // :> todo: Change these to actual PID values when we get the robot
-      public static final double fourBarP = .05;
-      public static final double fourBarI = .002;
+      public static final double fourBarP = .5;
+      public static final double fourBarI = .001;
       public static final double fourBarD = .002;
-      public static final double fourBarFF = .0003;
+      public static final double fourBarFF = 0;
     }
 
     // ss I think these are the ids for the limit switches? I just put some values in to stop some errors
     public static final class IntakeLimitSwitches {
-      public static final int limitSwitchMax = 0;
-      public static final int limitSwitchMin = 0;
+      public static final int limitSwitchMax = 1;
+      public static final int limitSwitchMin = 2;
     }
   }
 
@@ -184,12 +184,12 @@ public final class Constants {
 
       public static final class IDs {
         // ££ Climber ids
-        public static final int kMotorOne = 9;
-        public static final int kMotorTwo = 10;
+        public static final int kMotorOne = 21;
+        public static final int kMotorTwo = 22;
 
         // ££ Limit switch ids
-        public static final int kSwitchOne = 0;
-        public static final int kSwitchTwo = 1;
+        public static final int kSwitchOne = 2;
+        public static final int kSwitchTwo = 3;
       }
 
       public static final class MotorSpeeds {

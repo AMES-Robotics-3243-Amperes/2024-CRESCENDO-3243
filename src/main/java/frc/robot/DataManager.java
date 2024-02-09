@@ -44,7 +44,7 @@ public class DataManager {
     }
 
     public static class FieldPoses {
-        // :> From 1-5, field left to field right
+        // :> From 0-7, field left to field right
         public static Pose2d getNotePositions(int arrayPosition) {
             if (DriverStation.getAlliance().isPresent()) {
                 if (DriverStation.getAlliance().get() == Alliance.Red) {
