@@ -207,7 +207,7 @@ public final class Constants {
       public static final double kPositionOffset = 20;
 
       // ££ Sets the position conversion factor
-      public static final double kGearRatio = 12;
+      public static final double kGearRatio = 64;
     }
   }
 
