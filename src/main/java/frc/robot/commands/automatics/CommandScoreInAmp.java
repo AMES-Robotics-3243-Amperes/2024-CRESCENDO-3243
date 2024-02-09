@@ -6,18 +6,16 @@ package frc.robot.commands.automatics;
 
 import java.util.Arrays;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
-import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
-import frc.robot.commands.intake.CommandIntakeRunForTime;
+import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpAmp;
-import frc.robot.commands.shooter.CommandShooterStop;
+import frc.robot.commands.shooter.CommandShooterStopInstant;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemShooter;
@@ -38,15 +36,15 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new CommandSwerveFollowTrajectory(drivetrain, TrajectoryGenerator.generateTrajectory(Arrays.asList(
-          DataManager.currentRobotPose.get().toPose2d(), new Pose2d()// TODO fill in amp position
+        drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
+          DataManager.currentRobotPose.get().toPose2d(), DataManager.FieldPoses.getAmpPosition()
         ), AutoConstants.kTrajectoryConfig)),
-        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.position2),// TODO I have no idea if this is the right setpoint
+        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpAmp(shooter),
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kAmp)
       ),
-      new CommandIntakeRunForTime(intake, 0.5),// TODO switch for a sensor aware indexing command
-      new CommandShooterStop(shooter)// TODO switch for an instant 'begin to stop' command
+      new CommandIntakeNoteNotSensed(intake),
+      new CommandShooterStopInstant(shooter)
     );
   }
 }

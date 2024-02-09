@@ -58,11 +58,20 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected GenericEntry fourBarD;
   protected GenericEntry fourBarFF;
 
+  protected double fourBarPCurrentState;
+  protected double fourBarPPreviosuState;
+  protected double fourBarICurrentState;
+  protected double fourBarIPreviosuState;
+  protected double fourBarDCurrentState;
+  protected double fourBarDPreviosuState;
+  protected double fourBarFCurrentState;
+  protected double fourBarFPreviosuState;
+
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
-    position1 (fourBarSetPoint1),//TODO rename please? :point_right: :point_left: :pleading:
-    position2 (fourBarSetPoint2),
-    position3 (fourBarSetPoint3);
+    fourBarNotDeployedPosition (fourBarUndeployedSetPoint),// rename please? :point_right: :point_left: :pleading:
+    fourBarHalfDeployedPosition (fourBarHalfDeployedSetPoint), // Done, *blushes*
+    fourBarFullyDeployedPosition (fourBarFullyDeployedSetPoint);
 
     public final double angle;
     setPoints(double angle) {
@@ -121,6 +130,13 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   @Override
   public void doPeriodic() {
     // This method will be called once per scheduler run
+
+    // :> Sets the current state of the shuffleboard inputs
+    fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);
+    fourBarICurrentState = fourBarI.getDouble(FourBarPIDs.fourBarI);
+    fourBarDCurrentState = fourBarD.getDouble(FourBarPIDs.fourBarD);
+    fourBarFCurrentState = fourBarFF.getDouble(FourBarPIDs.fourBarFF);
+
     // 0? Sets PID Values, updates when changed. 
     m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
     m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
@@ -128,7 +144,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
     if (maxLimitSwitch.get()) {
-      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (fourBarSetPoint3 - fourBarSetPoint1)));
+      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (fourBarFullyDeployedSetPoint - fourBarUndeployedSetPoint)));
     }
     if (minLimitSwitch.get()) {
       m_fourBarAbsoluteEncoder.setZeroOffset(getFourBarMotorPosition());
@@ -139,6 +155,25 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     } else {
       m_IntakePID.setReference(0, ControlType.kVelocity);
     }
+
+    if (fourBarPPreviosuState != fourBarPCurrentState) {
+      m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
+    }
+    if (fourBarIPreviosuState != fourBarICurrentState) {
+      m_fourBarPID.setI(fourBarI.getDouble(FourBarPIDs.fourBarI));
+      
+    }
+    if (fourBarDPreviosuState != fourBarDCurrentState) {
+      m_fourBarPID.setD(fourBarD.getDouble(FourBarPIDs.fourBarD));
+    }
+    if (fourBarFPreviosuState != fourBarFCurrentState) {
+      m_fourBarPID.setFF(fourBarFF.getDouble(FourBarPIDs.fourBarFF));
+    }
+
+    fourBarPPreviosuState = fourBarPCurrentState;
+    fourBarIPreviosuState = fourBarICurrentState;
+    fourBarDPreviosuState = fourBarDCurrentState;
+    fourBarFPreviosuState = fourBarFCurrentState;
   }
 
   /**
@@ -214,49 +249,49 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public void testPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testPeriodic'");
     }
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
     }
 
     @Override
     public void setupPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupPeriodic'");
     }
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'getName'");
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'getDependencies'");
     }
     
@@ -288,7 +323,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'testIsDone'");
     }
 
@@ -300,31 +335,31 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'setupIsDone'");
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownPeriodic'");
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'closedownIsDone'");
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return "SampleTest";
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return new Test[]{
         m_PivotTest
       };
@@ -334,7 +369,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
 
   @Override
   public Test[] getTests() {
-    // TODO Auto-generated method stub
+    // Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getTests'");
   }
 }

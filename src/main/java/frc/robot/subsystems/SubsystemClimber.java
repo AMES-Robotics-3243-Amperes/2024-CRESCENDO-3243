@@ -11,7 +11,12 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
 import static frc.robot.Constants.Climber.ClimberConstants.*;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Climber.ClimberConstants.ClimberPIDFF;
+import frc.robot.Constants.Climber.ClimberConstants.IDs;
+import frc.robot.Constants.Climber.ClimberConstants.MotorSpeeds;
 
 public class SubsystemClimber extends SubsystemBase {
   // ££ Initialize climber motors
@@ -23,12 +28,16 @@ public class SubsystemClimber extends SubsystemBase {
   private final SparkPIDController motorTwoController;
 
   // ££ Initializes the relative encoders
-  private final RelativeEncoder motorOneRelativeEncoder;
-  private final RelativeEncoder motorTwoRelativeEncoder;
+  RelativeEncoder motorOneRelativeEncoder;
+  RelativeEncoder motorTwoRelativeEncoder;
 
   // ££ Boolean values for if the climber arms have reached positions ready to pull up
   boolean motorOneComplete = false;
   boolean motorTwoComplete = false;
+
+  // ££ Initializes the limit switches
+  DigitalInput limitSwitchOne;
+  DigitalInput limitSwitchTwo;
 
   /** Creates a new ClimberSubsystem. */
   public SubsystemClimber() {
@@ -57,6 +66,10 @@ public class SubsystemClimber extends SubsystemBase {
     // ££ Sets the feedback devices
     motorOneController.setFeedbackDevice(motorOneRelativeEncoder);
     motorTwoController.setFeedbackDevice(motorTwoRelativeEncoder);
+
+    // ££ Sets limit switches
+    limitSwitchOne = new DigitalInput(IDs.kSwitchOne);
+    limitSwitchTwo = new DigitalInput(IDs.kSwitchTwo);
   }
 
   public void setMotorPositionTarget(double position) {
@@ -74,20 +87,34 @@ public class SubsystemClimber extends SubsystemBase {
     }
 
     if (dPadUp) {
-      motorOne.set(MotorSpeeds.kRiseSpeed);
-      motorTwo.set(MotorSpeeds.kRiseSpeed);
+      if (motorOneRelativeEncoder.getPosition() >= motorPositionLimit) {
+        motorOne.set(0);
+      } else {
+        motorOne.set(MotorSpeeds.kRiseSpeed);
+      }
 
-      motorOneComplete = true;
-      motorTwoComplete = true;
+      if (motorTwoRelativeEncoder.getPosition() >= motorPositionLimit) {
+        motorTwo.set(0);
+      } else {
+        motorTwo.set(MotorSpeeds.kRiseSpeed);
+      }
     } 
     
     if (dPadDown) {
-      if (!motorOneComplete) {
+      if (motorOneRelativeEncoder.getPosition() <= 0.0) {
+        motorOne.set(0);
+      } else {
+        if (!motorOneComplete) {
         motorOne.set(MotorSpeeds.kInitialFallSpeed);
+        }
       }
 
-      if (!motorTwoComplete) {
-      motorTwo.set(MotorSpeeds.kInitialFallSpeed);
+      if (motorTwoRelativeEncoder.getPosition() >= 0.0) {
+        motorTwo.set(0);
+      } else {
+        if (!motorOneComplete) {
+        motorOne.set(MotorSpeeds.kInitialFallSpeed);
+        }
       }
     }
 
@@ -109,8 +136,34 @@ public class SubsystemClimber extends SubsystemBase {
     PIDController.setFF(ff);
   }
 
+  // ££ If the climbers are fully lowered (both limit switches activated) sets the base encoder value
+  public void calibrateClimber(boolean limitSwitchOneTripped, boolean limitSwitchTwoTripped) {
+    if (limitSwitchOneTripped) {
+      motorOneRelativeEncoder.setPosition(0);
+    }
+
+    if (limitSwitchOneTripped) {
+      motorTwoRelativeEncoder.setPosition(0);
+    }
+  }
+
+  // ££ Auto climber
+  public boolean autoRunClimber() {
+    boolean finished = false;
+
+    if (motorOneRelativeEncoder.getPosition() < motorPositionLimit || motorTwoRelativeEncoder.getPosition() < motorPositionLimit) {
+      runClimber(true, false);
+    } else {
+      finished = runClimber(false, true);
+    }
+
+    return finished;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // ££ Calibrates climber
+    calibrateClimber(limitSwitchOne.get(), limitSwitchTwo.get());
   }
 }
