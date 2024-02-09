@@ -396,7 +396,6 @@ public final class Constants {
     public static final String cameraName = "Microsoft_LifeCam_HD-3000";
 
     public static final String fieldLayoutPath = ""; // H! this isn't actually used; instead a built in file is used.
-    // :> TODO Replace this position with the actual position on the new chassis once season starts
     public static final Pose3d cameraPosition =
       new Pose3d(new Translation3d(RobotConstants.frameWidth/2. - Units.inchesToMeters(2.5), 0, Units.inchesToMeters(16.75)), new Rotation3d());
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
