@@ -5,12 +5,16 @@
 package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
+import frc.robot.commands.automatics.CommandPickupFieldNote;
+import frc.robot.commands.automatics.CommandScoreInSpeaker;
 import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandIntakeTeleop;
+import frc.robot.commands.plate.CommandPlateTeleop;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
 import frc.robot.commands.shooter.CommandShooterTeleopSpeaker;
 import frc.robot.subsystems.SubsystemPhotonvision;
+import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
@@ -19,6 +23,7 @@ import java.io.IOException;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -44,6 +49,7 @@ public class RobotContainer {
   private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
   private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
   private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
+  private final SubsystemPlate m_subsystemPlate = new SubsystemPlate();
 
   //
   // :3 COMMANDS
@@ -54,13 +60,16 @@ public class RobotContainer {
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
 
-  private final CommandClimberTeleop m_CommandClimber = new CommandClimberTeleop(m_SubsystemClimber, primaryController);
+  private final CommandClimberTeleop m_CommandClimberTeleop = new CommandClimberTeleop(m_SubsystemClimber, primaryController);
+  private final CommandPlateTeleop m_commandPlateTeleop = new CommandPlateTeleop(m_subsystemPlate, secondaryController);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
     m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
+    m_SubsystemClimber.setDefaultCommand(m_CommandClimberTeleop);
+    m_subsystemPlate.setDefaultCommand(m_commandPlateTeleop);
     try {
       new SubsystemPhotonvision();
     } catch (IOException e) {
@@ -93,6 +102,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return new SequentialCommandGroup(
+      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, 0),
+      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_subsystemPlate),
+      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, 1),
+      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_subsystemPlate)
+    );
   }
 }
