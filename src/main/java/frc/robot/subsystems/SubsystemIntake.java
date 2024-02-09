@@ -64,6 +64,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected GenericEntry intakeFF;
 
   protected GenericEntry intakePos;
+  protected GenericEntry intakeVel;
 
   protected double intakePCurrent;
   protected double intakeICurrent;
@@ -140,8 +141,8 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     intakeD = tab.add("intake D Value:", IntakePIDs.kD).getEntry();
     intakeFF = tab.add("intake FF Value:", IntakePIDs.kFF).getEntry();
 
-    intakePos = tab.add("Intake Position", m_IntakeRelativeEncoder.getPosition()).getEntry();
-
+    intakePos = tab.add("Intake Position:", m_IntakeRelativeEncoder.getPosition()).getEntry();
+    intakeVel = tab.add("Intake Velocity:", m_IntakeRelativeEncoder.getVelocity()).getEntry();
 
     
       
@@ -155,6 +156,9 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   @Override
   public void doPeriodic() {
     // This method will be called once per scheduler run
+
+    intakePos.setDouble(m_IntakeRelativeEncoder.getPosition());
+    intakeVel.setDouble(m_IntakeRelativeEncoder.getVelocity());
 
     // :> Sets the current state of the shuffleboard inputs
     fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);
