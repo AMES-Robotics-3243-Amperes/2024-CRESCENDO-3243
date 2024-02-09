@@ -12,6 +12,7 @@ import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandIntakeTeleop;
 import frc.robot.commands.plate.CommandPlateTeleop;
+import frc.robot.commands.shooter.CommandShooterStop;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
 import frc.robot.commands.shooter.CommandShooterTeleopSpeaker;
 import frc.robot.subsystems.SubsystemPhotonvision;
@@ -67,6 +68,7 @@ public class RobotContainer {
   private final CommandIntakeTeleop m_teleopCommandIntake = new CommandIntakeTeleop(m_subsystemIntake, secondaryController);
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
+  //private final CommandShooterStop m_CommandShooterStop = new CommandShooterStop(m_SubsystemShooter);
 
   private final CommandClimberTeleop m_CommandClimberTeleop = new CommandClimberTeleop(m_SubsystemClimber, primaryController);
   private final CommandPlateTeleop m_commandPlateTeleop = new CommandPlateTeleop(m_subsystemPlate, secondaryController);
@@ -98,29 +100,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    Pose2d start = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
-
-    List<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
-    interiorWaypoints.add(new Translation2d(1, 1));
-    interiorWaypoints.add(new Translation2d(-1, 1));
-    interiorWaypoints.add(new Translation2d(-1, -1));
-    interiorWaypoints.add(new Translation2d(1, -1));
-    interiorWaypoints.add(new Translation2d(2, 0));
-    interiorWaypoints.add(new Translation2d(-2, 0));
-
-    Pose2d end = new Pose2d(0, 0, Rotation2d.fromDegrees(180));
-
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(start, 
-      interiorWaypoints,
-      end,
-      AutoConstants.kTrajectoryConfig);
-
-    primaryController.a().whileTrue(m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(trajectory));
 
     // && Toggle amp shooting
-    /*secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
+    secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting
-    secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);*/
+    secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
   }
 
   /**
