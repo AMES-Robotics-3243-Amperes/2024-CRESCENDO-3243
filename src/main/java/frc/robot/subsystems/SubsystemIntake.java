@@ -26,7 +26,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.Constants.IntakeConstants.FourBarPIDs;
 import frc.robot.Constants.IntakeConstants.IntakeLimitSwitches;
-import frc.robot.Constants.IntakeConstants.IntakePIDs;
 import frc.robot.test.Test;
 import frc.robot.test.TestUtil;
 import frc.robot.utility.SubsystemBaseTestable;
@@ -47,7 +46,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   // 0? Creates IntakeMotor Relative Encoder. 
   protected final RelativeEncoder m_IntakeRelativeEncoder;
   // 0? Creates PIDController
-  protected final SparkPIDController m_IntakePID;
+  //protected final SparkPIDController m_IntakePID;
 
   // :> Limit Switches!
   protected final DigitalInput maxLimitSwitch = new DigitalInput(IntakeLimitSwitches.limitSwitchMax);
@@ -58,14 +57,14 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected GenericEntry fourBarD;
   protected GenericEntry fourBarFF;
 
-  protected GenericEntry intakeP;
-  protected GenericEntry intakeI;
-  protected GenericEntry intakeD;
-  protected GenericEntry intakeFF;
+  //protected GenericEntry intakeP;
+  //protected GenericEntry intakeI;
+  //protected GenericEntry intakeD;
+  //protected GenericEntry intakeFF;
 
   protected GenericEntry intakePos;
   protected GenericEntry intakeVel;
-
+/*
   protected double intakePCurrent;
   protected double intakeICurrent;
   protected double intakeDCurrent;
@@ -74,7 +73,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected double intakeIPrevious;
   protected double intakeDPrevious;
   protected double intakeFFPrevious;
-
+*/
   protected double fourBarPCurrentState;
   protected double fourBarPPreviosuState;
   protected double fourBarICurrentState;
@@ -105,16 +104,19 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     // ss Sets up Intake Motor, Encoder, and PID
     m_IntakeMotor = new CANSparkMax(IntakeMotorID, CANSparkMax.MotorType.kBrushless);
     m_IntakeRelativeEncoder = m_IntakeMotor.getEncoder();
-    m_IntakePID = m_IntakeMotor.getPIDController();
-    m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
+    m_IntakeRelativeEncoder.setVelocityConversionFactor(intakeConversionFactor);
+    m_IntakeMotor.setSmartCurrentLimit(35);
+    m_IntakeMotor.setSecondaryCurrentLimit(35);
+    //m_IntakePID = m_IntakeMotor.getPIDController();
+    //m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
 
     // 0? Sets up PID for Intake 
-    m_IntakePID.setP(IntakePIDs.kP);
-    m_IntakePID.setI(IntakePIDs.kI);
-    m_IntakePID.setD(IntakePIDs.kD);
-    m_IntakePID.setFF(IntakePIDs.kFF);
+    //m_IntakePID.setP(IntakePIDs.kP);
+    //m_IntakePID.setI(IntakePIDs.kI);
+    //m_IntakePID.setD(IntakePIDs.kD);
+    //m_IntakePID.setFF(IntakePIDs.kFF);
     // Sets the IntakeMotor to not run on startup
-    m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
+    //m_IntakePID.setReference(0, CANSparkMax.ControlType.kVelocity);
 
     // :> Gets the absolute encoder from the motor
     m_fourBarAbsoluteEncoder = m_fourBarMotor.getAbsoluteEncoder(Type.kDutyCycle);
@@ -136,10 +138,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     fourBarD = tab.add("FRBR D Value:", FourBarPIDs.fourBarD).getEntry();
     fourBarFF = tab.add("FRBR FF Value:", FourBarPIDs.fourBarFF).getEntry();
 
-    intakeP = tab.add("intake P Value:", IntakePIDs.kP).getEntry();
-    intakeI = tab.add("intake I Value:", IntakePIDs.kI).getEntry();
-    intakeD = tab.add("intake D Value:", IntakePIDs.kD).getEntry();
-    intakeFF = tab.add("intake FF Value:", IntakePIDs.kFF).getEntry();
+    //intakeP = tab.add("intake P Value:", IntakePIDs.kP).getEntry();
+    //intakeI = tab.add("intake I Value:", IntakePIDs.kI).getEntry();
+    //intakeD = tab.add("intake D Value:", IntakePIDs.kD).getEntry();
+    //intakeFF = tab.add("intake FF Value:", IntakePIDs.kFF).getEntry();
 
     intakePos = tab.add("Intake Position:", m_IntakeRelativeEncoder.getPosition()).getEntry();
     intakeVel = tab.add("Intake Velocity:", m_IntakeRelativeEncoder.getVelocity()).getEntry();
@@ -166,10 +168,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     fourBarDCurrentState = fourBarD.getDouble(FourBarPIDs.fourBarD);
     fourBarFCurrentState = fourBarFF.getDouble(FourBarPIDs.fourBarFF);
 
-    intakePCurrent = intakeP.getDouble(IntakePIDs.kP);
-    intakeICurrent = intakeI.getDouble(IntakePIDs.kI);
-    intakeDCurrent = intakeD.getDouble(IntakePIDs.kD);
-    intakeFFCurrent = intakeFF.getDouble(IntakePIDs.kFF);
+    //intakePCurrent = intakeP.getDouble(IntakePIDs.kP);
+    //intakeICurrent = intakeI.getDouble(IntakePIDs.kI);
+    //intakeDCurrent = intakeD.getDouble(IntakePIDs.kD);
+    //intakeFFCurrent = intakeFF.getDouble(IntakePIDs.kFF);
 
     // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
     if (maxLimitSwitch.get()) {
@@ -180,9 +182,11 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     }
 
     if (m_IntakeState) {
-      m_IntakePID.setReference(IntakePIDs.kV, ControlType.kVelocity);
+      //m_IntakePID.setReference(IntakePIDs.kV, ControlType.kVelocity);
+      m_IntakeMotor.set(intakeV);
     } else {
-      m_IntakePID.setReference(0, ControlType.kVelocity);
+      //m_IntakePID.setReference(0, ControlType.kVelocity);
+      m_IntakeMotor.set(0.0);
     }
 
     if (fourBarPPreviosuState != fourBarPCurrentState) {
@@ -197,7 +201,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     if (fourBarFPreviosuState != fourBarFCurrentState) {
       m_fourBarPID.setFF(fourBarFF.getDouble(FourBarPIDs.fourBarFF));
     }
-
+/*
     if (intakePPrevious != intakePCurrent) {
       m_IntakePID.setP(intakeP.getDouble(IntakePIDs.kP));
     }
@@ -210,15 +214,17 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     if (intakeFFPrevious != intakeFFCurrent) {
       m_IntakePID.setFF(intakeFF.getDouble(IntakePIDs.kFF));
     }
-
+*/
     fourBarPPreviosuState = fourBarPCurrentState;
     fourBarIPreviosuState = fourBarICurrentState;
     fourBarDPreviosuState = fourBarDCurrentState;
     fourBarFPreviosuState = fourBarFCurrentState;
+    /*
     intakePPrevious = intakePCurrent;
     intakeIPrevious = intakeICurrent;
     intakeDPrevious = intakeDCurrent;
     intakeFFPrevious = intakeFFCurrent;
+    */
   }
 
   /**

@@ -98,6 +98,8 @@ public final class Constants {
   public static class IntakeConstants {
     public static final int IntakeMotorID = 12;
     public static final int fourBarMotor = 11;
+
+    public static final double intakeConversionFactor = 1/15;
     // :> Conversion factor from the motor to the gearbox
     public static final double fourBarConversionFactor = 1/64;
 
@@ -110,15 +112,18 @@ public final class Constants {
     // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;
     public static final double upperBound = 1.01;
-    
+    // ss intake velocity (negative to intake)
+    public static final double intakeV = -1;
+    /*
     public static final class IntakePIDs {
       // ss todo: Tune the PIDs
       public static final double kP = 0.005;
       public static final double kI = 0.00;
       public static final double kD = 0;
       public static final double kFF = 0.00;
-      public static final double kV = 1;
+      public static final double kV = -1;
     }
+    */
 
     public static final class FourBarPIDs {
       // :> todo: Change these to actual PID values when we get the robot
