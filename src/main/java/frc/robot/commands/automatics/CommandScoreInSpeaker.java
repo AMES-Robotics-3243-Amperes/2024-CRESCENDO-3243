@@ -17,6 +17,7 @@ import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.drivetrain.CommandSwerveFollowTrajectory;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
+import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpSpeaker;
@@ -39,7 +40,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
   public CommandScoreInSpeaker(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemPlate plate) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Translation2d speakerLocation = DataManager.FieldPoses.getSpeakerPosition().getTranslation();// TODO Alliance choice
+    Translation2d speakerLocation = DataManager.FieldPoses.getSpeakerPosition().getTranslation();
     Translation2d robotLocation = DataManager.currentRobotPose.get().toPose2d().getTranslation();
     /** Unit vector repersenting the direction from the speaker's center to the current robot position. Will break if the robot is somehow exactly on the speaker. */
     Translation2d speakerToRobotDirection = robotLocation.minus(speakerLocation).div(robotLocation.minus(speakerLocation).getNorm());
@@ -57,7 +58,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kSpeaker)
       ),
-      new CommandIntakeRunForTime(intake, 0.5),// TODO switch for a sensor aware indexing command
+      new CommandIntakeNoteNotSensed(intake),
       new CommandShooterStopInstant(shooter)
     );
   }
