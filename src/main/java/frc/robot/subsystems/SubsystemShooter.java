@@ -57,7 +57,9 @@ public class SubsystemShooter extends SubsystemBase {
   // && Method to set the P, I, and D, values for the flywheel PID
   // && TODO: set actual values for P, I, and D
   public void setFlywheelPID(){
-    flywheelPID.setP(0);
+    flywheelPID.setFF(.000185);
+    flywheelPID.setP(.0001);
+    // && Potential I valeu: .0000005
     flywheelPID.setI(0);
     flywheelPID.setD(0);
   }
