@@ -10,12 +10,9 @@ import frc.robot.subsystems.SubsystemIntake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-
-// ss Just a command to access the TurnOnIntake Method of SubsystemIntake
-public class CommandIntakeOn extends InstantCommand {
-
+public class CommandOuttake extends InstantCommand {
   protected final SubsystemIntake m_SubsystemIntake;
-  public CommandIntakeOn(SubsystemIntake subsystemIntake) {
+  public CommandOuttake(SubsystemIntake subsystemIntake) {
     m_SubsystemIntake = subsystemIntake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_SubsystemIntake);
@@ -24,6 +21,6 @@ public class CommandIntakeOn extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_SubsystemIntake.turnOnIntake();
+    m_SubsystemIntake.outtake();
   }
 }

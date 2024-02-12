@@ -113,7 +113,8 @@ public final class Constants {
     public static final double lowerBound = 0.99;
     public static final double upperBound = 1.01;
     // ss intake velocity (negative to intake)
-    public static final double intakeV = -1;
+    public static final double intakeFV = -1;
+    public static final double intakeBV = 1;
     /*
     public static final class IntakePIDs {
       // ss todo: Tune the PIDs

@@ -32,7 +32,7 @@ public class CommandIntakeRunForTime extends Command {
   public void initialize() {
     m_Timer.reset();
     m_Timer.start();
-    m_SubsystemIntake.turnOnIntake();
+    m_SubsystemIntake.intake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +42,7 @@ public class CommandIntakeRunForTime extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_SubsystemIntake.turnOffIntake();
+    m_SubsystemIntake.stop();
   }
 
   // Returns true when the command should end.
