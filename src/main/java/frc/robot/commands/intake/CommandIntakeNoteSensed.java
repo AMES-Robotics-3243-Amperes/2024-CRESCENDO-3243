@@ -21,7 +21,7 @@ public class CommandIntakeNoteSensed extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_SubsystemIntake.turnOnIntake();
+    m_SubsystemIntake.intake();
   }
   
 
@@ -33,7 +33,7 @@ public class CommandIntakeNoteSensed extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_SubsystemIntake.turnOffIntake();
+    m_SubsystemIntake.stop();
   }
 
   // Returns true when the command should end.

@@ -35,10 +35,10 @@ public class CommandIntakeTeleop extends Command {
     }
     // ss Activates and Deactivates the Intake when the A button is pressed or unpressed
     if (m_Controller.getAButton()) {
-      m_Subsystem.turnOnIntake();
+      m_Subsystem.intake();
     }
     else {
-      m_Subsystem.turnOffIntake();
+      m_Subsystem.stop();
     }
 
   }

@@ -34,7 +34,7 @@ import frc.robot.utility.SubsystemBaseTestable;
 public class SubsystemIntake extends SubsystemBaseTestable {
 
   // ss Represents whether the Intake is on or off
-  protected boolean m_IntakeState = false;
+  protected intakeState m_IntakeState = intakeState.Stopped;
 
   // :> Creates the pivotMotor
   protected final CANSparkMax m_fourBarMotor = new CANSparkMax(fourBarMotor, MotorType.kBrushless);
@@ -83,6 +83,12 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   protected double fourBarDPreviosuState;
   protected double fourBarFCurrentState;
   protected double fourBarFPreviosuState;
+
+  public enum intakeState {
+    Intaking,
+    Stopped,
+    Outaking
+  }
 
   // :> Creates the enum type to be able to pass in a setpoint from a command
   public enum setPoints{
@@ -188,9 +194,11 @@ public class SubsystemIntake extends SubsystemBaseTestable {
       m_fourBarAbsoluteEncoder.setZeroOffset(m_fourBarAbsoluteEncoder.getZeroOffset() + getFourBarMotorPosition());
     }
     */
-    if (m_IntakeState) {
+    if (m_IntakeState == intakeState.Intaking) {
       //m_IntakePID.setReference(IntakePIDs.kV, ControlType.kVelocity);
-      m_IntakeMotor.set(intakeV);
+      m_IntakeMotor.set(intakeFV);
+    } else if (m_IntakeState == intakeState.Outaking) {
+      m_IntakeMotor.set(intakeBV);
     } else {
       //m_IntakePID.setReference(0, ControlType.kVelocity);
       m_IntakeMotor.set(0.0);
@@ -276,31 +284,38 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_fourBarPID.setReference(position.angle, ControlType.kPosition);
   }
   /**
-   * turns the intake on (velocity set in periodic) 
+   * makes the intake intake (velocity set in periodic) 
    * @author ss
    */
-  public void turnOnIntake() {
-    m_IntakeState = true;
+  public void intake() {
+    m_IntakeState = intakeState.Intaking;
   }
   /**
    * Turns off the intake (velocity set in periodic)
    * @author ss
    */
-  public void turnOffIntake() {
-    m_IntakeState = false;
+  public void stop() {
+    m_IntakeState = intakeState.Stopped;
+  }
+
+  public void outtake() {
+    m_IntakeState = intakeState.Outaking;
   }
   /**
-   * Toggles the intake and returns the NEW state of the intake (velocity set in periodic)
-   * @return the NEW state of the intake (true is on, false is off)
+   * If the intake is stopped, make the intake intake
+   * if the intake is not stopped, stop it
    */
-  public boolean toggleIntake() {
-    m_IntakeState = !m_IntakeState;
-    return m_IntakeState;
+  public void toggleIntake() {
+    if (m_IntakeState == intakeState.Stopped) {
+      m_IntakeState = intakeState.Intaking;
+    } else {
+      m_IntakeState = intakeState.Stopped;
+    }
   }
 
 
 
-
+/*
 
   private PivotTest m_PivotTest = new PivotTest();
   private class PivotTest implements Test {
@@ -367,16 +382,6 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     if(response == null){
       response = TestUtil.askUserBool("Did the Intake Run for ~5 Seconds");
     }
-      // ss turn on the intake
-  
-      // ss wait 5 seconds
-      if(timer.hasElapsed(5)){
-        turnOffIntake();
-      }
-      else  {turnOnIntake();}
-      
-      // ss turn off the intake
-     
     }
 
     @Override
@@ -424,7 +429,7 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     }
 
   }
-
+  */
   @Override
   public Test[] getTests() {
     // Auto-generated method stub
