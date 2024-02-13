@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import edu.wpi.first.networktables.GenericEntry;
+import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants.FourBarPIDs;
 import frc.robot.Constants.IntakeConstants.IntakeLimitSwitches;
 import frc.robot.test.Test;
@@ -107,8 +108,11 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_IntakeRelativeEncoder.setVelocityConversionFactor(intakeConversionFactor);
     m_IntakeMotor.setSmartCurrentLimit(35);
     m_IntakeMotor.setSecondaryCurrentLimit(35);
+    m_fourBarMotor.setSmartCurrentLimit(40);
     //m_IntakePID = m_IntakeMotor.getPIDController();
     //m_IntakePID.setFeedbackDevice(m_IntakeRelativeEncoder);
+
+    m_fourBarMotor.setIdleMode(IdleMode.kBrake);
 
     // 0? Sets up PID for Intake 
     //m_IntakePID.setP(IntakePIDs.kP);
@@ -126,6 +130,8 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_fourBarAbsoluteEncoder.setPositionConversionFactor(fourBarConversionFactor);
     //:> Sets the PIDController to take in data from the absolute encoder when doing its calculations
     m_fourBarPID.setFeedbackDevice(m_fourBarAbsoluteEncoder);
+
+    m_fourBarAbsoluteEncoder.setZeroOffset(.4292704 - Constants.IntakeConstants.fourBarUndeployedSetPoint);
    
     setPIDValues(m_fourBarPID, FourBarPIDs.fourBarP, FourBarPIDs.fourBarI, FourBarPIDs.fourBarD, FourBarPIDs.fourBarFF);
 
@@ -174,13 +180,14 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     //intakeFFCurrent = intakeFF.getDouble(IntakePIDs.kFF);
 
     // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
+    /*
     if (maxLimitSwitch.get()) {
-      m_fourBarAbsoluteEncoder.setZeroOffset((getFourBarMotorPosition() - (fourBarFullyDeployedSetPoint - fourBarUndeployedSetPoint)));
+      m_fourBarAbsoluteEncoder.setZeroOffset(((getFourBarMotorPosition() + m_fourBarAbsoluteEncoder.getZeroOffset()) - (fourBarFullyDeployedSetPoint - fourBarUndeployedSetPoint)));
     }
     if (minLimitSwitch.get()) {
-      m_fourBarAbsoluteEncoder.setZeroOffset(getFourBarMotorPosition());
+      m_fourBarAbsoluteEncoder.setZeroOffset(m_fourBarAbsoluteEncoder.getZeroOffset() + getFourBarMotorPosition());
     }
-
+    */
     if (m_IntakeState) {
       //m_IntakePID.setReference(IntakePIDs.kV, ControlType.kVelocity);
       m_IntakeMotor.set(intakeV);

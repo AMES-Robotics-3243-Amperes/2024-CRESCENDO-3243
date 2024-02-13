@@ -105,9 +105,9 @@ public final class Constants {
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations, NOT DEGREES OR RADIANS
-    public static final double fourBarUndeployedSetPoint = 0;
-    public static final double fourBarHalfDeployedSetPoint = 0.128;
-    public static final double fourBarFullyDeployedSetPoint = 0.256;
+    public static final double fourBarUndeployedSetPoint = 0.05;
+    public static final double fourBarHalfDeployedSetPoint = 0.14;
+    public static final double fourBarFullyDeployedSetPoint = 0.28;
 
     // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;
@@ -127,10 +127,10 @@ public final class Constants {
 
     public static final class FourBarPIDs {
       // :> todo: Change these to actual PID values when we get the robot
-      public static final double fourBarP = .5;
-      public static final double fourBarI = .001;
-      public static final double fourBarD = .002;
-      public static final double fourBarFF = 0;
+      public static final double fourBarP = 2.5;
+      public static final double fourBarI = 0;
+      public static final double fourBarD = 80;
+      public static final double fourBarFF = .25;
     }
 
     // ss I think these are the ids for the limit switches? I just put some values in to stop some errors
