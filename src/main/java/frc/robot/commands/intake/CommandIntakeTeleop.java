@@ -37,10 +37,11 @@ public class CommandIntakeTeleop extends Command {
     if (m_Controller.getAButton()) {
       m_Subsystem.intake();
     }
-    else {
+    else if (m_Controller.getBButton()){
+      m_Subsystem.outtake();
+    } else {
       m_Subsystem.stop();
     }
-
   }
   
   // Called once the command ends or is interrupted.
