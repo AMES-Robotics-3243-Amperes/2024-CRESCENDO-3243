@@ -147,7 +147,9 @@ public class DataManager {
 
         protected Pose3d m_latestOdometryPose = new Pose3d();
 
-        protected Pose3d m_latestPhotonPose = new Pose3d();
+        // :3 keep this as null, or no photonvision will cause datamanger
+        // to permanently return whatever this is
+        protected Pose3d m_latestPhotonPose = null;
 
         protected double m_latestAmbiguity = 0.0;
 
