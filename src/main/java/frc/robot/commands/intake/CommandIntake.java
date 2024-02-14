@@ -10,8 +10,6 @@ import frc.robot.subsystems.SubsystemIntake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-
-// ss Just a command to access the TurnOnIntake Method of SubsystemIntake
 public class CommandIntake extends InstantCommand {
 
   protected final SubsystemIntake m_SubsystemIntake;

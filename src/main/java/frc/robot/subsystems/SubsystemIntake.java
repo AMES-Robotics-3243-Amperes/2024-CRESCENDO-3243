@@ -291,13 +291,16 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     m_IntakeState = intakeState.Intaking;
   }
   /**
-   * Turns off the intake (velocity set in periodic)
+   * Turns off the intake
    * @author ss
    */
   public void stop() {
     m_IntakeState = intakeState.Stopped;
   }
-
+  /**
+   * makes the intake outtake
+   * @author ss
+   */
   public void outtake() {
     m_IntakeState = intakeState.Outaking;
   }
