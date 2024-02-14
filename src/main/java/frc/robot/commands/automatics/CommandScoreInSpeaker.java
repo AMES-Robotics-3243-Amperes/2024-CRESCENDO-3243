@@ -16,7 +16,7 @@ import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
-import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
+import frc.robot.commands.intake.CommandIntakeUntilNotSensed;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpSpeaker;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
@@ -56,7 +56,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kSpeaker)
       ),
-      new CommandIntakeNoteNotSensed(intake),
+      new CommandIntakeUntilNotSensed(intake),
       new CommandShooterStopInstant(shooter)
     );
   }
@@ -81,7 +81,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
         new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpSpeaker(shooter)
       ),
-      new CommandIntakeNoteNotSensed(intake),
+      new CommandIntakeUntilNotSensed(intake),
       new CommandShooterStopInstant(shooter)
     );
   }

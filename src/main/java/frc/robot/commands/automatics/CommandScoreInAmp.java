@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
-import frc.robot.commands.intake.CommandIntakeNoteNotSensed;
+import frc.robot.commands.intake.CommandIntakeUntilNotSensed;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpAmp;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
@@ -43,7 +43,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
         new CommandShooterSpinUpAmp(shooter),
         new CommandPlateMoveToPosition(plate, SubsystemPlate.Position.kAmp)
       ),
-      new CommandIntakeNoteNotSensed(intake),
+      new CommandIntakeUntilNotSensed(intake),
       new CommandShooterStopInstant(shooter)
     );
   }
@@ -59,7 +59,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
         new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpAmp(shooter)
       ),
-      new CommandIntakeNoteNotSensed(intake),
+      new CommandIntakeUntilNotSensed(intake),
       new CommandShooterStopInstant(shooter)
     );
   }

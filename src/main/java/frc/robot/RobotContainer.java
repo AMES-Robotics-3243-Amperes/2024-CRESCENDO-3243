@@ -11,6 +11,8 @@ import frc.robot.commands.automatics.CommandScoreInSpeaker;
 import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandIntakeTeleop;
+import frc.robot.commands.intake.CommandIntakeUntilSensed;
+import frc.robot.commands.intake.CommandOuttakeUntilSensed;
 import frc.robot.commands.plate.CommandPlateTeleop;
 import frc.robot.commands.shooter.CommandShooterStop;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
@@ -94,6 +96,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    // ss Intake
+    secondaryController.a().whileTrue(new CommandIntakeUntilSensed(m_subsystemIntake));
+    // ss Outtake
+    secondaryController.b().whileTrue(new CommandOuttakeUntilSensed(m_subsystemIntake));
     // && Toggle amp shooting
     secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting

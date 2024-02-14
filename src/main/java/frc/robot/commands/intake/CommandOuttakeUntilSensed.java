@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.DataManager;
 import frc.robot.subsystems.SubsystemIntake;
 
-public class CommandIntakeNoteSensed extends Command {
+public class CommandOuttakeUntilSensed extends Command {
   protected final SubsystemIntake m_SubsystemIntake;
 
   /** Creates a new CommandIntakeRunNoteColorSensor. */
-  public CommandIntakeNoteSensed(SubsystemIntake subsystemIntake) {
+  public CommandOuttakeUntilSensed(SubsystemIntake subsystemIntake) {
     m_SubsystemIntake = subsystemIntake;
     addRequirements(subsystemIntake);
   }
@@ -21,7 +21,7 @@ public class CommandIntakeNoteSensed extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_SubsystemIntake.intake();
+    m_SubsystemIntake.outtake();
   }
   
 
@@ -39,9 +39,6 @@ public class CommandIntakeNoteSensed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() { 
-    if(DataManager.currentNoteStorageSensor.get()){
-      return true;
-    }
-    return false;
+    return DataManager.currentNoteStorageSensor.get();
   }
 }
