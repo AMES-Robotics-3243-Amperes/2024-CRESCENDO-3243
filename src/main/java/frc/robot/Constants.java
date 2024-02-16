@@ -105,9 +105,9 @@ public final class Constants {
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations, NOT DEGREES OR RADIANS
-    public static final double fourBarUndeployedSetPoint = 0.05;
-    public static final double fourBarHalfDeployedSetPoint = 0.14;
-    public static final double fourBarFullyDeployedSetPoint = 0.28;
+    public static final double fourBarUndeployedSetPoint = 0.1;
+    public static final double fourBarHalfDeployedSetPoint = 0.16;
+    public static final double fourBarFullyDeployedSetPoint = 0.275;
 
     // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;
@@ -402,7 +402,7 @@ public final class Constants {
   }
   public static final class PhotonVision {
     //TODO replace placeholders (maybe done H!)
-    public static final String cameraName = "Microsoft_LifeCam_HD-3000";
+    public static final String cameraName = "Global_Shutter_Camera";
 
     public static final String fieldLayoutPath = ""; // H! this isn't actually used; instead a built in file is used.
     public static final Pose3d cameraPosition =
@@ -454,8 +454,8 @@ public final class Constants {
 
   public static final class ColorSensor {
     // H! Larger is closer
-    public static final int emptyDistance = 600;//H! todo tune these
-    public static final int filledDistance = 800;
+    public static final int emptyDistance = 140;//H! todo tune these
+    public static final int filledDistance = 150;
   }
  
   // :3 for auto routine constants. NOT field setpoints.

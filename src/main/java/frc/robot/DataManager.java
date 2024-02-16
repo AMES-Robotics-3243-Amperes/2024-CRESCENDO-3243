@@ -295,5 +295,7 @@ public class DataManager {
      * if you can, there's a decent chance if you're using it this is really something that should
      * be done by a subsystem or command.
      */
-    public static void periodic() {}
+    public static void periodic() {
+        SmartDashboard.putNumber("noteProximity", currentNoteStorageSensor.colorSensor.getProximity());
+    }
 }

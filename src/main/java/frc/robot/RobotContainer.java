@@ -74,13 +74,13 @@ public class RobotContainer {
     m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     m_SubsystemClimber.setDefaultCommand(m_CommandClimberTeleop);
     //m_subsystemPlate.setDefaultCommand(m_commandPlateTeleop);
-    /* 
+     
     try {
       new SubsystemPhotonvision();
     } catch (IOException e) {
       System.out.println("ruh roh, camera moment");
     }
-    */
+    
     // Configure the trigger bindings
     configureBindings();
   }
@@ -97,9 +97,9 @@ public class RobotContainer {
   private void configureBindings() {
 
     // ss Intake
-    secondaryController.a().whileTrue(new CommandIntakeUntilSensed(m_subsystemIntake));
+    //secondaryController.a().whileTrue(new CommandIntakeUntilSensed(m_subsystemIntake));
     // ss Outtake
-    secondaryController.b().whileTrue(new CommandOuttakeUntilSensed(m_subsystemIntake));
+    //secondaryController.b().whileTrue(new CommandOuttakeUntilSensed(m_subsystemIntake));
     // && Toggle amp shooting
     secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting
