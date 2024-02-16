@@ -455,4 +455,11 @@ public final class Constants {
     public static final int filledDistance = 800;
   }
  
+  // :3 for auto routine constants. NOT field setpoints.
+  public static final class AutomaticsConstants {
+    // :3 the distance from the center of the note the robot should
+    // be at when picking up and approaching a note respectively
+    public static final double notePickupDistance = 0.05;
+    public static final double noteApproachDistance = 0.15;
+  }
 }

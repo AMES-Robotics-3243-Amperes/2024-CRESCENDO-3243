@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.DataManager;
+import frc.robot.Constants.AutomaticsConstants;
 import frc.robot.commands.intake.CommandIntakeMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeUntilSensed;
 import frc.robot.subsystems.SubsystemIntake;
@@ -36,7 +37,7 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
     Translation2d movement = targetLocation.minus(startLocation);
     Rotation2d overNoteDirection = new Rotation2d(-movement.getX(), -movement.getY());
 
-    double preparatoryDistance = Constants.RobotConstants.frameWidth*Math.sqrt(2)/2. + 0.05; // Should be a little over around half the frame diagonal width
+    double preparatoryDistance = Constants.RobotConstants.frameWidth*Math.sqrt(2)/2. + AutomaticsConstants.noteApproachDistance; // Should be a little over around half the frame diagonal width
 
     Pose2d between = new Pose2d(
       targetLocation.minus(movement.div(movement.getNorm()).times(preparatoryDistance)),
