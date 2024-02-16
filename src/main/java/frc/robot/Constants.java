@@ -71,7 +71,7 @@ public final class Constants {
     // :> I really hope I typed these all in correctly or we are going to have a repeat of last years incident with Bryce
 
 
-    // :> This is a reference for shooting, it is the center of the speaker relative to the field
+    // :> This is a reference for shooting, it is the center of the speaker relative to the fieldFc
     // :> Worth noting I took all these measurements myself using the field onshape layout
     public static Pose2d blueSpeakerCenterReference = new Pose2d((0.4572 / 2), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
     public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
@@ -182,6 +182,9 @@ public final class Constants {
       // ££ Sets the current at which the motors will stop running on the descent
       public static final double MotorCurrentLimit = 50.0;
 
+      // ££ Sets the smart current limit
+      public static final int SmartMotorCurrentLimit = 35;
+
       // ££ Sets how many rotations the motors need to complete to be fully extended
       public static final double motorPositionLimit = 4.8;
 
@@ -206,7 +209,7 @@ public final class Constants {
         public static final double kP = 0.4;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kFF = 0;
+        public static final double kFF = 0.0;
       }
 
       // ££ Sets the positional reference value

@@ -133,7 +133,7 @@ public class SubsystemClimber extends SubsystemBase {
     } 
       // :> test
     if (dPadDown) {
-      // if (motorOneRelativeEncoder.getPosition() >= 0.0) {
+      // if (motorOneRelativeEncoder.getPosition() <= 0.0) {
       //   motorOne.set(0);
       // } else {
       //   if (!motorOneComplete) {
@@ -146,7 +146,7 @@ public class SubsystemClimber extends SubsystemBase {
       //   }
       // }
 
-      // if (motorTwoRelativeEncoder.getPosition() >= 0.0) {
+      // if (motorTwoRelativeEncoder.getPosition() <= 0.0) {
       //   motorTwo.set(0);
       // } else {
       //   if (!motorTwoComplete) {
@@ -167,6 +167,16 @@ public class SubsystemClimber extends SubsystemBase {
       if (currentRotationsTwo >= 0 || !positionInitializedTwo) {
         targetPositionTwo = currentRotationsTwo - 1;
       }
+
+      // if (motorOne.getOutputCurrent() < MotorCurrentLimit) {
+      //   currentRotationsOne = 0;
+      // }
+      // if (motorTwo.getOutputCurrent() < MotorCurrentLimit) {
+
+      // }
+
+      // Plan
+      // 1. Lower the climber until the current is not above a certain amount
     }
 
     motorOneController.setReference(targetPositionOne, ControlType.kPosition);
@@ -190,24 +200,25 @@ public class SubsystemClimber extends SubsystemBase {
     PIDController.setFF(ff);
   }
 
-  // ££ If the climbers are fully lowered (both limit switches activated) sets the base encoder value
+  // ££ If the climbers are fully lowered (limit switches activated) sets the base encoder value
   public void calibrateClimber(boolean limitSwitchOneTripped, boolean limitSwitchTwoTripped) {
     SmartDashboard.putBoolean("limitSwitchOneTripped", limitSwitchOneTripped);
     SmartDashboard.putBoolean("limitSwitchTwoTripped", limitSwitchTwoTripped);
     if (limitSwitchOneTripped != true) {
-      if (!positionInitializedOne) {
-        motorOneRelativeEncoder.setPosition(0); 
+      if (!positionInitializedOne || motorOneRelativeEncoder.getPosition() <= 0) {
+        targetPositionOne = 0;
       }
-      targetPositionOne = 0;
+      motorOneRelativeEncoder.setPosition(0);
       positionInitializedOne = true;
       motorOneController.setReference(targetPositionOne, ControlType.kPosition);
     }
     
+    
     if (limitSwitchTwoTripped != true) {
-      if (!positionInitializedTwo) {
-        motorTwoRelativeEncoder.setPosition(0);
+      if (!positionInitializedTwo || motorTwoRelativeEncoder.getPosition() <= 0) {
+        targetPositionTwo = 0;
       }
-      targetPositionTwo = 0;
+      motorTwoRelativeEncoder.setPosition(0);
       positionInitializedTwo = true;
       motorTwoController.setReference(targetPositionTwo, ControlType.kPosition);
     }
@@ -231,5 +242,8 @@ public class SubsystemClimber extends SubsystemBase {
     // This method will be called once per scheduler run
     // ££ Calibrates climber
     calibrateClimber(limitSwitchOne.get(), limitSwitchTwo.get());
+
+    motorOne.setSmartCurrentLimit(SmartMotorCurrentLimit);
+    motorTwo.setSmartCurrentLimit(SmartMotorCurrentLimit);
   }
 }
