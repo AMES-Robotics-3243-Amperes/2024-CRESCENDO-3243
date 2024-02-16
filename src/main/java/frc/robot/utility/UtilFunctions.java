@@ -89,22 +89,15 @@ public final class UtilFunctions {
      * @author :3
      */
     public static final Trajectory getPickupTrajectory(List<NoteAndRotation> notes) {
-        ArrayList<Translation2d> waypoints = new ArrayList<>();
+        ArrayList<Pose2d> waypoints = new ArrayList<>();
+        waypoints.add(DataManager.currentRobotPose.get().toPose2d());
+
         for (NoteAndRotation note : notes) {
             Pair<Pose2d, Pose2d> positions = note.getTrajectoryPositions();
-            waypoints.add(positions.getFirst().getTranslation());
-            waypoints.add(positions.getSecond().getTranslation());
+            waypoints.add(positions.getFirst());
+            waypoints.add(positions.getSecond());
         }
 
-        Pose2d start = DataManager.currentRobotPose.get().toPose2d();
-        if (notes.size() == 0) {
-            return TrajectoryGenerator.generateTrajectory(start, new ArrayList<>(), start, AutoConstants.kTrajectoryConfig);
-        }
-        
-        NoteAndRotation finalNote = notes.get(notes.size() - 1);
-        Pose2d end = new Pose2d(finalNote.getLocation(), finalNote.rotation.times(-1));
-        waypoints.remove(waypoints.size() - 1);
-
-        return TrajectoryGenerator.generateTrajectory(start, waypoints, end, AutoConstants.kTrajectoryConfig);
+        return TrajectoryGenerator.generateTrajectory(waypoints, AutoConstants.kTrajectoryConfig);
     }
 }
