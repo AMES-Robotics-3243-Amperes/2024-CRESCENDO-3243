@@ -183,7 +183,7 @@ public final class Constants {
       public static final double MotorCurrentLimit = 50.0;
 
       // ££ Sets how many rotations the motors need to complete to be fully extended
-      public static final double motorPositionLimit = 50.0;
+      public static final double motorPositionLimit = 4.8;
 
       public static final class IDs {
         // ££ Climber ids
@@ -191,8 +191,8 @@ public final class Constants {
         public static final int kMotorTwo = 22;
 
         // ££ Limit switch ids
-        public static final int kSwitchOne = 2;
-        public static final int kSwitchTwo = 3;
+        public static final int kSwitchOne = 3;
+        public static final int kSwitchTwo = 2;
       }
 
       public static final class MotorSpeeds {
@@ -203,17 +203,17 @@ public final class Constants {
 
       public static final class ClimberPIDFF {
         // ££ Sets the P, I, D, and FF values for the climber motors when they're pulling the robot up
-        public static final double kP = 0.01;
+        public static final double kP = 0.4;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kFF = 0.01;
+        public static final double kFF = 0;
       }
 
       // ££ Sets the positional reference value
       public static final double kPositionOffset = 20;
 
       // ££ Sets the position conversion factor
-      public static final double kGearRatio = 64;
+      public static final double kGearRatio = 1.0/64.0;
     }
   }
 
