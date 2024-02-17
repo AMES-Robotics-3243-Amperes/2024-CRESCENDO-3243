@@ -105,9 +105,9 @@ public final class Constants {
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations, NOT DEGREES OR RADIANS
-    public static final double fourBarUndeployedSetPoint = 0.029;
+    public static final double fourBarUndeployedSetPoint = 0.036;
     public static final double fourBarHalfDeployedSetPoint = 0.127;
-    public static final double fourBarFullyDeployedSetPoint = 0.243;
+    public static final double fourBarFullyDeployedSetPoint = 0.284;
 
     // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;
@@ -442,7 +442,7 @@ public final class Constants {
     // && The target speeds for the speaker and the amp (range will be based on these)
     // && todo: put in actual, reasonable numbers for all of the things below
     // H! the above should be done, but the numbers are currently untested
-    public static final double ampShootSpeed = 500;
+    public static final double ampShootSpeed = 740;
     public static final double speakerShootSpeed = 4000;
     public static final double stopShootSpeed = 0.0;
     

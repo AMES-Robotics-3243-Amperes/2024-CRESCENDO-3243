@@ -8,11 +8,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DataManager;
-import frc.robot.DataManager.CurrentRobotPose;
-
 import static frc.robot.Constants.PhotonVision.*;
 
 import java.io.IOException;

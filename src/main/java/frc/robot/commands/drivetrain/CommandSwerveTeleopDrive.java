@@ -23,7 +23,13 @@ public class CommandSwerveTeleopDrive extends Command {
   private final JoyUtil m_controller;
 
   // :3 teleop driving should be reversed depending on field side
-  private boolean reverse = true;
+  private boolean reverse = false;
+
+  // :3 if the current toggle field relativity button has been pressed yet
+  private boolean hasHandledFieldRelativeToggle = false;
+
+  // :3 if driving is field relative
+  private boolean fieldRelative = true;
 
   /**
    * Creates a new SwerveTeleopCommand.
@@ -42,17 +48,26 @@ public class CommandSwerveTeleopDrive extends Command {
 
   @Override
   public void execute() {
+    // :3 handle field relativity
+    if (m_controller.getStart() && !hasHandledFieldRelativeToggle) {
+      fieldRelative = !fieldRelative;
+      hasHandledFieldRelativeToggle = true;
+    } else if (!m_controller.getStart()) {
+      hasHandledFieldRelativeToggle = false;
+    }
+
     // :3 get x and y speeds
     double xSpeed = m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
     double ySpeed = m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
-    // TODO: let the driver do robot relative :3
-    speeds = speeds.rotateBy(DataManager.currentRobotPose.get().toPose2d().getRotation().times(-1));
+    if (fieldRelative) {
+      speeds = speeds.rotateBy(DataManager.currentRobotPose.get().toPose2d().getRotation().times(-1));
+    }
 
     // :3 get rotation speed
     double controllerRightX = m_controller.getRightX();
-    double rotationSpeed = -controllerRightX * DriveConstants.kAngularSpeedDamper;
+    double rotationSpeed = controllerRightX * DriveConstants.kAngularSpeedDamper;
 
     // :3 drive with those speeds
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speeds.getX(), speeds.getY(), rotationSpeed);

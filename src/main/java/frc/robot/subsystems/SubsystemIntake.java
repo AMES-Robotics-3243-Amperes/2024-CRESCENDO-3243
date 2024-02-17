@@ -10,8 +10,6 @@ import com.revrobotics.SparkPIDController;
 
 import static frc.robot.Constants.IntakeConstants.*;
 
-import java.util.concurrent.Future;
-
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -19,7 +17,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -28,7 +25,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants.FourBarPIDs;
 import frc.robot.Constants.IntakeConstants.IntakeLimitSwitches;
 import frc.robot.test.Test;
-import frc.robot.test.TestUtil;
 import frc.robot.utility.SubsystemBaseTestable;
 
 public class SubsystemIntake extends SubsystemBaseTestable {

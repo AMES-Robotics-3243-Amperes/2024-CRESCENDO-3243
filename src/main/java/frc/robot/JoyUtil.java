@@ -45,6 +45,7 @@ public class JoyUtil extends CommandXboxController {
   private final Trigger povDownTrigger = povDown();
   private final Trigger povUpLeftTrigger = povUpLeft();
   private final Trigger povUpRightTrigger = povUpRight();
+  private final Trigger startTrigger = start();
 
   /**
    * <> creates a new {@link JoyUtil} with the provided values
@@ -214,6 +215,15 @@ public class JoyUtil extends CommandXboxController {
    */
   public boolean getRightStick() {
     return rightStickTrigger.getAsBoolean();
+  }
+
+  /**
+   * <> get value of start as boolean
+   *
+   * @return the value of the right stick
+   */
+  public boolean getStart() {
+    return startTrigger.getAsBoolean();
   }
 
   /**

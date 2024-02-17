@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climber.ClimberConstants.ClimberPIDFF;
 import frc.robot.Constants.Climber.ClimberConstants.IDs;
-import frc.robot.Constants.Climber.ClimberConstants.MotorSpeeds;
 
 public class SubsystemClimber extends SubsystemBase {
   // ££ Initialize climber motors
