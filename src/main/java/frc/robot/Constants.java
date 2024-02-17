@@ -105,9 +105,9 @@ public final class Constants {
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations, NOT DEGREES OR RADIANS
-    public static final double fourBarUndeployedSetPoint = 0.1;
-    public static final double fourBarHalfDeployedSetPoint = 0.16;
-    public static final double fourBarFullyDeployedSetPoint = 0.275;
+    public static final double fourBarUndeployedSetPoint = 0.029;
+    public static final double fourBarHalfDeployedSetPoint = 0.127;
+    public static final double fourBarFullyDeployedSetPoint = 0.243;
 
     // ss the bounds for the getFourBarAtPosition() function as a ratio
     public static final double lowerBound = 0.99;

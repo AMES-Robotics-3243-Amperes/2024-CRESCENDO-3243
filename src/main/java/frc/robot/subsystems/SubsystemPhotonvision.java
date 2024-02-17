@@ -8,8 +8,10 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DataManager;
+import frc.robot.DataManager.CurrentRobotPose;
 
 import static frc.robot.Constants.PhotonVision.*;
 
@@ -28,7 +30,8 @@ public class SubsystemPhotonvision extends SubsystemBase {
   protected PhotonCamera camera;
   protected static AprilTagFieldLayout fieldLayout;
   protected PhotonPoseEstimator poseEstimator;
-
+  
+  
   /** Creates a new SubsystemPhotonVision. */
   public SubsystemPhotonvision() throws IOException {
     camera = new PhotonCamera(cameraName);
@@ -42,7 +45,6 @@ public class SubsystemPhotonvision extends SubsystemBase {
     
     Optional<EstimatedRobotPose> poseLatestOptional = poseEstimator.update();
     PhotonPipelineResult pipelineResult = camera.getLatestResult();
-
     if (poseLatestOptional.isPresent() && pipelineResult.targets.size() != 0) {
       // Get the ambiguity of the best target and divide it by the number of targets to account for the fact 
       // multiple targets give us better position data
@@ -50,8 +52,12 @@ public class SubsystemPhotonvision extends SubsystemBase {
       EstimatedRobotPose poseLatest = poseLatestOptional.get();
 
       DataManager.currentRobotPose.updateWithVision(poseLatest.estimatedPose, adjustedAmbiguity);
+      
     } else {
       DataManager.currentRobotPose.updateWithVision(null, 10000);
     }
+
+    
+
 }
 }

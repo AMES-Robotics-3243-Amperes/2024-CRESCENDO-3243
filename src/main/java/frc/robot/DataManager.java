@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utility.PowerManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -139,6 +140,7 @@ public class DataManager {
     public static class CurrentRobotPose implements FieldPose {
         /** The pose the robot's located at @author :3 */
         protected Pose3d m_robotPose = new Pose3d();
+        protected Field2d field2d = new Field2d();
 
         protected boolean m_robotPoseIsCurrent = false;
         /** The previous pose odometry read @author :3 */
@@ -149,7 +151,7 @@ public class DataManager {
 
         // :3 keep this as null, or no photonvision will cause datamanger
         // to permanently return whatever this is
-        protected Pose3d m_latestPhotonPose = null;
+        protected Pose3d m_latestPhotonPose = new Pose3d();
 
         protected double m_latestAmbiguity = 0.0;
 
@@ -182,6 +184,12 @@ public class DataManager {
 
                 // transform the robot pose and update the previous odometry
                 m_robotPose = m_robotPose.transformBy(transformSinceLastUpdate);
+
+                // :> Testing data for debugging photonvision please ignore
+                // :> Also worth noting this  was the first place I was able  to find a pose3D though I may be blind
+                field2d.setRobotPose(m_robotPose.toPose2d());
+                SmartDashboard.putData(field2d);
+
 
                 m_previousOdometryPose = m_latestOdometryPose;
                 SmartDashboard.putBoolean("usingVision", false);
