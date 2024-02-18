@@ -8,6 +8,7 @@ import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInAmp;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
+import frc.robot.commands.automatics.TestGroup;
 import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandIntakeTeleop;
@@ -19,7 +20,16 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemClimber;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -102,6 +112,25 @@ public class RobotContainer {
 
     primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
     primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
+    ArrayList<Translation2d> blah = new ArrayList<>();
+    //blah.add(new Translation2d(0, 2.5));
+    //primaryController.x().whileTrue(m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)));
+    primaryController.x().onTrue(new TestGroup(m_SubsystemSwerveDrivetrain));
+    //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
+    //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
+  }
+
+  public class CreateAndScheduleCommand extends InstantCommand {
+    @Override
+    public void initialize() {
+      SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
+      m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(
+        DataManager.currentRobotPose.get().toPose2d(), 
+        new ArrayList<>(), 
+        new Pose2d(2.5, 2.5, new Rotation2d(0)), 
+        Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)
+      ).schedule();
+    }
   }
 
   /**

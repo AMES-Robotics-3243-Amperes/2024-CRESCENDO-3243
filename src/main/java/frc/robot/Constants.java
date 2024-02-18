@@ -352,7 +352,8 @@ public final class Constants {
 
         // :3 kinematics (defined with above constants)
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-          new Translation2d(kRobotLength / 2, kRobotWidth / 2), new Translation2d(kRobotLength / 2, -kRobotWidth / 2),
+          new Translation2d(kRobotLength / 2, kRobotWidth / 2), 
+          new Translation2d(kRobotLength / 2, -kRobotWidth / 2),
           new Translation2d(-kRobotLength / 2, kRobotWidth / 2),
           new Translation2d(-kRobotLength / 2, -kRobotWidth / 2));
       }
@@ -384,7 +385,7 @@ public final class Constants {
         public static final double kMaxDrivingAcceleration = 2;
 
         public static final double kTrajectoryP = 0.2;
-        public static final double kTrajectoryI = 0.005;
+        public static final double kTrajectoryI = 0.0;
         public static final double kTrajectoryD = 0.01;
 
         public static final TrajectoryConfig kTrajectoryConfig =

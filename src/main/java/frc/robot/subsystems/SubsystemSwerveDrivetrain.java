@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -84,8 +85,9 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_odometry.update(m_imu.getYaw(), getModulePositions());
-    DataManager.currentRobotPose.updateWithOdometry(m_odometry.getPoseMeters());
+    m_odometry.update(DataManager.currentRobotPose.get().toPose2d().getRotation(), getModulePositions());
+    Pose2d dataManagerUpdateData = new Pose2d(m_odometry.getPoseMeters().getTranslation(), m_imu.getYaw());
+    DataManager.currentRobotPose.updateWithOdometry(dataManagerUpdateData);
 
     PowerManager.frontLeftDrivetrainMotorPresentCurrent = m_frontLeft.getMotorOutputCurrent();
     PowerManager.frontRightDrivetrainMotorPresentCurrent = m_frontRight.getMotorOutputCurrent();
