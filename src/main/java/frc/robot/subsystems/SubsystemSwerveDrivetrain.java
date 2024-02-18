@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,16 +29,16 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
 
   // :3 create swerve modules
   private final SubsystemSwerveModule m_frontLeft = new SubsystemSwerveModule(DriveConstants.IDs.kFrontLeftDrivingCanId,
-    DriveConstants.IDs.kFrontLeftTurningCanId, DriveConstants.ModuleOffsets.kFrontLeftOffset);
+      DriveConstants.IDs.kFrontLeftTurningCanId, DriveConstants.ModuleOffsets.kFrontLeftOffset);
 
   private final SubsystemSwerveModule m_frontRight = new SubsystemSwerveModule(DriveConstants.IDs.kFrontRightDrivingCanId,
-    DriveConstants.IDs.kFrontRightTurningCanId, DriveConstants.ModuleOffsets.kFrontRightOffset);
+      DriveConstants.IDs.kFrontRightTurningCanId, DriveConstants.ModuleOffsets.kFrontRightOffset);
 
   private final SubsystemSwerveModule m_rearLeft = new SubsystemSwerveModule(DriveConstants.IDs.kRearLeftDrivingCanId,
-    DriveConstants.IDs.kRearLeftTurningCanId, DriveConstants.ModuleOffsets.kBackLeftOffset);
+      DriveConstants.IDs.kRearLeftTurningCanId, DriveConstants.ModuleOffsets.kBackLeftOffset);
 
   private final SubsystemSwerveModule m_rearRight = new SubsystemSwerveModule(DriveConstants.IDs.kRearRightDrivingCanId,
-    DriveConstants.IDs.kRearRightTurningCanId, DriveConstants.ModuleOffsets.kBackRightOffset);
+      DriveConstants.IDs.kRearRightTurningCanId, DriveConstants.ModuleOffsets.kBackRightOffset);
 
   /** :3 odometry for tracking robot pose */
   SwerveDriveOdometry m_odometry;
@@ -51,12 +52,12 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
    * @author :3
    */
   public SubsystemSwerveDrivetrain() {
-    // :3 initialize odometry
-    m_odometry = new SwerveDriveOdometry(ChassisKinematics.kDriveKinematics,
-      DataManager.currentRobotPose.get().getRotation().toRotation2d(), getModulePositions());
-
     // :3 reset module driving encoders
     resetModuleDrivingEncoders();
+
+    // :3 initialize odometry
+    m_odometry = new SwerveDriveOdometry(ChassisKinematics.kDriveKinematics,
+        DataManager.currentRobotPose.get().getRotation().toRotation2d(), getModulePositions());
   }
 
   /**
@@ -72,15 +73,19 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
    */
   public SwerveControllerCommand createTrajectoryFollowCommand(Trajectory trajectory) {
     return new SwerveControllerCommand(trajectory,
-      () -> { return DataManager.currentRobotPose.get().toPose2d(); },
-      ChassisKinematics.kDriveKinematics,
-      new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
-      new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
-      new ProfiledPIDController(AutoConstants.kTuringP, AutoConstants.kTurningI, AutoConstants.kTurningD,
-        new TrapezoidProfile.Constraints(0, 0)),
-      () -> { return trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getRotation(); },
-      this::setModuleStates,
-      this);
+        () -> {
+          return DataManager.currentRobotPose.get().toPose2d();
+        },
+        ChassisKinematics.kDriveKinematics,
+        new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
+        new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
+        new ProfiledPIDController(AutoConstants.kTuringP, AutoConstants.kTurningI, AutoConstants.kTurningD,
+            new TrapezoidProfile.Constraints(0, 0)),
+        () -> {
+          return trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getRotation();
+        },
+        this::setModuleStates,
+        this);
   }
 
   @Override
@@ -98,7 +103,8 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
   /**
    * Set the swerve modules' desired states
    *
-   * @param desiredStates the desired {@link SwerveModuleState}s (front left, front right, rear left, rear right)
+   * @param desiredStates the desired {@link SwerveModuleState}s (front left,
+   *                      front right, rear left, rear right)
    * 
    * @author :3
    */
@@ -131,9 +137,9 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
    * @author :3
    */
   private SwerveModulePosition[] getModulePositions() {
-    return new SwerveModulePosition[]{
-      m_frontLeft.getPosition(), m_frontRight.getPosition(),
-      m_rearLeft.getPosition(), m_rearRight.getPosition()
+    return new SwerveModulePosition[] {
+        m_frontLeft.getPosition(), m_frontRight.getPosition(),
+        m_rearLeft.getPosition(), m_rearRight.getPosition()
     };
   }
 
