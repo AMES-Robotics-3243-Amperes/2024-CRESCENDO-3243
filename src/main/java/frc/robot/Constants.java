@@ -336,10 +336,10 @@ public final class Constants {
       // :3 absolute encoder offsets (should be multiples of pi / 2
       // :3 if the encoders were zeroed properly in rev client)
       public static final class ModuleOffsets {
-        public static final Rotation2d kFrontLeftOffset = Rotation2d.fromRadians(-Math.PI * 0.5);
-        public static final Rotation2d kFrontRightOffset = Rotation2d.fromRadians(0);
-        public static final Rotation2d kBackLeftOffset = Rotation2d.fromRadians(Math.PI);
-        public static final Rotation2d kBackRightOffset = Rotation2d.fromRadians(Math.PI * 0.5);
+        public static final Rotation2d kFrontLeftOffset = Rotation2d.fromRadians(-Math.PI * 1);
+        public static final Rotation2d kFrontRightOffset = Rotation2d.fromRadians(-Math.PI * 0.5);
+        public static final Rotation2d kBackLeftOffset = Rotation2d.fromRadians(Math.PI * 0.5);
+        public static final Rotation2d kBackRightOffset = Rotation2d.fromRadians(0);
       }
 
       // :3 things involving the physical setup of the chassis
