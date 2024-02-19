@@ -149,9 +149,9 @@ public class DataManager {
 
         protected Pose3d m_latestOdometryPose = new Pose3d();
 
-        // :3 keep this as null, or no photonvision will cause datamanger
+        // :3 keep this as null, or no photonvision will cause datamanager
         // to permanently return whatever this is
-        protected Pose3d m_latestPhotonPose = new Pose3d();
+        protected Pose3d m_latestPhotonPose = null;
 
         protected double m_latestAmbiguity = 0.0;
 
@@ -210,14 +210,7 @@ public class DataManager {
          */
         public void updateWithOdometry(Pose2d odometryReading) {
             // get the Transform3d from the last odometry update
-            m_latestOdometryPose = new Pose3d(
-                new Pose2d(
-                    odometryReading.getY(), 
-                    -odometryReading.getX(), 
-                    odometryReading.getRotation()
-                )
-            );
-
+            m_latestOdometryPose = new Pose3d(odometryReading);
             m_robotPoseIsCurrent = false;
         }
 
