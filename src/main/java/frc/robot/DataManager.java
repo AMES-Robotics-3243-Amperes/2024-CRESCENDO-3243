@@ -210,7 +210,13 @@ public class DataManager {
          */
         public void updateWithOdometry(Pose2d odometryReading) {
             // get the Transform3d from the last odometry update
-            m_latestOdometryPose = new Pose3d(odometryReading);
+            m_latestOdometryPose = new Pose3d(
+                new Pose2d(
+                    odometryReading.getY(), 
+                    -odometryReading.getX(), 
+                    odometryReading.getRotation()
+                )
+            );
             m_robotPoseIsCurrent = false;
         }
 
