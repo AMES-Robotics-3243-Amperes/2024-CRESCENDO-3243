@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,6 +52,10 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     DataManager.periodic();
     SmartDashboard.putData(CommandScheduler.getInstance());
+    Pose2d robotPose = DataManager.currentRobotPose.get().toPose2d();
+    SmartDashboard.putNumber("RobotX", robotPose.getX());
+    SmartDashboard.putNumber("RobotY", robotPose.getY());
+    SmartDashboard.putNumber("RobotRotations", robotPose.getRotation().getRotations());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

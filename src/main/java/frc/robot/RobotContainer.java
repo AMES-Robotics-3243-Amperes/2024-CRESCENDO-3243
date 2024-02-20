@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
+import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInAmp;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
@@ -25,8 +26,10 @@ import java.util.ArrayList;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -115,21 +118,42 @@ public class RobotContainer {
     ArrayList<Translation2d> blah = new ArrayList<>();
     //blah.add(new Translation2d(0, 2.5));
     //primaryController.x().whileTrue(m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)));
-    primaryController.x().onTrue(new TestGroup(m_SubsystemSwerveDrivetrain));
+    primaryController.x().onTrue(new CreateAndScheduleCommand());
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
 
   public class CreateAndScheduleCommand extends InstantCommand {
     @Override
-    public void initialize() {
-      SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
-      m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(
-        DataManager.currentRobotPose.get().toPose2d(), 
+    public void execute() {
+      Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
+      SmartDashboard.putNumber("xposLambda", currentRobotPose.getTranslation().getX());
+      Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(), 
         new ArrayList<>(), 
-        new Pose2d(2.5, 2.5, new Rotation2d(0)), 
-        Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)
-      ).schedule();
+        new Pose2d(1 - currentRobotPose.getX(), 2 - currentRobotPose.getY(), new Rotation2d(0)), 
+        Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig
+      );
+      for (double t = 0; t <= 2; t += 0.1) {
+        System.out.print("Time: ");
+        System.out.println(t);
+        System.out.println(trajectory.sample(t).poseMeters.getX());
+        System.out.println(trajectory.sample(t).poseMeters.getY());
+      }
+      
+      System.out.print("\nFinal:\nTime: ");
+      System.out.println(trajectory.getTotalTimeSeconds());
+      System.out.println(trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getX());
+      System.out.println(trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getY());
+      
+      Trajectory mockSimpleTrajectory = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(4, 0, new Rotation2d()), 
+        new ArrayList<Translation2d>(), 
+        new Pose2d(1, 0, new Rotation2d()), 
+        AutoConstants.kTrajectoryConfig
+      );
+
+      m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(mockSimpleTrajectory).schedule();
     }
   }
 
