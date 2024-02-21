@@ -4,7 +4,6 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -58,8 +57,8 @@ public class CommandSwerveTeleopDrive extends Command {
     }
 
     // :3 get x and y speeds
-    double xSpeed = m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
-    double ySpeed = m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double xSpeed = -m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double ySpeed = -m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
     if (fieldRelative) {

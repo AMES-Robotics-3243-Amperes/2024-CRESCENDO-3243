@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.DataManager;
@@ -80,7 +81,7 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
         new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
         new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
         new ProfiledPIDController(AutoConstants.kTuringP, AutoConstants.kTurningI, AutoConstants.kTurningD,
-            new TrapezoidProfile.Constraints(0, 0)),
+            new TrapezoidProfile.Constraints(3, 6)),
         () -> {
           return trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getRotation();
         },
@@ -93,6 +94,9 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
     m_odometry.update(DataManager.currentRobotPose.get().toPose2d().getRotation(), getModulePositions());
     Pose2d dataManagerUpdateData = new Pose2d(m_odometry.getPoseMeters().getTranslation(), m_imu.getYaw());
     DataManager.currentRobotPose.updateWithOdometry(dataManagerUpdateData);
+
+    SmartDashboard.putNumber("odometry x", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("odometry y", m_odometry.getPoseMeters().getY());
 
     PowerManager.frontLeftDrivetrainMotorPresentCurrent = m_frontLeft.getMotorOutputCurrent();
     PowerManager.frontRightDrivetrainMotorPresentCurrent = m_frontRight.getMotorOutputCurrent();

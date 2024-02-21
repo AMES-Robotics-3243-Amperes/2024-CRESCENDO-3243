@@ -115,10 +115,17 @@ public class RobotContainer {
 
     primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
     primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
-    ArrayList<Translation2d> blah = new ArrayList<>();
-    //blah.add(new Translation2d(0, 2.5));
-    //primaryController.x().whileTrue(m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)));
-    primaryController.x().onTrue(new CreateAndScheduleCommand());
+
+    ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
+      //interiorWaypoints.add(new Translation2d(4, 5));
+      
+      Trajectory mockSimpleTrajectory = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(2, 2, new Rotation2d()), 
+        interiorWaypoints, 
+        new Pose2d(5, 5, new Rotation2d()), 
+        AutoConstants.kTrajectoryConfig
+      );
+    primaryController.x().whileTrue(m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(mockSimpleTrajectory));
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
@@ -145,11 +152,14 @@ public class RobotContainer {
       System.out.println(trajectory.getTotalTimeSeconds());
       System.out.println(trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getX());
       System.out.println(trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getY());
+
+      ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
+      //interiorWaypoints.add(new Translation2d(1, 0));
       
       Trajectory mockSimpleTrajectory = TrajectoryGenerator.generateTrajectory(
         new Pose2d(4, 0, new Rotation2d()), 
-        new ArrayList<Translation2d>(), 
-        new Pose2d(1, 0, new Rotation2d()), 
+        interiorWaypoints, 
+        new Pose2d(1, 0.1, new Rotation2d()), 
         AutoConstants.kTrajectoryConfig
       );
 

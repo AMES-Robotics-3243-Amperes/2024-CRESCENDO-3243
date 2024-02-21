@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -169,7 +170,7 @@ public class DataManager {
                 m_robotPoseIsCurrent = true;
             }
 
-            return new Pose3d(m_robotPose.getTranslation(), m_robotPose.getRotation().rotateBy(new Rotation3d(0, 0, Math.PI / 2)));
+            return new Pose3d(m_robotPose.getTranslation(), m_robotPose.getRotation());
         }
 
         /*
@@ -180,7 +181,9 @@ public class DataManager {
             // This seems to behave a little weird and alternate bettween using vision and not, but it's fine-ish for now (I hope) H!
             SmartDashboard.putNumber("photonAmbiguity", m_latestAmbiguity);
             if (m_latestAmbiguity > 0.15 || m_latestPhotonPose == null) {
-                Transform3d transformSinceLastUpdate = new Transform3d(m_previousOdometryPose, m_latestOdometryPose);
+                Translation3d translationChange = m_latestOdometryPose.getTranslation().minus(m_previousOdometryPose.getTranslation());
+                Rotation3d rotationChange = m_latestOdometryPose.getRotation().minus(m_previousOdometryPose.getRotation());
+                Transform3d transformSinceLastUpdate = new Transform3d(translationChange, rotationChange);
 
                 // transform the robot pose and update the previous odometry
                 m_robotPose = m_robotPose.transformBy(transformSinceLastUpdate);
@@ -189,9 +192,6 @@ public class DataManager {
                 // :> Also worth noting this  was the first place I was able  to find a pose3D though I may be blind
                 field2d.setRobotPose(m_robotPose.toPose2d());
                 SmartDashboard.putData(field2d);
-
-
-                m_previousOdometryPose = m_latestOdometryPose;
                 SmartDashboard.putBoolean("usingVision", false);
             } else {
                 SmartDashboard.putNumber("photonPoseX", m_latestPhotonPose.getX());
@@ -200,6 +200,8 @@ public class DataManager {
                 m_robotPose = m_latestPhotonPose;
                 SmartDashboard.putBoolean("usingVision", true);
             }
+
+            m_previousOdometryPose = m_latestOdometryPose;
         }
 
         /**
@@ -210,13 +212,7 @@ public class DataManager {
          */
         public void updateWithOdometry(Pose2d odometryReading) {
             // get the Transform3d from the last odometry update
-            m_latestOdometryPose = new Pose3d(
-                new Pose2d(
-                    odometryReading.getY(), 
-                    -odometryReading.getX(), 
-                    odometryReading.getRotation()
-                )
-            );
+            m_latestOdometryPose = new Pose3d(odometryReading);
             m_robotPoseIsCurrent = false;
         }
 
