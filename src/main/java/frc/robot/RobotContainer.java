@@ -125,7 +125,7 @@ public class RobotContainer {
         new Pose2d(5, 5, new Rotation2d()), 
         AutoConstants.kTrajectoryConfig
       );
-    primaryController.x().whileTrue(m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(mockSimpleTrajectory));
+    primaryController.x().onTrue(new CreateAndScheduleCommand());
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
@@ -136,22 +136,18 @@ public class RobotContainer {
       Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
       SmartDashboard.putNumber("xposLambda", currentRobotPose.getTranslation().getX());
       Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(), 
+        DataManager.currentRobotPose.get().toPose2d(), 
         new ArrayList<>(), 
-        new Pose2d(1 - currentRobotPose.getX(), 2 - currentRobotPose.getY(), new Rotation2d(0)), 
+        new Pose2d(4, 4, new Rotation2d(0)), 
         Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig
       );
-      for (double t = 0; t <= 2; t += 0.1) {
+      /*for (double t = 0; t <= 2; t += 0.1) {
         System.out.print("Time: ");
         System.out.println(t);
         System.out.println(trajectory.sample(t).poseMeters.getX());
         System.out.println(trajectory.sample(t).poseMeters.getY());
       }
-      
-      System.out.print("\nFinal:\nTime: ");
-      System.out.println(trajectory.getTotalTimeSeconds());
-      System.out.println(trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getX());
-      System.out.println(trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters.getY());
+      */
 
       ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
       //interiorWaypoints.add(new Translation2d(1, 0));
@@ -163,7 +159,7 @@ public class RobotContainer {
         AutoConstants.kTrajectoryConfig
       );
 
-      m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(mockSimpleTrajectory).schedule();
+      m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(trajectory).schedule();
     }
   }
 

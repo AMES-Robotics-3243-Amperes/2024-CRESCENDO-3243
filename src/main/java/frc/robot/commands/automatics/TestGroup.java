@@ -28,7 +28,7 @@ public class TestGroup extends SequentialCommandGroup {
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
         DataManager.currentRobotPose.get().toPose2d(), 
         new ArrayList<>(), 
-        new Pose2d(2.5, 2.5, new Rotation2d(0)), 
+        new Pose2d(4, 4, new Rotation2d(0)), 
         Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig);
 
     SmartDashboard.putNumber("somethingX", trajectory.getInitialPose().getX());

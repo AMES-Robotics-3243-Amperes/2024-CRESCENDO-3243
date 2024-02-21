@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -74,9 +77,7 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
    */
   public SwerveControllerCommand createTrajectoryFollowCommand(Trajectory trajectory) {
     return new SwerveControllerCommand(trajectory,
-        () -> {
-          return DataManager.currentRobotPose.get().toPose2d();
-        },
+        currentRobotPose.get().toPose2d()::getRotation,
         ChassisKinematics.kDriveKinematics,
         new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
         new PIDController(AutoConstants.kTrajectoryP, AutoConstants.kTrajectoryI, AutoConstants.kTrajectoryD),
