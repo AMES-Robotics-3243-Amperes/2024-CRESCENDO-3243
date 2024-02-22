@@ -2,7 +2,6 @@ package frc.robot.commands.intake;
 import frc.robot.DataManager;
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.SubsystemIntake;
-import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
 public class CommandIntakeTeleop extends Command {
 
@@ -25,17 +24,6 @@ public class CommandIntakeTeleop extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // :> Checks which setpoint the driver wants to input
-    // :> Note do not press multiple of these at the same time :(
-    if (m_Controller.getPOVLeft()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.fourBarNotDeployedPosition);
-    }
-    if (m_Controller.getPOVDown()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.fourBarHalfDeployedPosition);
-    }
-    if (m_Controller.getPOVRight()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.fourBarFullyDeployedPosition);
-    }
     // ss Activates and Deactivates the Intake when the A button is pressed or unpressed
     if (m_Controller.getAButton()) {
       m_Subsystem.intake();

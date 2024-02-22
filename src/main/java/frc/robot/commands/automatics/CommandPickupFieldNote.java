@@ -15,8 +15,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.Constants.AutomaticsConstants;
-import frc.robot.commands.intake.CommandIntakeMoveFourBar;
+import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeUntilSensed;
+import frc.robot.subsystems.SubsystemFourBar;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
@@ -25,7 +26,7 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CommandPickupFieldNote extends SequentialCommandGroup {
   /** Creates a new CommandPickupFieldNote. */
-  public CommandPickupFieldNote(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, int targetNote) {
+  public CommandPickupFieldNote(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemFourBar fourBar, int targetNote) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -49,7 +50,7 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
         drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
           start, between, new Pose2d(target.getTranslation(), overNoteDirection)
         ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
-        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarFullyDeployedPosition)
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition)
       ),
       new CommandIntakeUntilSensed(intake),
       drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
