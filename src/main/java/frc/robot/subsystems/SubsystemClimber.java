@@ -89,7 +89,8 @@ public class SubsystemClimber extends SubsystemBase {
     targetPositionOne = 0;
     targetPositionTwo = 0;
 
-
+    motorOne.setSmartCurrentLimit(SmartMotorCurrentLimit);
+    motorTwo.setSmartCurrentLimit(SmartMotorCurrentLimit);
   }
 
   public boolean runClimber(boolean dPadUp, boolean dPadDown) {
@@ -241,8 +242,5 @@ public class SubsystemClimber extends SubsystemBase {
     // This method will be called once per scheduler run
     // ££ Calibrates climber
     calibrateClimber(limitSwitchOne.get(), limitSwitchTwo.get());
-
-    motorOne.setSmartCurrentLimit(SmartMotorCurrentLimit);
-    motorTwo.setSmartCurrentLimit(SmartMotorCurrentLimit);
   }
 }
