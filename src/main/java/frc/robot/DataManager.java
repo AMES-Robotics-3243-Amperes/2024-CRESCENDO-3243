@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -183,10 +182,10 @@ public class DataManager {
             if (m_latestAmbiguity > 0.15 || m_latestPhotonPose == null) {
                 Translation3d translationChange = m_latestOdometryPose.getTranslation().minus(m_previousOdometryPose.getTranslation());
                 Rotation3d rotationChange = m_latestOdometryPose.getRotation().minus(m_previousOdometryPose.getRotation());
-                Transform3d transformSinceLastUpdate = new Transform3d(translationChange, rotationChange);
 
                 // transform the robot pose and update the previous odometry
-                m_robotPose = m_robotPose.transformBy(transformSinceLastUpdate);
+                m_robotPose = new Pose3d(m_robotPose.getTranslation().plus(translationChange),
+                    m_robotPose.getRotation().plus(rotationChange));
 
                 // :> Testing data for debugging photonvision please ignore
                 // :> Also worth noting this  was the first place I was able  to find a pose3D though I may be blind
@@ -201,6 +200,8 @@ public class DataManager {
                 SmartDashboard.putBoolean("usingVision", true);
             }
 
+            SmartDashboard.putNumber("hix", m_robotPose.getX());
+            SmartDashboard.putNumber("hiy", m_robotPose.getY());
             m_previousOdometryPose = m_latestOdometryPose;
         }
 

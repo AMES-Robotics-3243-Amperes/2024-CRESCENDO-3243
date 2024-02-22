@@ -367,26 +367,24 @@ public final class Constants {
       // :3 auto-movement configuration
       public static final class AutoConstants {
         // :3 turning stuff
-        public static final double kMaxAngularVelocityRadians = 2;
-        public static final double kMaxAngularAccelerationRadians = 2.5;
+        public static final double kMaxAngularVelocityRadians = 3;
+        public static final double kMaxAngularAccelerationRadians = 5;
 
-        public static final double kTuringP = 2.5;
+        public static final double kTuringP = 8;
         public static final double kTurningI = 0.1;
-        public static final double kTurningD = 0.08;
-
-        public static final TrapezoidProfile.Constraints kTurningConfig =
-          new TrapezoidProfile.Constraints(kMaxAngularVelocityRadians, kMaxAngularAccelerationRadians);
-
-        public static final ProfiledPIDController kTurningPID =
-          new ProfiledPIDController(kTuringP, kTurningI, kTurningD, kTurningConfig);
+        public static final double kTurningD = 0.03;
 
         // :3 driving setpoint stuff
-        public static final double kMaxDrivingVelocity = 3.5;
-        public static final double kMaxDrivingAcceleration = 2;
+        public static final double kMaxDrivingVelocity = 6;
+        public static final double kMaxDrivingAcceleration = 8;
 
         public static final double kTrajectoryP = 0.2;
         public static final double kTrajectoryI = 0.0;
         public static final double kTrajectoryD = 0.01;
+
+        public static final double kSetpointP = 10;
+        public static final double kSetpointI = 0.01;
+        public static final double kSetpointD = 0.1;
 
         public static final TrajectoryConfig kTrajectoryConfig =
           new TrajectoryConfig(kMaxDrivingVelocity, kMaxDrivingAcceleration);

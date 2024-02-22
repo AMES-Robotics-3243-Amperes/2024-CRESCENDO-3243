@@ -9,8 +9,8 @@ import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInAmp;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
-import frc.robot.commands.automatics.TestGroup;
 import frc.robot.commands.climber.CommandClimberTeleop;
+import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandIntakeTeleop;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
@@ -28,8 +28,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -116,16 +114,8 @@ public class RobotContainer {
     primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
     primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
 
-    ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
-      //interiorWaypoints.add(new Translation2d(4, 5));
-      
-      Trajectory mockSimpleTrajectory = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(2, 2, new Rotation2d()), 
-        interiorWaypoints, 
-        new Pose2d(5, 5, new Rotation2d()), 
-        AutoConstants.kTrajectoryConfig
-      );
-    primaryController.x().onTrue(new CreateAndScheduleCommand());
+    Pose2d goal = new Pose2d(2.1, 5.1, Rotation2d.fromDegrees(180));
+    primaryController.x().whileTrue(new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, goal));
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
