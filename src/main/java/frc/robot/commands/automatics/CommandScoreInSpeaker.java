@@ -18,13 +18,14 @@ import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
-import frc.robot.commands.intake.CommandIntakeMoveFourBar;
+import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.intake.CommandIntakeUntilNotSensed;
 import frc.robot.commands.intake.CommandOuttakeUntilNotSensed;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpSpeaker;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
+import frc.robot.subsystems.SubsystemFourBar;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemShooter;
@@ -40,7 +41,7 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
  */
 public class CommandScoreInSpeaker extends SequentialCommandGroup {
 
-  public CommandScoreInSpeaker(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter) {
+  public CommandScoreInSpeaker(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemFourBar fourBar) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     Translation2d speakerLocation = DataManager.FieldPoses.getSpeakerPosition().getTranslation();

@@ -15,13 +15,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.DataManager;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
-import frc.robot.commands.intake.CommandIntakeMoveFourBar;
+import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.intake.CommandIntakeUntilNotSensed;
 import frc.robot.commands.intake.CommandOuttakeUntilNotSensed;
 import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpAmp;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
+import frc.robot.subsystems.SubsystemFourBar;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemShooter;
@@ -36,7 +37,7 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
  * @author H!
  */
 public class CommandScoreInAmp extends SequentialCommandGroup {
-
+  /** Creates a new CommandScoreInSpeaker. */
   public CommandScoreInAmp(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

@@ -6,12 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.commands.automatics.CommandPickup;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInAmp;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
 import frc.robot.commands.climber.CommandClimberTeleop;
 import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
+import frc.robot.commands.intake.CommandFourBarTeleop;
 import frc.robot.commands.intake.CommandIntakeTeleop;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
 import frc.robot.commands.shooter.CommandShooterTeleopSpeaker;
@@ -20,6 +22,8 @@ import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemClimber;
+import frc.robot.subsystems.SubsystemFourBar;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -57,6 +61,7 @@ public class RobotContainer {
   private final SubsystemIntake m_subsystemIntake = new SubsystemIntake();
   private final SubsystemShooter m_SubsystemShooter = new SubsystemShooter();
   private final SubsystemClimber m_SubsystemClimber = new SubsystemClimber();
+  private final SubsystemFourBar m_SubsystemFourBar = new SubsystemFourBar();
   //private final SubsystemPlate m_subsystemPlate = new SubsystemPlate();
 
   //
@@ -66,6 +71,7 @@ public class RobotContainer {
 
   private final CommandSwerveTeleopDrive m_CommandSwerveTeleopDrive = new CommandSwerveTeleopDrive(m_SubsystemSwerveDrivetrain, primaryController);
   private final CommandIntakeTeleop m_teleopCommandIntake = new CommandIntakeTeleop(m_subsystemIntake, secondaryController);
+  private final CommandFourBarTeleop m_CommandFourBarTeleop = new CommandFourBarTeleop(m_SubsystemFourBar, secondaryController);
   private final CommandShooterTeleopAmp m_CommandShooterTeleopAmp = new CommandShooterTeleopAmp(m_SubsystemShooter);
   private final CommandShooterTeleopSpeaker m_CommandShooterTeleopSpeaker = new CommandShooterTeleopSpeaker(m_SubsystemShooter);
   //private final CommandShooterStop m_CommandShooterStop = new CommandShooterStop(m_SubsystemShooter);
@@ -79,6 +85,7 @@ public class RobotContainer {
     m_SubsystemSwerveDrivetrain.setDefaultCommand(m_CommandSwerveTeleopDrive);
     m_subsystemIntake.setDefaultCommand(m_teleopCommandIntake);
     m_SubsystemClimber.setDefaultCommand(m_CommandClimberTeleop);
+    m_SubsystemFourBar.setDefaultCommand(m_CommandFourBarTeleop);
     //m_subsystemPlate.setDefaultCommand(m_commandPlateTeleop);
      
     try {
@@ -110,9 +117,9 @@ public class RobotContainer {
     secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting
     secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
-
-    primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
-    primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
+    secondaryController.rightBumper().whileTrue(new CommandPickup(m_subsystemIntake, m_SubsystemFourBar));
+    primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+    primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
 
     primaryController.x().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter));
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
@@ -159,10 +166,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, 0),
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter),
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, 1),
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter)
+      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 0),
+      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar),
+      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar,1),
+      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar)
     );
   }
 }
