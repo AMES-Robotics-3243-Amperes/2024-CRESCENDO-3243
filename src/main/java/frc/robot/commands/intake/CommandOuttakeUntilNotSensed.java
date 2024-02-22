@@ -38,7 +38,7 @@ public class CommandOuttakeUntilNotSensed extends Command {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { 
+  public boolean isFinished() {
     return !DataManager.currentNoteStorageSensor.get();
   }
 }

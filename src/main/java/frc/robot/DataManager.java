@@ -199,9 +199,6 @@ public class DataManager {
                 m_robotPose = m_latestPhotonPose;
                 SmartDashboard.putBoolean("usingVision", true);
             }
-
-            SmartDashboard.putNumber("hix", m_robotPose.getX());
-            SmartDashboard.putNumber("hiy", m_robotPose.getY());
             m_previousOdometryPose = m_latestOdometryPose;
         }
 

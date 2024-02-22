@@ -9,7 +9,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.SubsystemShooter;
 
-
 public class CommandShooterSpinUpSpeaker extends Command {
   public SubsystemShooter m_SubsystemShooter;
 

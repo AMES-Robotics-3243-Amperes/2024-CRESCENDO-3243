@@ -19,7 +19,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants.FourBarPIDs;
