@@ -9,10 +9,10 @@ public class CommandFourBarMoveFourBar extends Command {
   protected final SubsystemFourBar m_Subsystem;
   protected final setPoints m_SetPoint;
 
-  public CommandFourBarMoveFourBar(SubsystemFourBar intake, setPoints setPoint) {
-    m_Subsystem = intake;
+  public CommandFourBarMoveFourBar(SubsystemFourBar fourBar, setPoints setPoint) {
+    m_Subsystem = fourBar;
     m_SetPoint = setPoint;
-    addRequirements(intake);
+    addRequirements(fourBar);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
