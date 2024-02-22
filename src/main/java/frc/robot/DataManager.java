@@ -5,7 +5,6 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -199,9 +198,6 @@ public class DataManager {
                 m_robotPose = m_latestPhotonPose;
                 SmartDashboard.putBoolean("usingVision", true);
             }
-
-            SmartDashboard.putNumber("hix", m_robotPose.getX());
-            SmartDashboard.putNumber("hiy", m_robotPose.getY());
             m_previousOdometryPose = m_latestOdometryPose;
         }
 

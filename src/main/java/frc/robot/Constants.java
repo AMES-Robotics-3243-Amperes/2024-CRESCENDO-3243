@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 
@@ -77,8 +75,8 @@ public final class Constants {
     public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
 
     // :> Worth noting (teehee) these are going to the be used for mainly alligning to the amp as we score into it
-    public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
-    public static Pose2d redAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), 0, new Rotation2d(0));
+    public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(0));
+    public static Pose2d redAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(0));
 
     public static Pose2d blueStagePosition1 = new Pose2d(4.481,  (fieldHeight-3.339), new Rotation2d(0));
     public static Pose2d blueStagePosition2 = new Pose2d(4.553, (fieldHeight-4.937), new Rotation2d(0));
@@ -114,7 +112,7 @@ public final class Constants {
     public static final double upperBound = 1.01;
     // ss intake velocity (negative to intake)
     public static final double intakeFV = -1;
-    public static final double intakeBV = .5;
+    public static final double intakeBV = .2;
     /*
     public static final class IntakePIDs {
       // ss todo: Tune the PIDs
@@ -442,7 +440,7 @@ public final class Constants {
     // && todo: put in actual, reasonable numbers for all of the things below
     // H! the above should be done, but the numbers are currently untested
     public static final double ampShootSpeed = 740;
-    public static final double speakerShootSpeed = 4000;
+    public static final double speakerShootSpeed = 5000;
     public static final double stopShootSpeed = 0.0;
     
     // && The range of shooter speeds that are "acceptable" on either side of the target speed 
