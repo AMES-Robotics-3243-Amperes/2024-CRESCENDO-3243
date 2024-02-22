@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.commands.automatics.CommandPickup;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInAmp;
 import frc.robot.commands.automatics.CommandScoreInSpeaker;
@@ -116,7 +117,7 @@ public class RobotContainer {
     secondaryController.x().toggleOnTrue(m_CommandShooterTeleopAmp);
     // && toggle speaker shooting
     secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
-
+    secondaryController.rightBumper().whileTrue(new CommandPickup(m_subsystemIntake, m_SubsystemFourBar));
     primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
     primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
 
