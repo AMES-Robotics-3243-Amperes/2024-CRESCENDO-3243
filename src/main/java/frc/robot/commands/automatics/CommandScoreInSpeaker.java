@@ -4,30 +4,21 @@
 
 package frc.robot.commands.automatics;
 
-import java.util.Arrays;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.DataManager;
-import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
 import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
 import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
-import frc.robot.commands.intake.CommandIntakeUntilNotSensed;
 import frc.robot.commands.intake.CommandOuttakeUntilNotSensed;
-import frc.robot.commands.plate.CommandPlateMoveToPosition;
 import frc.robot.commands.shooter.CommandShooterSpinUpSpeaker;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
 import frc.robot.subsystems.SubsystemFourBar;
 import frc.robot.subsystems.SubsystemIntake;
-import frc.robot.subsystems.SubsystemPlate;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
@@ -57,10 +48,10 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new CommandSwerveDriveToSetpoint(drivetrain, goal),
-        new CommandIntakeMoveFourBar(intake, SubsystemIntake.setPoints.fourBarNotDeployedPosition),
-        new CommandShooterSpinUpSpeaker(shooter)
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition),
+        new CommandShooterSpinUpSpeaker(shooter),
+        new CommandOuttakeUntilNotSensed(intake)
       ),
-      new CommandOuttakeUntilNotSensed(intake),
       new CommandIntakeRunForTime(intake, 0.5),
       new CommandShooterStopInstant(shooter)
     );
