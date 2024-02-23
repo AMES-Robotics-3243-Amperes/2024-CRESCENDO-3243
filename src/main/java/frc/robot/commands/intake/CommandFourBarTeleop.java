@@ -18,6 +18,7 @@ public class CommandFourBarTeleop extends Command {
     m_Controller = controller;
     m_Subsystem = fourBar;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(fourBar);
   }
 
   // Called when the command is initially scheduled.
