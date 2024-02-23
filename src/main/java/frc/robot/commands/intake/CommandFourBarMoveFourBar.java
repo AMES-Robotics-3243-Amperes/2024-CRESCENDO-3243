@@ -25,7 +25,9 @@ public class CommandFourBarMoveFourBar extends Command {
   @Override
   public void execute() {}
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (!interrupted) {System.out.println("\nFour Bar Done\n");}
+  }
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

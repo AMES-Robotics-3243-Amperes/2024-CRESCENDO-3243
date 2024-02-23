@@ -180,7 +180,7 @@ public class SubsystemFourBar extends SubsystemBase {
     * @author ss
     */
     public boolean getFourBarAtSetPoint(setPoints position) {
-      return ((getFourBarMotorPosition() / position.angle) > lowerBound) && ((getFourBarMotorPosition() / position.angle) < upperBound);
+      return Math.abs(position.angle - getFourBarMotorPosition()) < allowableDifference;
     }
     
 }

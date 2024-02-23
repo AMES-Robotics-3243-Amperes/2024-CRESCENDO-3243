@@ -91,12 +91,13 @@ public class CommandSwerveDriveToSetpoint extends Command {
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, 0);
     SwerveModuleState[] moduleStates = ChassisKinematics.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
     drivetrainSubsystem.setModuleStates(moduleStates);
+    if (!interrupted) {System.out.println("\nDriving Done\n");}
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // TODO: constant the wiggle room :3
-    return DataManager.currentRobotPose.get().toPose2d().getTranslation().getDistance(goal.getTranslation()) < 0.1;
+    return DataManager.currentRobotPose.get().toPose2d().getTranslation().getDistance(goal.getTranslation()) < 0.05;
   }
 }

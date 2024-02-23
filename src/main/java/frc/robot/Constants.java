@@ -75,8 +75,8 @@ public final class Constants {
     public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
 
     // :> Worth noting (teehee) these are going to the be used for mainly alligning to the amp as we score into it
-    public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(0));
-    public static Pose2d redAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(0));
+    public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(Math.PI/2));
+    public static Pose2d redAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(Math.PI/2));
 
     public static Pose2d blueStagePosition1 = new Pose2d(4.481,  (fieldHeight-3.339), new Rotation2d(0));
     public static Pose2d blueStagePosition2 = new Pose2d(4.553, (fieldHeight-4.937), new Rotation2d(0));
@@ -107,9 +107,8 @@ public final class Constants {
     public static final double fourBarHalfDeployedSetPoint = 0.127;
     public static final double fourBarFullyDeployedSetPoint = 0.284;
 
-    // ss the bounds for the getFourBarAtPosition() function as a ratio
-    public static final double lowerBound = 0.99;
-    public static final double upperBound = 1.01;
+    // H! the bounds for the getFourBarAtPosition() function as a difference
+    public static final double allowableDifference = 0.1;
     // ss intake velocity (negative to intake)
     public static final double intakeFV = -1;
     public static final double intakeBV = .2;
@@ -237,7 +236,7 @@ public final class Constants {
       // :3 pidf values / min and max outputs
       public static final class PIDF {
 
-        public static final double kDrivingP = 0.2;
+        public static final double kDrivingP = 0.1;
         public static final double kDrivingI = 0;
         public static final double kDrivingD = 0;
         public static final double kDrivingFF = 0;
@@ -439,13 +438,13 @@ public final class Constants {
     // && The target speeds for the speaker and the amp (range will be based on these)
     // && todo: put in actual, reasonable numbers for all of the things below
     // H! the above should be done, but the numbers are currently untested
-    public static final double ampShootSpeed = 740;
+    public static final double ampShootSpeed = 450;
     public static final double speakerShootSpeed = 5000;
     public static final double stopShootSpeed = 0.0;
     
     // && The range of shooter speeds that are "acceptable" on either side of the target speed 
-    public static final double ampSpeedRange = 1;
-    public static final double speakerSpeedRange = 1;
+    public static final double ampSpeedRange = 30;
+    public static final double speakerSpeedRange = 100;
     public static final double stopSpeedRange = 1;
   }
 

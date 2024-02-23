@@ -34,7 +34,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
   public CommandScoreInAmp(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemFourBar fourBar) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Pose2d target = DataManager.FieldPoses.getAmpPosition().transformBy(new Transform2d(0, -1, new Rotation2d()));
+    Pose2d target = DataManager.FieldPoses.getAmpPosition().transformBy(new Transform2d( -.5,0, new Rotation2d()));
 
     addCommands(
       new ParallelCommandGroup(

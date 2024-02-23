@@ -34,6 +34,7 @@ public class CommandOuttakeUntilNotSensed extends Command {
   @Override
   public void end(boolean interrupted) {
     m_SubsystemIntake.stop();
+    if (!interrupted) {System.out.println("\nNote backed up\n");}
   }
 
   // Returns true when the command should end.
