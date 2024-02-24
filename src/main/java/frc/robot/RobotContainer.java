@@ -188,24 +188,25 @@ public class RobotContainer {
 
       new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
       new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, Constants.FieldConstants.leftBlueWingNote),
       new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftBlueWingNote),
 
       new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside)
     );
-    return new SequentialCommandGroup(
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
+    // return new SequentialCommandGroup(
+    //   new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
       
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 0),
+    //   new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 0),
       
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside),
+    //   new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside),
 
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 1),
+    //   new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 1),
 
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
+    //   new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
 
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 2),
+    //   new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 2),
       
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside)
-    );
+    //   new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside)
+    // );
   }
 }

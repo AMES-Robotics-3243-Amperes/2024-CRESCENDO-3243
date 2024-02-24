@@ -188,7 +188,7 @@ public class DataManager {
         protected void combineUpdateData() {
             // This seems to behave a little weird and alternate bettween using vision and not, but it's fine-ish for now (I hope) H!
             SmartDashboard.putNumber("photonAmbiguity", m_latestAmbiguity);
-            if (m_latestAmbiguity > 0.12 || m_latestPhotonPose == null || !usePhotonVision) {
+            if (m_latestAmbiguity >= 0.04 || m_latestPhotonPose == null || !usePhotonVision) {
                 Translation3d translationChange = m_latestOdometryPose.getTranslation().minus(m_previousOdometryPose.getTranslation());
                 Rotation3d rotationChange = m_latestOdometryPose.getRotation().minus(m_previousOdometryPose.getRotation());
 
