@@ -4,6 +4,9 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,7 +23,8 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
 public class CommandSwerveDriveToSetpoint extends Command {
   SubsystemSwerveDrivetrain drivetrainSubsystem;
-  Pose2d goal;
+  Supplier<Pose2d> goal;
+  Optional<Pose2d> currentGoal = Optional.empty();
 
   ProfiledPIDController xPidController = new ProfiledPIDController(AutoConstants.kSetpointP,
     AutoConstants.kSetpointI,
@@ -42,11 +46,17 @@ public class CommandSwerveDriveToSetpoint extends Command {
 
   /** Creates a new CommandSwerveDriveToSetpoint. */
   public CommandSwerveDriveToSetpoint(SubsystemSwerveDrivetrain drivetrainSubsystem, Pose2d goal) {
-    Rotation2d fixedRotation = Rotation2d.fromRadians(MathUtil.angleModulus(goal.getRotation().getRadians()));
-    Pose2d fixedGoal = new Pose2d(goal.getTranslation(), fixedRotation);
-
     this.drivetrainSubsystem = drivetrainSubsystem;
-    this.goal = fixedGoal;
+    this.goal = () -> goal;
+
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.drivetrainSubsystem);
+  }
+
+  /** Creates a new CommandSwerveDriveToSetpoint. */
+  public CommandSwerveDriveToSetpoint(SubsystemSwerveDrivetrain drivetrainSubsystem, Supplier<Pose2d> goal) {
+    this.drivetrainSubsystem = drivetrainSubsystem;
+    this.goal = goal;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.drivetrainSubsystem);
@@ -61,23 +71,23 @@ public class CommandSwerveDriveToSetpoint extends Command {
     yPidController.reset(currentRobotPose.getTranslation().getY());
     thetaPidController.reset(currentRobotPose.getRotation().getRadians());
     thetaPidController.enableContinuousInput(-Math.PI, Math.PI);
+
+    currentGoal = Optional.of(poseAngleModulus(goal.get()));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
-    double xSpeed = xPidController.calculate(currentRobotPose.getTranslation().getX(), goal.getX());
-    double ySpeed = yPidController.calculate(currentRobotPose.getTranslation().getY(), goal.getY());
+    Pose2d currentRobotPose = poseAngleModulus(DataManager.currentRobotPose.get().toPose2d());
+    double xSpeed = xPidController.calculate(currentRobotPose.getTranslation().getX(), currentGoal.get().getX());
+    double ySpeed = yPidController.calculate(currentRobotPose.getTranslation().getY(), currentGoal.get().getY());
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
-    speeds = speeds.rotateBy(DataManager.currentRobotPose.get().toPose2d().getRotation().times(-1));
+    speeds = speeds.rotateBy(currentRobotPose.getRotation().times(-1));
 
     // :3 get rotation speed
     double rotationSpeed = thetaPidController.calculate(MathUtil.angleModulus(currentRobotPose.getRotation().getRadians()),
-      goal.getRotation().getRadians());
-
-    
+      currentGoal.get().getRotation().getRadians());
 
     // :3 drive with those speeds
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speeds.getX(), speeds.getY(), rotationSpeed);
@@ -97,12 +107,21 @@ public class CommandSwerveDriveToSetpoint extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
+    Pose2d currentRobotPose = poseAngleModulus(DataManager.currentRobotPose.get().toPose2d());
     boolean positionCorrect =
-      currentRobotPose.getTranslation().getDistance(goal.getTranslation()) < AutoConstants.kMaxSetpointDistance;
+      currentRobotPose.getTranslation().getDistance(currentGoal.get().getTranslation()) < AutoConstants.kMaxSetpointDistance;
     boolean rotationCorrect =
-      Math.abs(currentRobotPose.getRotation().getRadians() - goal.getRotation().getRadians()) < AutoConstants.kMaxSetpointRotationError;
+      Math.abs(currentRobotPose.getRotation().getRadians() - currentGoal.get().getRotation().getRadians()) < AutoConstants.kMaxSetpointRotationError;
 
     return positionCorrect && rotationCorrect;
+  }
+
+  /** Helper function that performs angle modulus on a Pose2d;
+   * 
+   * @author :3
+   */
+  private Pose2d poseAngleModulus(Pose2d pose) {
+    Rotation2d fixedAngle = Rotation2d.fromRadians(MathUtil.angleModulus(pose.getRotation().getRadians()));
+    return new Pose2d(pose.getX(), pose.getY(), fixedAngle);
   }
 }
