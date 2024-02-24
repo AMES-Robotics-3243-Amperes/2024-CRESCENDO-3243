@@ -107,7 +107,7 @@ public final class Constants {
 
     // :> TODO: These might have to be negative depending on how the encoder sees it so these may need to be changed
     // ss These are in Rotations, NOT DEGREES OR RADIANS
-    public static final double fourBarUndeployedSetPoint = 0.036;
+    public static final double fourBarUndeployedSetPoint = 0.065;
     public static final double fourBarHalfDeployedSetPoint = 0.127;
     public static final double fourBarFullyDeployedSetPoint = 0.284;
 
@@ -368,7 +368,7 @@ public final class Constants {
       // :3 auto-movement configuration
       public static final class AutoConstants {
         // :3 wiggle room for setpoint driving
-        public static final double kMaxSetpointDistance = 0.03;
+        public static final double kMaxSetpointDistance = 0.06;
         public static final double kMaxSetpointRotationError = 0.1;
 
         // :3 turning stuff

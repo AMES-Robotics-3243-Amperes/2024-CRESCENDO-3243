@@ -35,7 +35,7 @@ public class CommandScoreInSpeaker1 extends SequentialCommandGroup {
     //Pose2d launchPose = new Pose2d(launchLocation, new Rotation2d(-speakerToRobotDirection.getX(), -speakerToRobotDirection.getY()));
     // There're negatives to switch the direction, so it's robot to speaker instead of speaker to robot direction.
 
-    Pose2d goal = new Pose2d(1.8, 4, Rotation2d.fromDegrees(128));
+    Pose2d goal = new Pose2d(1.69, 3.95, Rotation2d.fromDegrees(140.4));
 
     addCommands(
       new ParallelCommandGroup(
