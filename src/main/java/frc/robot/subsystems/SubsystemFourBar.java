@@ -50,14 +50,21 @@ public class SubsystemFourBar extends SubsystemBase {
 
 
   // :> Creates the enum type to be able to pass in a setpoint from a command
-  public enum setPoints{
-    fourBarNotDeployedPosition (fourBarUndeployedSetPoint),// rename please? :point_right: :point_left: :pleading:
+  public enum SetPoints{
+    fourBarNotDeployedPosition (fourBarUndeployedSetPoint, -0.02),// rename please? :point_right: :point_left: :pleading:
     fourBarHalfDeployedPosition (fourBarHalfDeployedSetPoint), // Done, *blushes*
-    fourBarFullyDeployedPosition (fourBarFullyDeployedSetPoint);
+    fourBarFullyDeployedPosition (fourBarFullyDeployedSetPoint, 0.02);
 
     public final double angle;
-    setPoints(double angle) {
+    public final double pushOffset;
+
+    SetPoints(double angle, double pushOffset) {
       this.angle = angle;
+      this.pushOffset = pushOffset;
+    }
+
+    SetPoints(double angle) {
+      this(angle, 0);
     }
   }
   
@@ -171,15 +178,15 @@ public class SubsystemFourBar extends SubsystemBase {
     * @param position
     * @author :>
     */
-    public void setFourBarPositionReference(setPoints position) {
-      m_fourBarPID.setReference(position.angle, ControlType.kPosition);
+    public void setFourBarPositionReference(SetPoints position) {
+      m_fourBarPID.setReference(position.angle + position.pushOffset, ControlType.kPosition);
     }
     /**
     * Gets whether the fourBar is at the setPoint
     * @param position
     * @author ss
     */
-    public boolean getFourBarAtSetPoint(setPoints position) {
+    public boolean getFourBarAtSetPoint(SetPoints position) {
       return Math.abs(position.angle - getFourBarMotorPosition()) < allowableDifference;
     }
     

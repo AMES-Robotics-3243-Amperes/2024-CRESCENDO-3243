@@ -45,7 +45,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new CommandSwerveDriveToSetpoint(drivetrain, () -> position.getPose()),
-        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition),
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandOuttakeUntilNotSensed(intake)
       ),

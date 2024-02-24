@@ -6,7 +6,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.JoyUtil;
-import frc.robot.subsystems.SubsystemFourBar.setPoints;
+import frc.robot.subsystems.SubsystemFourBar.SetPoints;
 import frc.robot.subsystems.SubsystemFourBar;
 
 public class CommandFourBarTeleop extends Command {
@@ -32,13 +32,13 @@ public class CommandFourBarTeleop extends Command {
     // :> Checks which setpoint the driver wants to input
     // :> Note do not press multiple of these at the same time :(
       if (m_Controller.getPOVLeft()) {
-        m_Subsystem.setFourBarPositionReference(setPoints.fourBarNotDeployedPosition);
+        m_Subsystem.setFourBarPositionReference(SetPoints.fourBarNotDeployedPosition);
       }
       if (m_Controller.getPOVDown()) {
-        m_Subsystem.setFourBarPositionReference(setPoints.fourBarHalfDeployedPosition);
+        m_Subsystem.setFourBarPositionReference(SetPoints.fourBarHalfDeployedPosition);
       }
       if (m_Controller.getPOVRight()) {
-        m_Subsystem.setFourBarPositionReference(setPoints.fourBarFullyDeployedPosition);
+        m_Subsystem.setFourBarPositionReference(SetPoints.fourBarFullyDeployedPosition);
       }
   }
 

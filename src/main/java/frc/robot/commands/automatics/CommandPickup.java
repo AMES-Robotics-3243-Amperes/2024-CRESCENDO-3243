@@ -22,10 +22,10 @@ public class CommandPickup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
         new CommandIntakeUntilSensed(intake)
       ),
-      new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition)
+      new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarNotDeployedPosition)
     );
   }
 }
