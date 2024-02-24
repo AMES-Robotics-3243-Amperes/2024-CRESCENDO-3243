@@ -176,7 +176,7 @@ public class RobotContainer {
       new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, Constants.FieldConstants.rightBlueWingNote),
       new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
       new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote2),
-      new CommandScoreInSpeaker1(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar),
+      new CommandScoreInSpeaker1(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar)
     );
   }
 }
