@@ -240,7 +240,7 @@ public final class Constants {
       // :3 pidf values / min and max outputs
       public static final class PIDF {
 
-        public static final double kDrivingP = 0.07;
+        public static final double kDrivingP = 0.2;
         public static final double kDrivingI = 0;
         public static final double kDrivingD = 0;
         public static final double kDrivingFF = 0;
@@ -368,7 +368,7 @@ public final class Constants {
       // :3 auto-movement configuration
       public static final class AutoConstants {
         // :3 wiggle room for setpoint driving
-        public static final double kMaxSetpointDistance = 0.06;
+        public static final double kMaxSetpointDistance = 0.1;
         public static final double kMaxSetpointRotationError = 0.1;
 
         // :3 turning stuff
@@ -389,7 +389,7 @@ public final class Constants {
 
         public static final double kSetpointP = 10;
         public static final double kSetpointI = 0.01;
-        public static final double kSetpointD = 0.1;
+        public static final double kSetpointD = 1;
 
         public static final TrajectoryConfig kTrajectoryConfig =
           new TrajectoryConfig(kMaxDrivingVelocity, kMaxDrivingAcceleration);

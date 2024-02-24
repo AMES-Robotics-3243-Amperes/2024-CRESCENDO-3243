@@ -107,13 +107,24 @@ public class CommandSwerveDriveToSetpoint extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    Pose2d currentRobotPose = poseAngleModulus(DataManager.currentRobotPose.get().toPose2d());
+    Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
     boolean positionCorrect =
       currentRobotPose.getTranslation().getDistance(currentGoal.get().getTranslation()) < AutoConstants.kMaxSetpointDistance;
-    boolean rotationCorrect =
-      Math.abs(currentRobotPose.getRotation().getRadians() - currentGoal.get().getRotation().getRadians()) < AutoConstants.kMaxSetpointRotationError;
 
-    return positionCorrect && rotationCorrect;
+    return positionCorrect && getRotationCorrect();
+  }
+
+  /**
+   * Helper function for getting if rotation is correct
+   * 
+   * @author :3
+   */
+  private boolean getRotationCorrect() {
+    double currentRotationRadians = poseAngleModulus(DataManager.currentRobotPose.get().toPose2d()).getRotation().getRadians();
+    double goalRotationRadians = goal.get().getRotation().getRadians();
+    return MathUtil.isNear(currentRotationRadians, goalRotationRadians, AutoConstants.kMaxSetpointRotationError)
+      || MathUtil.isNear(currentRotationRadians, goalRotationRadians + (Math.PI * 2), AutoConstants.kMaxSetpointRotationError)
+      || MathUtil.isNear(currentRotationRadians, goalRotationRadians, AutoConstants.kMaxSetpointRotationError + (Math.PI * 2));
   }
 
   /** Helper function that performs angle modulus on a Pose2d;
