@@ -45,7 +45,7 @@ public class CommandScoreInSpeakerRight extends SequentialCommandGroup {
         new CommandSwerveDriveToSetpoint(drivetrain,
           () -> DriverStation.getAlliance().get() == Alliance.Red ? SpeakerPosition.ampside.getPose() : SpeakerPosition.sourceside.getPose()
         ),
-        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition),
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandOuttakeUntilNotSensed(intake)
       ),

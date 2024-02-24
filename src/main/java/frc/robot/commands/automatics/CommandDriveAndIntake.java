@@ -25,7 +25,7 @@ public class CommandDriveAndIntake extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+      new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
       new ParallelCommandGroup(
         new CommandIntakeRunForTime(intake, 1.1),
         new CommandSwerveDriveToSetpoint(drivetrain, goal)

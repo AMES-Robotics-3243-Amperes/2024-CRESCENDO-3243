@@ -1,15 +1,15 @@
 package frc.robot.commands.intake;
 import frc.robot.subsystems.SubsystemFourBar;
-import frc.robot.subsystems.SubsystemFourBar.setPoints;
+import frc.robot.subsystems.SubsystemFourBar.SetPoints;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
 public class CommandFourBarMoveFourBar extends Command {
   // :> Worth noting the entire point of this command is to be used by another command to set the FourBar to a setpoint
   protected final SubsystemFourBar m_Subsystem;
-  protected final setPoints m_SetPoint;
+  protected final SetPoints m_SetPoint;
 
-  public CommandFourBarMoveFourBar(SubsystemFourBar fourBar, setPoints setPoint) {
+  public CommandFourBarMoveFourBar(SubsystemFourBar fourBar, SetPoints setPoint) {
     m_Subsystem = fourBar;
     m_SetPoint = setPoint;
     addRequirements(fourBar);

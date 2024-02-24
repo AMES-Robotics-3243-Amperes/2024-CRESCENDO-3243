@@ -39,7 +39,7 @@ public class CommandScoreInAmp extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup(
         new CommandSwerveDriveToSetpoint(drivetrain, target),
-        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition),
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpAmp(shooter),
         new CommandOuttakeUntilNotSensed(intake)
       ),

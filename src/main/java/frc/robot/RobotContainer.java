@@ -19,11 +19,13 @@ import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
 import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandFourBarTeleop;
 import frc.robot.commands.intake.CommandIntakeTeleop;
+import frc.robot.commands.shooter.CommandShooterStopInstant;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
 import frc.robot.commands.shooter.CommandShooterTeleopSpeaker;
 import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
+import frc.robot.subsystems.SubsystemFourBar.SetPoints;
 import frc.robot.utility.SpeakerPosition;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemClimber;
@@ -123,11 +125,18 @@ public class RobotContainer {
     // && toggle speaker shooting
     secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
     secondaryController.rightBumper().whileTrue(new CommandPickup(m_subsystemIntake, m_SubsystemFourBar));
+
+    secondaryController.rightBumper().onFalse(new CommandFourBarMoveFourBar(m_SubsystemFourBar, SetPoints.fourBarNotDeployedPosition));
+
     primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
     
     primaryController.b().whileTrue(new CommandScoreInSpeakerRight(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
     primaryController.y().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center));
     primaryController.x().whileTrue(new CommandScoreInSpeakerLeft(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+
+    primaryController.b().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
+    primaryController.y().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
+    primaryController.x().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
@@ -175,19 +184,19 @@ public class RobotContainer {
       new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
       
       new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
       new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote),
       
       new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside),
 
       new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(1)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
       new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.middleBlueWingNote),
 
       new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
 
       new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
       new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, Constants.FieldConstants.leftBlueWingNote),
       new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftBlueWingNote),
 

@@ -50,7 +50,7 @@ public class CommandPickupFieldNote extends SequentialCommandGroup {
         drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
           start, between, new Pose2d(target.getTranslation(), overNoteDirection)
         ), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)),
-        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition)
+        new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition)
       ),
       new CommandIntakeUntilSensed(intake),
       drivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(Arrays.asList(
