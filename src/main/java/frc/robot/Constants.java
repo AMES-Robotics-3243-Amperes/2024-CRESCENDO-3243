@@ -46,21 +46,21 @@ public final class Constants {
 
     public static double fieldHeight = 8.02;
     public static double fieldWidth = 16.54;
-    // :> I don't know why he did it this way but heres an artificial constant that I'm extracting off of
+    // H! meters per hundered inches
     public static double merrickFieldConstant = (2.5399986284);
 
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
-    public static Pose2d leftRedWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (2 * (.57 * merrickFieldConstant))), new Rotation2d(0));
-    public static Pose2d middleRedWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (.57 * merrickFieldConstant)), new Rotation2d(0));
-    public static Pose2d rightRedWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), (fieldHeight / 2), new Rotation2d(0));
+    public static Pose2d leftRedWingNote = new Pose2d(fieldWidth - 2.8956, 1.2101, new Rotation2d(0));
+    public static Pose2d middleRedWingNote = new Pose2d(fieldWidth - 2.8956, 2.6579, new Rotation2d(0));
+    public static Pose2d rightRedWingNote = new Pose2d(fieldWidth - 2.8956, 4.1057, new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote = new Pose2d((1.14 * merrickFieldConstant)-1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
-    public static Pose2d middleBlueWingNote = new Pose2d((1.14 * merrickFieldConstant)-1, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
-    public static Pose2d rightBlueWingNote = new Pose2d((1.14 * merrickFieldConstant)-1, ((fieldHeight/2) - .25), new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote = new Pose2d(2.8956, 4.1057, new Rotation2d(Math.PI));
+    public static Pose2d middleBlueWingNote = new Pose2d(2.8956, 2.6579, new Rotation2d(Math.PI));
+    public static Pose2d rightBlueWingNote = new Pose2d(2.8956, 1.2101, new Rotation2d(Math.PI));
     
-    public static Pose2d leftBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
-    public static Pose2d middleBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
-    public static Pose2d rightBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2) - .25), new Rotation2d(Math.PI));
+    // public static Pose2d leftBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
+    // public static Pose2d middleBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
+    // public static Pose2d rightBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2) - .25), new Rotation2d(Math.PI));
 
     // :> Going from left to right
     public static Pose2d middleFieldNote1 = new Pose2d((fieldWidth/2), (.2964*merrickFieldConstant), new Rotation2d(0));

@@ -6,6 +6,8 @@ package frc.robot.commands.automatics;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
@@ -18,13 +20,14 @@ import frc.robot.subsystems.SubsystemFourBar;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
+import frc.robot.utility.SpeakerPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CommandScoreInSpeaker1 extends SequentialCommandGroup {
+public class CommandScoreInSpeakerRight extends SequentialCommandGroup {
   /** Creates a new CommandScoreInSpeaker1. */
-  public CommandScoreInSpeaker1(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemFourBar fourBar) {
+  public CommandScoreInSpeakerRight(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemFourBar fourBar) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     //Translation2d speakerLocation = DataManager.FieldPoses.getSpeakerPosition().getTranslation();
@@ -35,11 +38,13 @@ public class CommandScoreInSpeaker1 extends SequentialCommandGroup {
     //Pose2d launchPose = new Pose2d(launchLocation, new Rotation2d(-speakerToRobotDirection.getX(), -speakerToRobotDirection.getY()));
     // There're negatives to switch the direction, so it's robot to speaker instead of speaker to robot direction.
 
-    Pose2d goal = new Pose2d(1.69, 3.95, Rotation2d.fromDegrees(140.4));
+    // Pose2d goal = new Pose2d(1.69, 3.95, Rotation2d.fromDegrees(140.4));
 
     addCommands(
       new ParallelCommandGroup(
-        new CommandSwerveDriveToSetpoint(drivetrain, goal),
+        new CommandSwerveDriveToSetpoint(drivetrain,
+          () -> DriverStation.getAlliance().get() == Alliance.Red ? SpeakerPosition.ampside.getPose() : SpeakerPosition.sourceside.getPose()
+        ),
         new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition),
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandOuttakeUntilNotSensed(intake)
