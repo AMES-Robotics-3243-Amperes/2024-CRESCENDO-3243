@@ -98,6 +98,6 @@ public class CommandSwerveDriveToSetpoint extends Command {
   @Override
   public boolean isFinished() {
     // TODO: constant the wiggle room :3
-    return DataManager.currentRobotPose.get().toPose2d().getTranslation().getDistance(goal.getTranslation()) < 0.05;
+    return DataManager.currentRobotPose.get().toPose2d().getTranslation().getDistance(goal.getTranslation()) < 0.03;
   }
 }

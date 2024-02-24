@@ -6,14 +6,20 @@ package frc.robot;
 
 import frc.robot.Constants.JoyUtilConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.AutoConstants;
+import frc.robot.commands.automatics.CommandDriveAndIntake;
 import frc.robot.commands.automatics.CommandPickup;
 import frc.robot.commands.automatics.CommandPickupFieldNote;
 import frc.robot.commands.automatics.CommandScoreInAmp;
-import frc.robot.commands.automatics.CommandScoreInSpeaker;
+import frc.robot.commands.automatics.CommandScoreInSpeaker1;
+import frc.robot.commands.automatics.CommandScoreInSpeaker2;
+import frc.robot.commands.automatics.CommandScoreInSpeaker3;
 import frc.robot.commands.climber.CommandClimberTeleop;
+import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
 import frc.robot.commands.drivetrain.CommandSwerveTeleopDrive;
+import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandFourBarTeleop;
 import frc.robot.commands.intake.CommandIntakeTeleop;
+import frc.robot.commands.intake.CommandIntakeToggle;
 import frc.robot.commands.shooter.CommandShooterTeleopAmp;
 import frc.robot.commands.shooter.CommandShooterTeleopSpeaker;
 import frc.robot.subsystems.SubsystemPhotonvision;
@@ -118,9 +124,10 @@ public class RobotContainer {
     secondaryController.y().toggleOnTrue(m_CommandShooterTeleopSpeaker);
     secondaryController.rightBumper().whileTrue(new CommandPickup(m_subsystemIntake, m_SubsystemFourBar));
     primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
-    primaryController.b().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
-
-    primaryController.x().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+    
+    primaryController.b().whileTrue(new CommandScoreInSpeaker1(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+    primaryController.y().whileTrue(new CommandScoreInSpeaker3(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+    primaryController.x().whileTrue(new CommandScoreInSpeaker2(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
     //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
@@ -165,10 +172,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, 0),
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar),
-      new CommandPickupFieldNote(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar,1),
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar)
+      new CommandScoreInSpeaker2(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar),
+      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, Constants.FieldConstants.rightBlueWingNote),
+      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.setPoints.fourBarFullyDeployedPosition),
+      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote2),
+      new CommandScoreInSpeaker1(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar),
     );
   }
 }

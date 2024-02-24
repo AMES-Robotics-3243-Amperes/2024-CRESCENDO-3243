@@ -30,7 +30,7 @@ public final class Constants {
    * Constants pertaining to physical parameters of the robot.
    */
   public static final class RobotConstants {
-    public static final double speakerRange = Units.inchesToMeters(72);// Inexact number, measurement is needed
+    public static final double speakerRange = Units.inchesToMeters(100);// Inexact number, measurement is needed
     public static final double frameWidth = Units.inchesToMeters(26);
   }
 
@@ -50,13 +50,17 @@ public final class Constants {
     public static double merrickFieldConstant = (2.5399986284);
 
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
-    public static Pose2d leftBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (2 * (.57 * merrickFieldConstant))), new Rotation2d(9));
-    public static Pose2d middleBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (.57 * merrickFieldConstant)), new Rotation2d(0));
-    public static Pose2d rightBlueWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), (fieldHeight / 2), new Rotation2d(0));
+    public static Pose2d leftRedWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (2 * (.57 * merrickFieldConstant))), new Rotation2d(0));
+    public static Pose2d middleRedWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), ((fieldHeight / 2) - (.57 * merrickFieldConstant)), new Rotation2d(0));
+    public static Pose2d rightRedWingNote = new Pose2d(((fieldWidth)- (1.14 * merrickFieldConstant)), (fieldHeight / 2), new Rotation2d(0));
     
-    public static Pose2d leftRedWingNote = new Pose2d((1.14 * merrickFieldConstant), ((fieldHeight/2)-(2*(.57 * merrickFieldConstant))), new Rotation2d(0));
-    public static Pose2d middleRedWingNote = new Pose2d((1.14 * merrickFieldConstant), ((fieldHeight/2)-(.57 * merrickFieldConstant)), new Rotation2d(1));
-    public static Pose2d rightRedWingNote = new Pose2d((1.14 * merrickFieldConstant), ((fieldHeight/2)), new Rotation2d(0));
+    public static Pose2d leftBlueWingNote = new Pose2d((1.14 * merrickFieldConstant)-1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
+    public static Pose2d middleBlueWingNote = new Pose2d((1.14 * merrickFieldConstant)-1, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
+    public static Pose2d rightBlueWingNote = new Pose2d((1.14 * merrickFieldConstant)-1, ((fieldHeight/2) - .25), new Rotation2d(Math.PI));
+    
+    public static Pose2d leftBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
+    public static Pose2d middleBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
+    public static Pose2d rightBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2) - .25), new Rotation2d(Math.PI));
 
     // :> Going from left to right
     public static Pose2d middleFieldNote1 = new Pose2d((fieldWidth/2), (.2964*merrickFieldConstant), new Rotation2d(0));
@@ -108,7 +112,7 @@ public final class Constants {
     public static final double fourBarFullyDeployedSetPoint = 0.284;
 
     // H! the bounds for the getFourBarAtPosition() function as a difference
-    public static final double allowableDifference = 0.1;
+    public static final double allowableDifference = 0.05;
     // ss intake velocity (negative to intake)
     public static final double intakeFV = -1;
     public static final double intakeBV = .2;
@@ -236,7 +240,7 @@ public final class Constants {
       // :3 pidf values / min and max outputs
       public static final class PIDF {
 
-        public static final double kDrivingP = 0.1;
+        public static final double kDrivingP = 0.07;
         public static final double kDrivingI = 0;
         public static final double kDrivingD = 0;
         public static final double kDrivingFF = 0;
@@ -292,7 +296,7 @@ public final class Constants {
 
       // :> This entire next section is utilized by PowerManager to manage the robots speed/acceleration
       // :3 speed damper (flat constant supplied speed is multiplied by)
-      public static final double kDrivingSpeedDamper = 2.5; // :3 meters per second
+      public static final double kDrivingSpeedDamper = 5.5; // :3 meters per second
       public static final double kSlowDrivingSpeedDamper = 0.8;
 
       // :> Speed Damper for the rotation of the robot
@@ -309,7 +313,7 @@ public final class Constants {
         * PowerManager uses these constants to control how much power the robot is drawing
       */
       public static final double kMaxRotationAcceleration = 3 * Math.PI; // (radians)
-      public static final double kMaxDrivingAcceleration = 12;
+      public static final double kMaxDrivingAcceleration = 13;
 
       // :3 if the gyro is reversed
       public static final boolean kGyroReversed = false;
@@ -438,7 +442,7 @@ public final class Constants {
     // && The target speeds for the speaker and the amp (range will be based on these)
     // && todo: put in actual, reasonable numbers for all of the things below
     // H! the above should be done, but the numbers are currently untested
-    public static final double ampShootSpeed = 450;
+    public static final double ampShootSpeed = 630;
     public static final double speakerShootSpeed = 5000;
     public static final double stopShootSpeed = 0.0;
     

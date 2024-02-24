@@ -6,15 +6,16 @@ package frc.robot.commands.automatics;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.DataManager;
 import frc.robot.commands.drivetrain.CommandSwerveDriveToSetpoint;
 import frc.robot.commands.intake.CommandFourBarMoveFourBar;
 import frc.robot.commands.intake.CommandIntakeRunForTime;
 import frc.robot.commands.intake.CommandOuttakeUntilNotSensed;
-import frc.robot.commands.shooter.CommandShooterSpinUpAmp;
+import frc.robot.commands.shooter.CommandShooterSpinUpSpeaker;
 import frc.robot.commands.shooter.CommandShooterStopInstant;
 import frc.robot.subsystems.SubsystemFourBar;
 import frc.robot.subsystems.SubsystemIntake;
@@ -29,18 +30,27 @@ import frc.robot.subsystems.SubsystemSwerveDrivetrain;
  * 
  * @author H!
  */
-public class CommandScoreInAmp extends SequentialCommandGroup {
-  /** Creates a new CommandScoreInSpeaker. */
-  public CommandScoreInAmp(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemFourBar fourBar) {
+// :> This one is the original command we used to try and align and score in speaker
+public class CommandScoreInSpeaker2 extends SequentialCommandGroup {
+
+  public CommandScoreInSpeaker2(SubsystemSwerveDrivetrain drivetrain, SubsystemIntake intake, SubsystemShooter shooter, SubsystemFourBar fourBar) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Pose2d target = DataManager.FieldPoses.getAmpPosition().transformBy(new Transform2d( -.66, 0, new Rotation2d()));
+    Translation2d speakerLocation = DataManager.FieldPoses.getSpeakerPosition().getTranslation();
+    Translation2d robotLocation = DataManager.currentRobotPose.get().toPose2d().getTranslation();
+    /** Unit vector repersenting the direction from the speaker's center to the current robot position. Will break if the robot is somehow exactly on the speaker. */
+    Translation2d speakerToRobotDirection = robotLocation.minus(speakerLocation).div(robotLocation.minus(speakerLocation).getNorm());
+    Translation2d launchLocation = speakerLocation.plus(speakerToRobotDirection.times(Constants.RobotConstants.speakerRange));
+    Pose2d launchPose = new Pose2d(launchLocation, new Rotation2d(-speakerToRobotDirection.getX(), -speakerToRobotDirection.getY()));
+    // There're negatives to switch the direction, so it's robot to speaker instead of speaker to robot direction.
+
+    Pose2d goal = new Pose2d(2.22, 5.1, Rotation2d.fromDegrees(180));
 
     addCommands(
       new ParallelCommandGroup(
-        new CommandSwerveDriveToSetpoint(drivetrain, target),
+        new CommandSwerveDriveToSetpoint(drivetrain, goal),
         new CommandFourBarMoveFourBar(fourBar, SubsystemFourBar.setPoints.fourBarNotDeployedPosition),
-        new CommandShooterSpinUpAmp(shooter),
+        new CommandShooterSpinUpSpeaker(shooter),
         new CommandOuttakeUntilNotSensed(intake)
       ),
       new CommandIntakeRunForTime(intake, 0.5),
