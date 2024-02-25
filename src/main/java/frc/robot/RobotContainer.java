@@ -134,6 +134,7 @@ public class RobotContainer {
     primaryController.y().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center));
     primaryController.x().whileTrue(new CommandScoreInSpeakerLeft(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
 
+    primaryController.a().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.b().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.y().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.x().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
