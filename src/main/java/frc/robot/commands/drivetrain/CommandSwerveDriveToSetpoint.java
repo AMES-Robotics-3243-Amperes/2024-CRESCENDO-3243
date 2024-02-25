@@ -97,7 +97,12 @@ public class CommandSwerveDriveToSetpoint extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // TODO: constant the wiggle room :3
-    return DataManager.currentRobotPose.get().toPose2d().getTranslation().getDistance(goal.getTranslation()) < 0.03;
+    Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
+    boolean positionCorrect =
+      currentRobotPose.getTranslation().getDistance(goal.getTranslation()) < AutoConstants.kMaxSetpointDistance;
+    boolean rotationCorrect =
+      Math.abs(currentRobotPose.getRotation().getRadians() - goal.getRotation().getRadians()) < AutoConstants.kMaxSetpointRotationError;
+
+    return positionCorrect && rotationCorrect;
   }
 }

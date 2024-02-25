@@ -367,6 +367,10 @@ public final class Constants {
 
       // :3 auto-movement configuration
       public static final class AutoConstants {
+        // :3 wiggle room for setpoint driving
+        public static final double kMaxSetpointDistance = 0.03;
+        public static final double kMaxSetpointRotationError = 0.1;
+
         // :3 turning stuff
         public static final double kMaxAngularVelocityRadians = 3;
         public static final double kMaxAngularAccelerationRadians = 5;

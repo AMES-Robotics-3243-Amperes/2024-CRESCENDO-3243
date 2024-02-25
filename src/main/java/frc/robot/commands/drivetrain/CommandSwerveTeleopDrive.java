@@ -25,11 +25,12 @@ public class CommandSwerveTeleopDrive extends Command {
   // :3 teleop driving should be reversed depending on field side
   private boolean reverse = false;
 
-  // :3 if the current toggle field relativity button has been pressed yet
-  private boolean hasHandledFieldRelativeToggle = false;
-
   // :3 if driving is field relative
   private boolean fieldRelative = true;
+
+  // :3 if the presses to toggle things have been handled yet
+  private boolean hasHandledFieldRelativeToggle = false;
+  private boolean hasHandledPhotonVisionToggle = false;
 
   /**
    * Creates a new SwerveTeleopCommand.
@@ -49,11 +50,19 @@ public class CommandSwerveTeleopDrive extends Command {
   @Override
   public void execute() {
     // :3 handle field relativity
-    if (m_controller.getStart() && !hasHandledFieldRelativeToggle) {
+    if (m_controller.getBack() && !hasHandledFieldRelativeToggle) {
       fieldRelative = !fieldRelative;
       hasHandledFieldRelativeToggle = true;
-    } else if (!m_controller.getStart()) {
+    } else if (!m_controller.getBack()) {
       hasHandledFieldRelativeToggle = false;
+    }
+
+    // :3 handle photon vision
+    if (m_controller.getStart() && !hasHandledPhotonVisionToggle) {
+      DataManager.currentRobotPose.setPhotonVision(!DataManager.currentRobotPose.getPhotonVisionStatus());
+      hasHandledPhotonVisionToggle = true;
+    } else if (!m_controller.getStart()) {
+      hasHandledPhotonVisionToggle = false;
     }
 
     // :3 get x and y speeds
