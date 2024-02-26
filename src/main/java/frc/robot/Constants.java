@@ -410,7 +410,7 @@ public final class Constants {
 
     public static final String fieldLayoutPath = ""; // H! this isn't actually used; instead a built in file is used.
     public static final Pose3d cameraPosition =
-      new Pose3d(new Translation3d(RobotConstants.frameWidth/2. - Units.inchesToMeters(2.5), 0, Units.inchesToMeters(16.75)), new Rotation3d());
+      new Pose3d(new Translation3d(RobotConstants.frameWidth/2. - Units.inchesToMeters(2.75), 0, Units.inchesToMeters(15+13/16)), new Rotation3d(0, Math.PI/4, 0));
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
   }
 
