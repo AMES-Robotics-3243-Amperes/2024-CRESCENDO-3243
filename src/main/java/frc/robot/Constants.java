@@ -54,7 +54,7 @@ public final class Constants {
     public static Pose2d middleRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 5.6579, new Rotation2d(0));
     public static Pose2d rightRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 4.2457, new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote1 = new Pose2d(1.8956, 6.8, new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote1 = new Pose2d(1.8956, 7, new Rotation2d(Math.PI));
     public static Pose2d middleBlueWingNote1 = new Pose2d(1.8956, 5.688, new Rotation2d(Math.PI));
     public static Pose2d rightBlueWingNote1 = new Pose2d(1.8956, 4.24, new Rotation2d(Math.PI));
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
@@ -62,7 +62,7 @@ public final class Constants {
     public static Pose2d middleRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 5.6579, new Rotation2d(0));
     public static Pose2d rightRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 4.3, new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote2 = new Pose2d(3.1956, 6.8, new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote2 = new Pose2d(3.1956, 7, new Rotation2d(Math.PI));
     public static Pose2d middleBlueWingNote2 = new Pose2d(3.1956, 5.688, new Rotation2d(Math.PI));
     public static Pose2d rightBlueWingNote2 = new Pose2d(2.9956, 4.3, new Rotation2d(Math.PI));
     
@@ -256,7 +256,7 @@ public final class Constants {
         public static final double kDrivingMinOutput = -1;
         public static final double kDrivingMaxOutput = 1;
 
-        public static final double kTurningP = 0.3;
+        public static final double kTurningP = 0.5;
         public static final double kTurningI = 0;
         public static final double kTurningD = 0;
         public static final double kTurningFF = 0;
