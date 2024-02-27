@@ -85,8 +85,8 @@ public class SubsystemIntake extends SubsystemBaseTestable {
   public void doPeriodic() {
     // This method will be called once per scheduler run
 
-    intakePos.setDouble(m_IntakeRelativeEncoder.getPosition());
-    intakeVel.setDouble(m_IntakeRelativeEncoder.getVelocity());
+    //intakePos.setDouble(m_IntakeRelativeEncoder.getPosition());
+    //intakeVel.setDouble(m_IntakeRelativeEncoder.getVelocity());
 
     //intakePCurrent = intakeP.getDouble(IntakePIDs.kP);
     //intakeICurrent = intakeI.getDouble(IntakePIDs.kI);

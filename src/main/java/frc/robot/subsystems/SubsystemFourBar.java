@@ -109,13 +109,13 @@ public class SubsystemFourBar extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // && Widget for the tauron position on shuffleboard
-    SmartDashboard.putNumber("4BarRotations",m_fourBarAbsoluteEncoder.getPosition());
+    //SmartDashboard.putNumber("4BarRotations",m_fourBarAbsoluteEncoder.getPosition());
 
     // :> Sets the current state of the shuffleboard inputs
-    fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);
-    fourBarICurrentState = fourBarI.getDouble(FourBarPIDs.fourBarI);
-    fourBarDCurrentState = fourBarD.getDouble(FourBarPIDs.fourBarD);
-    fourBarFCurrentState = fourBarFF.getDouble(FourBarPIDs.fourBarFF);
+    //fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);
+    //fourBarICurrentState = fourBarI.getDouble(FourBarPIDs.fourBarI);
+    //fourBarDCurrentState = fourBarD.getDouble(FourBarPIDs.fourBarD);
+    //fourBarFCurrentState = fourBarFF.getDouble(FourBarPIDs.fourBarFF);
     
     // :> Bryce said this is the best way to do it theoretically, might be wrong. We'll find out ¯\_(ツ)_/¯
     /*
@@ -126,7 +126,7 @@ public class SubsystemFourBar extends SubsystemBase {
       m_fourBarAbsoluteEncoder.setZeroOffset(m_fourBarAbsoluteEncoder.getZeroOffset() + getFourBarMotorPosition());
     }
     */
-
+    /* 
     if (fourBarPPreviosuState != fourBarPCurrentState) {
       m_fourBarPID.setP(fourBarP.getDouble(FourBarPIDs.fourBarP));
     }
@@ -144,7 +144,7 @@ public class SubsystemFourBar extends SubsystemBase {
     fourBarIPreviosuState = fourBarICurrentState;
     fourBarDPreviosuState = fourBarDCurrentState;
     fourBarFPreviosuState = fourBarFCurrentState;
-
+    */
   }
   /**
     * Sets the PIDValues of the fourBar when called

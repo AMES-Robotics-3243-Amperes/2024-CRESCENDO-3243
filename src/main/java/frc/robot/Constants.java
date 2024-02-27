@@ -50,13 +50,21 @@ public final class Constants {
     public static double merrickFieldConstant = (2.5399986284);
 
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
-    public static Pose2d leftRedWingNote = new Pose2d(fieldWidth - 2.8956, 1.2101, new Rotation2d(0));
-    public static Pose2d middleRedWingNote = new Pose2d(fieldWidth - 2.8956, 2.6579, new Rotation2d(0));
-    public static Pose2d rightRedWingNote = new Pose2d(fieldWidth - 2.8956, 4.1057, new Rotation2d(0));
+    public static Pose2d leftRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 6.8101, new Rotation2d(0));
+    public static Pose2d middleRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 5.6579, new Rotation2d(0));
+    public static Pose2d rightRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 4.2457, new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote = new Pose2d(2.8956, 4.1057, new Rotation2d(Math.PI));
-    public static Pose2d middleBlueWingNote = new Pose2d(2.8956, 2.6579, new Rotation2d(Math.PI));
-    public static Pose2d rightBlueWingNote = new Pose2d(2.8956, 1.2101, new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote1 = new Pose2d(1.8956, 6.8, new Rotation2d(Math.PI));
+    public static Pose2d middleBlueWingNote1 = new Pose2d(1.8956, 5.688, new Rotation2d(Math.PI));
+    public static Pose2d rightBlueWingNote1 = new Pose2d(1.8956, 4.24, new Rotation2d(Math.PI));
+    // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
+    public static Pose2d leftRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 6.8101, new Rotation2d(0));
+    public static Pose2d middleRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 5.6579, new Rotation2d(0));
+    public static Pose2d rightRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 4.3, new Rotation2d(0));
+    
+    public static Pose2d leftBlueWingNote2 = new Pose2d(3.1956, 6.8, new Rotation2d(Math.PI));
+    public static Pose2d middleBlueWingNote2 = new Pose2d(3.1956, 5.688, new Rotation2d(Math.PI));
+    public static Pose2d rightBlueWingNote2 = new Pose2d(2.9956, 4.3, new Rotation2d(Math.PI));
     
     // public static Pose2d leftBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
     // public static Pose2d middleBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
@@ -83,16 +91,16 @@ public final class Constants {
     public static Pose2d redAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(Math.PI/2));
 
     public static Pose2d blueStagePosition1 = new Pose2d(4.481,  (fieldHeight-3.339), new Rotation2d(0));
-    public static Pose2d blueStagePosition2 = new Pose2d(4.553, (fieldHeight-4.937), new Rotation2d(0));
+    public static Pose2d blueStagePosition2 = new Pose2d(4.253, (fieldHeight-4.937), new Rotation2d(0));
     public static Pose2d blueStagePosition3 = new Pose2d(5.762, (fieldHeight-4.103), new Rotation2d(0));
 
 
     public static Pose2d redStagePosition1 = new Pose2d(12.16, (fieldHeight-3.339), new Rotation2d(0));
-    public static Pose2d redStagePosition2 = new Pose2d(12.065, (fieldHeight-4.937), new Rotation2d(0));
+    public static Pose2d redStagePosition2 = new Pose2d(12.265, (fieldHeight-4.937), new Rotation2d(0));
     public static Pose2d redStagePosition3 = new Pose2d(10.78, (fieldHeight-4.1), new Rotation2d(0));
 
-    public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote, middleBlueWingNote, rightBlueWingNote, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
-    public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote, middleRedWingNote, rightRedWingNote, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
+    public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote1, leftBlueWingNote2, middleBlueWingNote1, middleBlueWingNote2, rightBlueWingNote1, rightBlueWingNote2, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
+    public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote1, leftRedWingNote2, middleRedWingNote1, middleRedWingNote2, rightRedWingNote1, rightRedWingNote2, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
     public static Pose2d[] stageRedPositions = new Pose2d[]{redStagePosition1, redStagePosition2, redStagePosition3};  
     public static Pose2d[] stageBluePositions = new Pose2d[]{blueStagePosition1, blueStagePosition2, blueStagePosition3}; 
   }
@@ -114,7 +122,7 @@ public final class Constants {
     // H! the bounds for the getFourBarAtPosition() function as a difference
     public static final double allowableDifference = 0.05;
     // ss intake velocity (negative to intake)
-    public static final double intakeFV = -1;
+    public static final double intakeFV = -.9;
     public static final double intakeBV = .2;
     /*
     public static final class IntakePIDs {
@@ -240,7 +248,7 @@ public final class Constants {
       // :3 pidf values / min and max outputs
       public static final class PIDF {
 
-        public static final double kDrivingP = 0.2;
+        public static final double kDrivingP = 0.175;
         public static final double kDrivingI = 0;
         public static final double kDrivingD = 0;
         public static final double kDrivingFF = 0;
@@ -388,9 +396,9 @@ public final class Constants {
         public static final double kTrajectoryI = 0.0;
         public static final double kTrajectoryD = 0.01;
 
-        public static final double kSetpointP = 8;
-        public static final double kSetpointI = 0.01;
-        public static final double kSetpointD = 1;
+        public static final double kSetpointP = 5;
+        public static final double kSetpointI = 0.005;
+        public static final double kSetpointD = 1.1;
 
         public static final TrajectoryConfig kTrajectoryConfig =
           new TrajectoryConfig(kMaxDrivingVelocity, kMaxDrivingAcceleration);
@@ -453,7 +461,7 @@ public final class Constants {
     
     // && The range of shooter speeds that are "acceptable" on either side of the target speed 
     public static final double ampSpeedRange = 30;
-    public static final double speakerSpeedRange = 150;
+    public static final double speakerSpeedRange = 250;
     public static final double stopSpeedRange = 1;
   }
 

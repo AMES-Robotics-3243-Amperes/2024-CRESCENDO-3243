@@ -49,7 +49,7 @@ public class CommandScoreInSpeaker extends SequentialCommandGroup {
         new CommandShooterSpinUpSpeaker(shooter),
         new CommandOuttakeUntilNotSensed(intake)
       ),
-      new CommandIntakeRunForTime(intake, 0.5),
+      new CommandIntakeRunForTime(intake, 0.45),
       new CommandShooterStopInstant(shooter)
     );
   }

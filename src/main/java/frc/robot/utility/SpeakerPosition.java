@@ -14,7 +14,7 @@ public enum SpeakerPosition {
     ),
     center(
       new Pose2d(Constants.FieldConstants.fieldWidth - 2.22, 5.1, Rotation2d.fromDegrees(0)),
-      new Pose2d(2.2, 5.1 + Units.inchesToMeters(22.25), Rotation2d.fromDegrees(180))
+      new Pose2d(2, 5.1 + Units.inchesToMeters(22.25), Rotation2d.fromDegrees(180))
     ),
     sourceside(
       new Pose2d(Constants.FieldConstants.fieldWidth - 1.69, 3.95 + Units.inchesToMeters(22.25), Rotation2d.fromDegrees((-(140.4-180)))),
