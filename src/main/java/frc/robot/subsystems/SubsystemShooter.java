@@ -9,6 +9,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SubsystemShooter extends SubsystemBase {
@@ -68,5 +69,8 @@ public class SubsystemShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    // && Widget for shooter flywheel speed in shuffleboard
+    SmartDashboard.putNumber("ShooterSpeed", getFlywheelSpeed());
   }
 }

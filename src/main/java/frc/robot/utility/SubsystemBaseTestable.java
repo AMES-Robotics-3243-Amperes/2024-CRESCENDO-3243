@@ -24,16 +24,6 @@ public abstract class SubsystemBaseTestable extends SubsystemBase implements Tes
     @Override
     public final void periodic() {
 
-        if (Robot.managerFirst == null) {
-            SmartDashboard.putBoolean("managerFirstNull", true);
-        } else {
-            SmartDashboard.putBoolean("managerFirstNull", false);
-            SmartDashboard.putBoolean("mangerFirst", Robot.managerFirst);
-        }
-        
-        
-        SmartDashboard.putBoolean("IsInTestMode", DriverStation.isTest());
-        SmartDashboard.putBoolean("IsEnabled", DriverStation.isTestEnabled());
         if (DriverStation.isTest() && DriverStation.isEnabled()) {
             if (Robot.managerFirst == null) {
                 Robot.managerFirst = false;

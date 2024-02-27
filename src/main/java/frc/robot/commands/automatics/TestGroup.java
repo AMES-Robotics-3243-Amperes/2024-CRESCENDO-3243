@@ -31,8 +31,6 @@ public class TestGroup extends SequentialCommandGroup {
         new Pose2d(4, 4, new Rotation2d(0)), 
         Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig);
 
-    SmartDashboard.putNumber("somethingX", trajectory.getInitialPose().getX());
-    SmartDashboard.putNumber("somethingY", trajectory.getInitialPose().getY());
     addCommands(
       drivetrain.createTrajectoryFollowCommand(trajectory)
     );

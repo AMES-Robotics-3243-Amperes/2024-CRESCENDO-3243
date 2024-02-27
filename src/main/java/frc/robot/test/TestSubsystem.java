@@ -33,7 +33,6 @@ public class TestSubsystem extends SubsystemBaseTestable {
       timer++;
       a++;
       assert a == timer;
-      SmartDashboard.putBoolean("testPhase", isTesting);
     }
 
     @Override

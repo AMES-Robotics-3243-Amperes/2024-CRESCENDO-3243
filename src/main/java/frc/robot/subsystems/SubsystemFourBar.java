@@ -18,6 +18,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants.FourBarPIDs;
@@ -70,7 +71,6 @@ public class SubsystemFourBar extends SubsystemBase {
   
   
   // :> Creates Shuffleboard tab to be able to put stuff on it relating to fourBar
-  protected ShuffleboardTab tab = Shuffleboard.getTab("fourBar Tuning");
   /** Creates a new SubsystemFourBar. */
   public SubsystemFourBar() {
 
@@ -98,10 +98,6 @@ public class SubsystemFourBar extends SubsystemBase {
     // :> Shuffleboard PID Tuning
     //
    
-    fourBarP = tab.add("FRBR P Value:", FourBarPIDs.fourBarP).getEntry();
-    fourBarI = tab.add("FRBR I Value:", FourBarPIDs.fourBarI).getEntry();
-    fourBarD = tab.add("FRBR D Value:", FourBarPIDs.fourBarD).getEntry();
-    fourBarFF = tab.add("FRBR FF Value:", FourBarPIDs.fourBarFF).getEntry();
 
     /* :> Sets the idlemode to break, 
       *   the reason why we do this is to make it so when the fourBar stops getting input it doesn't flail about
@@ -112,6 +108,8 @@ public class SubsystemFourBar extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // && Widget for the tauron position on shuffleboard
+    SmartDashboard.putNumber("4BarRotations",m_fourBarAbsoluteEncoder.getPosition());
 
     // :> Sets the current state of the shuffleboard inputs
     fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);

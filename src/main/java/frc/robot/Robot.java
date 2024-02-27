@@ -51,11 +51,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     DataManager.periodic();
-    SmartDashboard.putData(CommandScheduler.getInstance());
     Pose2d robotPose = DataManager.currentRobotPose.get().toPose2d();
-    SmartDashboard.putNumber("RobotX", robotPose.getX());
-    SmartDashboard.putNumber("RobotY", robotPose.getY());
-    SmartDashboard.putNumber("RobotRotations", robotPose.getRotation().getRotations());
+   
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

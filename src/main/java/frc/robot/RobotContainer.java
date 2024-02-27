@@ -138,7 +138,6 @@ public class RobotContainer {
     primaryController.b().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.y().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.x().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
-    //SmartDashboard.putNumber("xposLambda", DataManager.currentRobotPose.get().toPose2d().getTranslation().getX());
     //m_SubsystemSwerveDrivetrain.createTrajectoryFollowCommand(TrajectoryGenerator.generateTrajectory(DataManager.currentRobotPose.get().toPose2d(), blah, new Pose2d(2.5, 2.5, new Rotation2d(0)), Constants.DriveTrain.DriveConstants.AutoConstants.kTrajectoryConfig)).schedule();
   }
 
@@ -146,7 +145,6 @@ public class RobotContainer {
     @Override
     public void execute() {
       Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
-      SmartDashboard.putNumber("xposLambda", currentRobotPose.getTranslation().getX());
       Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
         DataManager.currentRobotPose.get().toPose2d(), 
         new ArrayList<>(), 

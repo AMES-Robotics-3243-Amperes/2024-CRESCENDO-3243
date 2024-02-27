@@ -54,10 +54,6 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     Outaking
   }
 
-  // :> Creates the enum type to be able to pass in a setpoint from a command
-  
-  // :> Creates Shuffleboard tab to be able to put stuff on it relating to Intake
-  protected ShuffleboardTab tab = Shuffleboard.getTab("Intake Tuning");
 
 
   /** Creates a new SubsystemIntake. */
@@ -81,10 +77,6 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     //intakeI = tab.add("intake I Value:", IntakePIDs.kI).getEntry();
     //intakeD = tab.add("intake D Value:", IntakePIDs.kD).getEntry();
     //intakeFF = tab.add("intake FF Value:", IntakePIDs.kFF).getEntry();
-
-    intakePos = tab.add("Intake Position:", m_IntakeRelativeEncoder.getPosition()).getEntry();
-    intakeVel = tab.add("Intake Velocity:", m_IntakeRelativeEncoder.getVelocity()).getEntry();
-
     
 
   }
