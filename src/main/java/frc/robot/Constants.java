@@ -147,8 +147,8 @@ public final class Constants {
     public static final double kDeadzone = 0.12;
 
     // :3 max amount controller output can change per second
-    public static final double kRateLimitLeft = 20;
-    public static final double kRateLimitRight = 20;
+    public static final double kRateLimitLeft = 4.5;
+    public static final double kRateLimitRight = 4.5;
 
     // :3 curve stuff
     public static final int exponent1 = 1;
@@ -231,7 +231,7 @@ public final class Constants {
 
       // :3 idle modes
       public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
-      public static final IdleMode kTurningMotorIdleMode = IdleMode.kCoast;
+      public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
       // :3 current limits
       public static final int kDrivingMotorCurrentLimit = 50; // :3 amps
@@ -244,6 +244,7 @@ public final class Constants {
         public static final double kDrivingI = 0;
         public static final double kDrivingD = 0;
         public static final double kDrivingFF = 0;
+ 
         public static final double kDrivingMinOutput = -1;
         public static final double kDrivingMaxOutput = 1;
 
@@ -410,7 +411,7 @@ public final class Constants {
 
     public static final String fieldLayoutPath = ""; // H! this isn't actually used; instead a built in file is used.
     public static final Pose3d cameraPosition =
-      new Pose3d(new Translation3d(RobotConstants.frameWidth/2. - Units.inchesToMeters(2.75), 0, Units.inchesToMeters(15+13/16)), new Rotation3d(0, Math.PI/4, 0));
+      new Pose3d(new Translation3d(RobotConstants.frameWidth/2. - Units.inchesToMeters(2.75), 0, Units.inchesToMeters(15+13/16)), new Rotation3d(Math.PI, -Math.PI/4, 0));
     public static final Transform3d robotToCamera = new Transform3d(new Pose3d(), cameraPosition);
   }
 
@@ -452,7 +453,7 @@ public final class Constants {
     
     // && The range of shooter speeds that are "acceptable" on either side of the target speed 
     public static final double ampSpeedRange = 30;
-    public static final double speakerSpeedRange = 100;
+    public static final double speakerSpeedRange = 150;
     public static final double stopSpeedRange = 1;
   }
 
