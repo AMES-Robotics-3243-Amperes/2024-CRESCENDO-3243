@@ -11,7 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.DataManager;
@@ -95,8 +94,6 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
     Pose2d dataManagerUpdateData = new Pose2d(m_odometry.getPoseMeters().getTranslation(), m_imu.getYaw());
     DataManager.currentRobotPose.updateWithOdometry(dataManagerUpdateData);
 
-    SmartDashboard.putNumber("odometry x", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("odometry y", m_odometry.getPoseMeters().getY());
 
     PowerManager.frontLeftDrivetrainMotorPresentCurrent = m_frontLeft.getMotorOutputCurrent();
     PowerManager.frontRightDrivetrainMotorPresentCurrent = m_frontRight.getMotorOutputCurrent();

@@ -187,7 +187,6 @@ public class DataManager {
          */
         protected void combineUpdateData() {
             // This seems to behave a little weird and alternate bettween using vision and not, but it's fine-ish for now (I hope) H!
-            SmartDashboard.putNumber("photonAmbiguity", m_latestAmbiguity);
             if (m_latestAmbiguity >= 0.04 || m_latestPhotonPose == null || !usePhotonVision) {
                 Translation3d translationChange = m_latestOdometryPose.getTranslation().minus(m_previousOdometryPose.getTranslation());
                 Rotation3d rotationChange = m_latestOdometryPose.getRotation().minus(m_previousOdometryPose.getRotation());
@@ -199,16 +198,15 @@ public class DataManager {
                 // :> Testing data for debugging photonvision please ignore
                 // :> Also worth noting this  was the first place I was able  to find a pose3D though I may be blind
                 field2d.setRobotPose(m_robotPose.toPose2d());
-                SmartDashboard.putData(field2d);
-                SmartDashboard.putBoolean("usingVision", false);
             } else {
-                SmartDashboard.putNumber("photonPoseX", m_latestPhotonPose.getX());
-                SmartDashboard.putNumber("photonPoseY", m_latestPhotonPose.getY());
-                SmartDashboard.putNumber("photonPoseRotZ", m_latestPhotonPose.getRotation().getZ());
+
                 m_robotPose = m_latestPhotonPose;
-                SmartDashboard.putBoolean("usingVision", true);
+                
             }
             m_previousOdometryPose = m_latestOdometryPose;
+
+            field2d.setRobotPose(m_robotPose.toPose2d());
+            SmartDashboard.putData(field2d);
         }
 
         /**
@@ -312,6 +310,7 @@ public class DataManager {
      * be done by a subsystem or command.
      */
     public static void periodic() {
-        SmartDashboard.putNumber("noteProximity", currentNoteStorageSensor.colorSensor.getProximity());
+        // && Widget for whether note is detected iin shuffleboard
+       SmartDashboard.putBoolean("noteDeeznutz", DataManager.currentNoteStorageSensor.get());
     }
 }

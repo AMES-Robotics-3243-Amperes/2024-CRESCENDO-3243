@@ -94,10 +94,6 @@ public class SubsystemClimber extends SubsystemBase {
   }
 
   public boolean runClimber(boolean dPadUp, boolean dPadDown) {
-    SmartDashboard.putNumber("targetPositionOne", targetPositionOne);
-    SmartDashboard.putNumber("targetPositionTwo", targetPositionTwo);
-    SmartDashboard.putNumber("currentRotationsOne", currentRotationsOne);
-    SmartDashboard.putNumber("currentRotationsTwo", currentRotationsTwo);
     if (motorOne.getOutputCurrent() > MotorCurrentLimit) {
       motorOneComplete = true;
     }
@@ -202,8 +198,7 @@ public class SubsystemClimber extends SubsystemBase {
 
   // ££ If the climbers are fully lowered (limit switches activated) sets the base encoder value
   public void calibrateClimber(boolean limitSwitchOneTripped, boolean limitSwitchTwoTripped) {
-    SmartDashboard.putBoolean("limitSwitchOneTripped", limitSwitchOneTripped);
-    SmartDashboard.putBoolean("limitSwitchTwoTripped", limitSwitchTwoTripped);
+    
     if (limitSwitchOneTripped != true) {
       if (!positionInitializedOne || motorOneRelativeEncoder.getPosition() <= 0) {
         targetPositionOne = 0;
