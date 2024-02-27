@@ -2,26 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.plate;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.SubsystemClimber;
 import frc.robot.JoyUtil;
+import frc.robot.subsystems.SubsystemPlate;
+import static frc.robot.Constants.Plate.*;
 
-public class CommandClimber extends Command {
-
-  // ££ Subsystem
-  SubsystemClimber m_subsystemClimber;
-
-  // ££ Controller
+public class CommandPlateTeleop extends Command {
+  SubsystemPlate m_subsystem;
   JoyUtil m_controller;
-
-  /** Creates a new ClimberCommand. */
-  public CommandClimber(SubsystemClimber subsystem, JoyUtil controller) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_subsystemClimber = subsystem;
+  /** Creates a new CommandPlateTeleop. */
+  public CommandPlateTeleop(SubsystemPlate subsystem, JoyUtil controller) {
+    m_subsystem = subsystem;
     m_controller = controller;
-
     addRequirements(subsystem);
   }
 
@@ -32,10 +26,7 @@ public class CommandClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean dPadUp = m_controller.getPOVUp();
-    boolean dPadDown = m_controller.getPOVDown();
-
-    m_subsystemClimber.runClimber(dPadUp, dPadDown);
+    m_subsystem.setPosition(m_subsystem.getNumericPosition() + manualSpeedFactor * m_controller.getRightY());
   }
 
   // Called once the command ends or is interrupted.

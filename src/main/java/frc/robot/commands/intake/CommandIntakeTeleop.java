@@ -1,15 +1,17 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
+import frc.robot.DataManager;
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.SubsystemIntake;
-import frc.robot.subsystems.SubsystemIntake.setPoints;
 import edu.wpi.first.wpilibj2.command.Command;
-public class CommandTeleopIntake extends Command {
+public class CommandIntakeTeleop extends Command {
 
   private final JoyUtil m_Controller;
   protected final SubsystemIntake m_Subsystem;
+  protected boolean isIntaking = false;
+  protected boolean startingNotePresence = false;
 
   /** Creates a new command. */
-  public CommandTeleopIntake(SubsystemIntake intake, JoyUtil controller) {
+  public CommandIntakeTeleop(SubsystemIntake intake, JoyUtil controller) {
     m_Controller = controller;
     m_Subsystem = intake;
     addRequirements(intake);
@@ -22,25 +24,21 @@ public class CommandTeleopIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // :> Checks which setpoint the driver wants to input
-    // :> Note do not press multiple of these at the same time :(
-    if (m_Controller.getPOVLeft()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.position1);
-    }
-    if (m_Controller.getPOVDown()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.position2);
-    }
-    if (m_Controller.getPOVRight()) {
-      m_Subsystem.setFourBarPositionReference(setPoints.position3);
-    }
     // ss Activates and Deactivates the Intake when the A button is pressed or unpressed
     if (m_Controller.getAButton()) {
-      m_Subsystem.turnOnIntake();
+      m_Subsystem.intake();
+      isIntaking = true;
+      startingNotePresence = DataManager.currentNoteStorageSensor.get();
+    } else if (m_Controller.getBButton()) {
+      m_Subsystem.outtake();
+      isIntaking = false;
+    } 
+    if (isIntaking && startingNotePresence != DataManager.currentNoteStorageSensor.get()) {
+      isIntaking = false;
     }
-    else {
-      m_Subsystem.turnOffIntake();
+    if (!m_Controller.getAButton() && !m_Controller.getBButton() && !isIntaking) {
+      m_Subsystem.stop();
     }
-
   }
   
   // Called once the command ends or is interrupted.

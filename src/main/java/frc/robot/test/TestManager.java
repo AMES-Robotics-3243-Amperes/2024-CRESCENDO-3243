@@ -142,22 +142,11 @@ public class TestManager {
         }
         
         cyclesRun++;
-        SmartDashboard.putNumber("CyclesRun", cyclesRun);
         //System.out.println("#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#\n#");
         String[] testGroupNames = new String[groupsToTest.size()];
         for (int i = 0; i < groupsToTest.size(); i++) {
             testGroupNames[i] = groupsToTest.get(i).getName();
         }
-
-        SmartDashboard.putBoolean("TestManagerAlive", true);
-
-        SmartDashboard.putStringArray("TestGroupsQueued", testGroupNames);
-        try {
-            SmartDashboard.putString("FirstTestGroup", groupsToTest.get(0).getName());
-        } catch (Exception e) {
-            //System.out.println("No test groups");
-        }
-        
 
         if (groupsToTest.size() > 0) {
             results.putIfAbsent(groupsToTest.get(0).getName(), new HashMap<String, TestResults>());
