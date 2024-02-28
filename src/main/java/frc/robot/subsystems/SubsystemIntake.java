@@ -12,7 +12,7 @@ import static frc.robot.Constants.IntakeConstants.*;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.test.Test;
 import frc.robot.utility.SubsystemBaseTestable;
@@ -78,7 +78,10 @@ public class SubsystemIntake extends SubsystemBaseTestable {
     //intakeD = tab.add("intake D Value:", IntakePIDs.kD).getEntry();
     //intakeFF = tab.add("intake FF Value:", IntakePIDs.kFF).getEntry();
     
-
+    // ss sets up intake camera
+    // Should be accessible from Sources in CameraServer
+    // May need a different device number
+    CameraServer.startAutomaticCapture("Intake Camera", 0);
   }
 
   @Override
