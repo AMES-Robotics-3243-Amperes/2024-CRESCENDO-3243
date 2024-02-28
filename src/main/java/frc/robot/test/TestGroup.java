@@ -1,4 +1,4 @@
-package frc.robot.utility;
+package frc.robot.test;
 
 public interface TestGroup {
     public Test[] getTests();

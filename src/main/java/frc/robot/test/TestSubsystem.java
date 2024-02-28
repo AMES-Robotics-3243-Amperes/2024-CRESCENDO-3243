@@ -2,9 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.utility;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.utility.SubsystemBaseTestable;
 
 public class TestSubsystem extends SubsystemBaseTestable {
 
@@ -32,7 +33,6 @@ public class TestSubsystem extends SubsystemBaseTestable {
       timer++;
       a++;
       assert a == timer;
-      SmartDashboard.putBoolean("testPhase", isTesting);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class TestSubsystem extends SubsystemBaseTestable {
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
-      return null; // TODO add dependencies and such
+      // Auto-generated method stub
+      return null; // add dependencies and such
     }
     
   }
@@ -76,49 +76,49 @@ public class TestSubsystem extends SubsystemBaseTestable {
 
     @Override
     public void testPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       
     }
 
     @Override
     public boolean testIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return false;
     }
 
     @Override
     public void setupPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       
     }
 
     @Override
     public boolean setupIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return false;
     }
 
     @Override
     public void closedownPeriodic() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       
     }
 
     @Override
     public boolean closedownIsDone() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return false;
     }
 
     @Override
     public String getName() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return null;
     }
 
     @Override
     public Test[] getDependencies() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       return null;
     }
     
