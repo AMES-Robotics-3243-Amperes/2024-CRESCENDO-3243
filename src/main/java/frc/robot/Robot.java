@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     DataManager.onRobotInit();
+    m_robotContainer.configureAllianceDependence();
   }
 
   /**
@@ -81,6 +82,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

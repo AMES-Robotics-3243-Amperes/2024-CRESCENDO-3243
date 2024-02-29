@@ -7,6 +7,8 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveTrain.DriveConstants;
 import frc.robot.Constants.DriveTrain.DriveConstants.ChassisKinematics;
@@ -97,13 +99,12 @@ public class CommandSwerveTeleopDrive extends Command {
   }
 
   /**
-   * Sets if driving should be reversed or not
-   * 
-   * @param value if driving should be reversed
+   * Handles setting the correct reverse value.
+   * Should be called once FMS info has been gathered.
    * 
    * @author :3
    */
-  public void setReverse(boolean value) {
-    reverse = value;
+  public void handleReverse() {
+    this.reverse = DriverStation.getAlliance().get() == Alliance.Red;
   }
 }

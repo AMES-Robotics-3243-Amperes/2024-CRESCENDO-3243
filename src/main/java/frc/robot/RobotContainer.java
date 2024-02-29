@@ -128,12 +128,6 @@ public class RobotContainer {
 
     secondaryController.rightBumper().onFalse(new CommandFourBarMoveFourBar(m_SubsystemFourBar, SetPoints.fourBarNotDeployedPosition));
 
-    primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
-    
-    primaryController.b().whileTrue(new CommandScoreInSpeakerRight(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
-    primaryController.y().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center));
-    primaryController.x().whileTrue(new CommandScoreInSpeakerLeft(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
-
     primaryController.a().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.b().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
     primaryController.y().onFalse(new CommandShooterStopInstant(m_SubsystemShooter));
@@ -215,5 +209,15 @@ public class RobotContainer {
       
     //   new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside)
     // );
+  }
+
+  public void configureAllianceDependence() {
+    m_CommandSwerveTeleopDrive.handleReverse();
+
+    primaryController.a().whileTrue(new CommandScoreInAmp(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+    
+    primaryController.b().whileTrue(new CommandScoreInSpeakerRight(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
+    primaryController.y().whileTrue(new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center));
+    primaryController.x().whileTrue(new CommandScoreInSpeakerLeft(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar));
   }
 }
