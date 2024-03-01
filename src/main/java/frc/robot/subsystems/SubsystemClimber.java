@@ -121,10 +121,10 @@ public class SubsystemClimber extends SubsystemBase {
 
 
       if (currentRotationsOne < motorPositionLimit) {
-        targetPositionOne = currentRotationsOne + 1;
+        targetPositionOne = currentRotationsOne + 4;
       }
       if (currentRotationsTwo < motorPositionLimit) {
-        targetPositionTwo = currentRotationsTwo + 1;
+        targetPositionTwo = currentRotationsTwo + 4;
       }
     } 
       // :> test
@@ -157,11 +157,11 @@ public class SubsystemClimber extends SubsystemBase {
 
      
       if (currentRotationsOne >= 0 || !positionInitializedOne) {
-        targetPositionOne = currentRotationsOne - 1;
+        targetPositionOne = currentRotationsOne - 4;
       
       }
       if (currentRotationsTwo >= 0 || !positionInitializedTwo) {
-        targetPositionTwo = currentRotationsTwo - 1;
+        targetPositionTwo = currentRotationsTwo - 4;
       }
 
       // if (motorOne.getOutputCurrent() < MotorCurrentLimit) {

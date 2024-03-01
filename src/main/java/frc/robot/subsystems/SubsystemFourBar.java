@@ -109,7 +109,7 @@ public class SubsystemFourBar extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // && Widget for the tauron position on shuffleboard
-    //SmartDashboard.putNumber("4BarRotations",m_fourBarAbsoluteEncoder.getPosition());
+    SmartDashboard.putNumber("4BarRotations",m_fourBarAbsoluteEncoder.getPosition());
 
     // :> Sets the current state of the shuffleboard inputs
     //fourBarPCurrentState = fourBarP.getDouble(FourBarPIDs.fourBarP);

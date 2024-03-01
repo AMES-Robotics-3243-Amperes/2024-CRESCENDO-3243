@@ -56,13 +56,13 @@ public final class Constants {
     
     public static Pose2d leftBlueWingNote1 = new Pose2d(1.8956, 7, new Rotation2d(Math.PI));
     public static Pose2d middleBlueWingNote1 = new Pose2d(1.8956, 5.688, new Rotation2d(Math.PI));
-    public static Pose2d rightBlueWingNote1 = new Pose2d(1.8956, 4.24, new Rotation2d(Math.PI));
+    public static Pose2d rightBlueWingNote1 = new Pose2d(1.8956, 4.2, new Rotation2d(Math.PI));
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
     public static Pose2d leftRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 6.8101, new Rotation2d(0));
     public static Pose2d middleRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 5.6579, new Rotation2d(0));
     public static Pose2d rightRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 4.3, new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote2 = new Pose2d(3.1956, 7, new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote2 = new Pose2d(3.0956, 7, new Rotation2d(Math.PI));
     public static Pose2d middleBlueWingNote2 = new Pose2d(3.1956, 5.688, new Rotation2d(Math.PI));
     public static Pose2d rightBlueWingNote2 = new Pose2d(2.9956, 4.3, new Rotation2d(Math.PI));
     
@@ -83,8 +83,8 @@ public final class Constants {
 
     // :> This is a reference for shooting, it is the center of the speaker relative to the fieldFc
     // :> Worth noting I took all these measurements myself using the field onshape layout
-    public static Pose2d blueSpeakerCenterReference = new Pose2d((0.4572 / 2), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
-    public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), ((fieldHeight - 2.035) - (1.05 / 2)), new Rotation2d(0));
+    public static Pose2d blueSpeakerCenterReference = new Pose2d((0.4572 / 2), fieldHeight - 2.56, new Rotation2d(0));
+    public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), fieldHeight - 2.56, new Rotation2d(0));
 
     // :> Worth noting (teehee) these are going to the be used for mainly alligning to the amp as we score into it
     public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(Math.PI/2));
@@ -155,7 +155,7 @@ public final class Constants {
     public static final double kDeadzone = 0.12;
 
     // :3 max amount controller output can change per second
-    public static final double kRateLimitLeft = 4.5;
+    public static final double kRateLimitLeft = 4;
     public static final double kRateLimitRight = 4.5;
 
     // :3 curve stuff
@@ -305,7 +305,7 @@ public final class Constants {
 
       // :> This entire next section is utilized by PowerManager to manage the robots speed/acceleration
       // :3 speed damper (flat constant supplied speed is multiplied by)
-      public static final double kDrivingSpeedDamper = 5.5; // :3 meters per second
+      public static final double kDrivingSpeedDamper = 7; // :3 meters per second
       public static final double kSlowDrivingSpeedDamper = 0.8;
 
       // :> Speed Damper for the rotation of the robot
@@ -377,14 +377,14 @@ public final class Constants {
       // :3 auto-movement configuration
       public static final class AutoConstants {
         // :3 wiggle room for setpoint driving
-        public static final double kMaxSetpointDistance = 0.1;
-        public static final double kMaxSetpointRotationError = 0.1;
+        public static final double kMaxSetpointDistance = 0.04;
+        public static final Rotation2d kMaxSetpointRotationError = Rotation2d.fromDegrees(1);
 
         // :3 turning stuff
         public static final double kMaxAngularVelocityRadians = 3;
         public static final double kMaxAngularAccelerationRadians = 5;
 
-        public static final double kTuringP = 2;
+        public static final double kTuringP = 2.1;
         public static final double kTurningI = 0.1;
         public static final double kTurningD = 0.03;
 
@@ -398,7 +398,8 @@ public final class Constants {
 
         public static final double kSetpointP = 5;
         public static final double kSetpointI = 0.005;
-        public static final double kSetpointD = 1.1;
+        public static final double kSetpointD = 1.4;
+        public static final double kSetpointMinSpeed = 0.2;
 
         public static final TrajectoryConfig kTrajectoryConfig =
           new TrajectoryConfig(kMaxDrivingVelocity, kMaxDrivingAcceleration);

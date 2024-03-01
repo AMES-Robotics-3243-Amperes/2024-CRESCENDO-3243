@@ -68,12 +68,17 @@ public class CommandSwerveTeleopDrive extends Command {
     }
 
     // :3 get x and y speeds
-    double xSpeed = -m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
-    double ySpeed = -m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double xSpeed = -m_controller.getLeftY() * (reverse && fieldRelative ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double ySpeed = -m_controller.getLeftX() * (reverse && fieldRelative ? -1 : 1) * DataManager.currentVelocityConstant.get();
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
     if (fieldRelative) {
       speeds = speeds.rotateBy(DataManager.currentRobotPose.get().toPose2d().getRotation().times(-1));
+    }
+
+    // :3 this code is for the 2024 season camera layout. delete if you see past 2024. thanks!
+    if (!fieldRelative) {
+      speeds = speeds.times(-1);
     }
 
     // :3 get rotation speed

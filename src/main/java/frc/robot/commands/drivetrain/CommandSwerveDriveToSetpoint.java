@@ -85,6 +85,13 @@ public class CommandSwerveDriveToSetpoint extends Command {
 
     speeds = speeds.rotateBy(currentRobotPose.getRotation().times(-1));
 
+    Translation2d offset = currentGoal.get().getTranslation().minus(currentRobotPose.getTranslation());
+    Translation2d correctOffset = offset.times(AutoConstants.kSetpointMinSpeed / offset.getNorm());
+
+    if (offset.getNorm() != 0 && !isAtCorrectSpot(false)) {
+      speeds = speeds.plus(correctOffset);
+    }
+
     // :3 get rotation speed
     double rotationSpeed = thetaPidController.calculate(MathUtil.angleModulus(currentRobotPose.getRotation().getRadians()),
       currentGoal.get().getRotation().getRadians());
@@ -107,11 +114,16 @@ public class CommandSwerveDriveToSetpoint extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    return isAtCorrectSpot(true);
+  }
+
+  // Returns true when the robot is at the correct spot
+  public boolean isAtCorrectSpot(boolean considerRotation) {
     Pose2d currentRobotPose = DataManager.currentRobotPose.get().toPose2d();
     boolean positionCorrect =
       currentRobotPose.getTranslation().getDistance(currentGoal.get().getTranslation()) < AutoConstants.kMaxSetpointDistance;
 
-    return positionCorrect && getRotationCorrect();
+    return positionCorrect && (getRotationCorrect() || !considerRotation);
   }
 
   /**
@@ -122,9 +134,9 @@ public class CommandSwerveDriveToSetpoint extends Command {
   private boolean getRotationCorrect() {
     double currentRotationRadians = poseAngleModulus(DataManager.currentRobotPose.get().toPose2d()).getRotation().getRadians();
     double goalRotationRadians = goal.get().getRotation().getRadians();
-    return MathUtil.isNear(currentRotationRadians, goalRotationRadians, AutoConstants.kMaxSetpointRotationError)
-      || MathUtil.isNear(currentRotationRadians, goalRotationRadians + (Math.PI * 2), AutoConstants.kMaxSetpointRotationError)
-      || MathUtil.isNear(currentRotationRadians, goalRotationRadians, AutoConstants.kMaxSetpointRotationError + (Math.PI * 2));
+    return MathUtil.isNear(currentRotationRadians, goalRotationRadians, AutoConstants.kMaxSetpointRotationError.getRadians())
+      || MathUtil.isNear(currentRotationRadians, goalRotationRadians + (Math.PI * 2), AutoConstants.kMaxSetpointRotationError.getRadians())
+      || MathUtil.isNear(currentRotationRadians, goalRotationRadians, AutoConstants.kMaxSetpointRotationError.getRadians() + (Math.PI * 2));
   }
 
   /** Helper function that performs angle modulus on a Pose2d;
