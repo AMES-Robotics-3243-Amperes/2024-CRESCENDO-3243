@@ -83,8 +83,8 @@ public class SubsystemClimber extends SubsystemBase {
     limitSwitchOne = new DigitalInput(IDs.kSwitchOne);
     limitSwitchTwo = new DigitalInput(IDs.kSwitchTwo);
 
-    motorOne.setInverted(true);
-    motorTwo.setInverted(false);
+    motorOne.setInverted(false);
+    motorTwo.setInverted(true);
 
     targetPositionOne = 0;
     targetPositionTwo = 0;
@@ -120,12 +120,15 @@ public class SubsystemClimber extends SubsystemBase {
 
 
 
-      if (currentRotationsOne < motorPositionLimit) {
-        targetPositionOne = currentRotationsOne + 4;
-      }
-      if (currentRotationsTwo < motorPositionLimit) {
-        targetPositionTwo = currentRotationsTwo + 4;
-      }
+      // if (currentRotationsOne < motorPositionLimit) {
+      //   targetPositionOne = currentRotationsOne + 4;
+      // }
+      // if (currentRotationsTwo < motorPositionLimit) {
+      //   targetPositionTwo = currentRotationsTwo + 4;
+      // }
+
+      motorTwo.set(MotorSpeeds.kRiseSpeed);
+
     } 
       // :> test
     if (dPadDown) {
@@ -156,12 +159,18 @@ public class SubsystemClimber extends SubsystemBase {
       // }
 
      
-      if (currentRotationsOne >= 0 || !positionInitializedOne) {
-        targetPositionOne = currentRotationsOne - 4;
+      // if (currentRotationsOne >= 0 || !positionInitializedOne) {
+      //   targetPositionOne = currentRotationsOne - 4;
       
-      }
-      if (currentRotationsTwo >= 0 || !positionInitializedTwo) {
-        targetPositionTwo = currentRotationsTwo - 4;
+      // }
+      // if (currentRotationsTwo >= 0 || !positionInitializedTwo) {
+      //   targetPositionTwo = currentRotationsTwo - 4;
+      // }
+
+      if (!limitSwitchTwo.get()) {
+        motorTwo.set(MotorSpeeds.kInitialFallSpeed);
+      } else {
+        motorTwo.set(0);
       }
 
       // if (motorOne.getOutputCurrent() < MotorCurrentLimit) {
@@ -175,8 +184,8 @@ public class SubsystemClimber extends SubsystemBase {
       // 1. Lower the climber until the current is not above a certain amount
     }
 
-    motorOneController.setReference(targetPositionOne, ControlType.kPosition);
-    motorTwoController.setReference(targetPositionTwo, ControlType.kPosition);
+    // motorOneController.setReference(targetPositionOne, ControlType.kPosition);
+    // motorTwoController.setReference(targetPositionTwo, ControlType.kPosition);
 
 
 
@@ -199,7 +208,7 @@ public class SubsystemClimber extends SubsystemBase {
   // ££ If the climbers are fully lowered (limit switches activated) sets the base encoder value
   public void calibrateClimber(boolean limitSwitchOneTripped, boolean limitSwitchTwoTripped) {
     
-    if (limitSwitchOneTripped != true) {
+    if (limitSwitchOneTripped) {
       if (!positionInitializedOne || motorOneRelativeEncoder.getPosition() <= 0) {
         targetPositionOne = 0;
       }
@@ -209,7 +218,7 @@ public class SubsystemClimber extends SubsystemBase {
     }
     
     
-    if (limitSwitchTwoTripped != true) {
+    if (limitSwitchTwoTripped) {
       if (!positionInitializedTwo || motorTwoRelativeEncoder.getPosition() <= 0) {
         targetPositionTwo = 0;
       }

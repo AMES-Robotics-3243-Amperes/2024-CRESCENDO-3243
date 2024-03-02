@@ -43,31 +43,38 @@ public final class Constants {
      * Merrick was silly and so I will be doing everything in terms of artificially defined constants
      * Note: we are in meters
     */ 
+    
 
     public static double fieldHeight = 8.02;
     public static double fieldWidth = 16.54;
     // H! meters per hundered inches
     public static double merrickFieldConstant = (2.5399986284);
 
+    // :> This is a reference for shooting, it is the center of the speaker relative to the fieldFc
+    // :> Worth noting I took all these measurements myself using the field onshape layout
+    public static Pose2d blueSpeakerCenterReference = new Pose2d((0.4572 / 2), fieldHeight - 2.56, new Rotation2d(0));
+    public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), fieldHeight - 2.56, new Rotation2d(0));
+
+
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
-    public static Pose2d leftRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 6.8101, new Rotation2d(0));
-    public static Pose2d middleRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 5.6579, new Rotation2d(0));
-    public static Pose2d rightRedWingNote1 = new Pose2d(fieldWidth - 2.3956, 4.2457, new Rotation2d(0));
+    public static Pose2d leftRedWingNote1 = new Pose2d(fieldWidth - 2.0956, 6.8101, new Rotation2d(0));
+    public static Pose2d middleRedWingNote1 = new Pose2d(fieldWidth - 2.0956, 5.6579, new Rotation2d(0));
+    public static Pose2d rightRedWingNote1 = new Pose2d(fieldWidth - 2.0956, (redSpeakerCenterReference.getY() + Units.inchesToMeters(57)), new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote1 = new Pose2d(1.8956, 7, new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote1 = new Pose2d(1.8956, (redSpeakerCenterReference.getY() + Units.inchesToMeters(57)), new Rotation2d(Math.PI));
     public static Pose2d middleBlueWingNote1 = new Pose2d(1.8956, 5.688, new Rotation2d(Math.PI));
     public static Pose2d rightBlueWingNote1 = new Pose2d(1.8956, 4.2, new Rotation2d(Math.PI));
     // :> All Rotations I'm going to set to be 0 as we don't actually care what direction we approach the notes from, we only need the x and y
     public static Pose2d leftRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 6.8101, new Rotation2d(0));
     public static Pose2d middleRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 5.6579, new Rotation2d(0));
-    public static Pose2d rightRedWingNote2 = new Pose2d(fieldWidth - 2.8956, 4.3, new Rotation2d(0));
+    public static Pose2d rightRedWingNote2 = new Pose2d(fieldWidth - 2.8956, (redSpeakerCenterReference.getY() + Units.inchesToMeters(57)), new Rotation2d(0));
     
-    public static Pose2d leftBlueWingNote2 = new Pose2d(3.0956, 7, new Rotation2d(Math.PI));
+    public static Pose2d leftBlueWingNote2 = new Pose2d(3.0956, (redSpeakerCenterReference.getY() + Units.inchesToMeters(57)), new Rotation2d(Math.PI));
     public static Pose2d middleBlueWingNote2 = new Pose2d(3.1956, 5.688, new Rotation2d(Math.PI));
     public static Pose2d rightBlueWingNote2 = new Pose2d(2.9956, 4.3, new Rotation2d(Math.PI));
     
     // public static Pose2d leftBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+1, ((fieldHeight/2)+(2*(.57 * merrickFieldConstant))), new Rotation2d(Math.PI));
-    // public static Pose2d middleBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
+    // public static Pose2d middleBlueWingNote2 = new Poq se2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2)+(.57 * merrickFieldConstant)), new Rotation2d(Math.PI));
     // public static Pose2d rightBlueWingNote2 = new Pose2d((1.14 * merrickFieldConstant)+.65, ((fieldHeight/2) - .25), new Rotation2d(Math.PI));
 
     // :> Going from left to right
@@ -81,11 +88,7 @@ public final class Constants {
     // :> I really hope I typed these all in correctly or we are going to have a repeat of last years incident with Bryce
 
 
-    // :> This is a reference for shooting, it is the center of the speaker relative to the fieldFc
-    // :> Worth noting I took all these measurements myself using the field onshape layout
-    public static Pose2d blueSpeakerCenterReference = new Pose2d((0.4572 / 2), fieldHeight - 2.56, new Rotation2d(0));
-    public static Pose2d redSpeakerCenterReference = new Pose2d((fieldWidth - (0.4572 / 2)), fieldHeight - 2.56, new Rotation2d(0));
-
+   
     // :> Worth noting (teehee) these are going to the be used for mainly alligning to the amp as we score into it
     public static Pose2d blueAmp = new Pose2d(((fieldWidth/2)-(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(Math.PI/2));
     public static Pose2d redAmp = new Pose2d(((fieldWidth/2)+(2.50550*merrickFieldConstant)), fieldHeight, new Rotation2d(Math.PI/2));
@@ -100,7 +103,7 @@ public final class Constants {
     public static Pose2d redStagePosition3 = new Pose2d(10.78, (fieldHeight-4.1), new Rotation2d(0));
 
     public static Pose2d[] noteBluePositions = new Pose2d[]{leftBlueWingNote1, leftBlueWingNote2, middleBlueWingNote1, middleBlueWingNote2, rightBlueWingNote1, rightBlueWingNote2, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
-    public static Pose2d[] noteRedPositions = new Pose2d[]{leftRedWingNote1, leftRedWingNote2, middleRedWingNote1, middleRedWingNote2, rightRedWingNote1, rightRedWingNote2, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
+    public static Pose2d[] noteRedPositions = new Pose2d[]{rightRedWingNote1, rightRedWingNote2, middleRedWingNote1, middleRedWingNote2, leftRedWingNote1, leftRedWingNote2, middleFieldNote1, middleFieldNote2, middleFieldNote3, middleFieldNote4, middleFieldNote5};
     public static Pose2d[] stageRedPositions = new Pose2d[]{redStagePosition1, redStagePosition2, redStagePosition3};  
     public static Pose2d[] stageBluePositions = new Pose2d[]{blueStagePosition1, blueStagePosition2, blueStagePosition3}; 
   }
@@ -181,7 +184,7 @@ public final class Constants {
     */ 
     public static final double robotResistance = .025;
 
-    // :> These values dictate at what point the robot is at unsafe voltage draw
+    // :> These values dictate at what point the robot is at unsafe voltage rrrrrrrrrrr 
     public static final double softVoltageCap = 8.5;
     public static final double hardVoltageCap = 7.8;
   }
@@ -209,8 +212,8 @@ public final class Constants {
 
       public static final class MotorSpeeds {
         // ££ Sets the speeds of the motors on the rise and fall
-        public static final double kRiseSpeed = -0.5;
-        public static final double kInitialFallSpeed = 0.5;
+        public static final double kRiseSpeed = -0.8;
+        public static final double kInitialFallSpeed = 0.8;
       }
 
       public static final class ClimberPIDFF {
@@ -377,7 +380,7 @@ public final class Constants {
       // :3 auto-movement configuration
       public static final class AutoConstants {
         // :3 wiggle room for setpoint driving
-        public static final double kMaxSetpointDistance = 0.04;
+        public static final double kMaxSetpointDistance = 0.08;
         public static final Rotation2d kMaxSetpointRotationError = Rotation2d.fromDegrees(1);
 
         // :3 turning stuff
@@ -456,13 +459,13 @@ public final class Constants {
     // && The target speeds for the speaker and the amp (range will be based on these)
     // && todo: put in actual, reasonable numbers for all of the things below
     // H! the above should be done, but the numbers are currently untested
-    public static final double ampShootSpeed = 630;
+    public static final double ampShootSpeed = 780;
     public static final double speakerShootSpeed = 5000;
     public static final double stopShootSpeed = 0.0;
     
     // && The range of shooter speeds that are "acceptable" on either side of the target speed 
     public static final double ampSpeedRange = 30;
-    public static final double speakerSpeedRange = 250;
+    public static final double speakerSpeedRange = 500;
     public static final double stopSpeedRange = 1;
   }
 

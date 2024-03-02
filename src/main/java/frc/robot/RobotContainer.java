@@ -26,6 +26,7 @@ import frc.robot.subsystems.SubsystemPhotonvision;
 import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 import frc.robot.subsystems.SubsystemFourBar.SetPoints;
+import frc.robot.utility.AutoSelection;
 import frc.robot.utility.SpeakerPosition;
 import frc.robot.subsystems.SubsystemIntake;
 import frc.robot.subsystems.SubsystemClimber;
@@ -39,6 +40,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -173,100 +176,112 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() { 
-     // BLUE
-    return new SequentialCommandGroup(
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside),
+  public Command getAutonomousCommand() {
+    AutoSelection autoSelection = AutoSelection.Note3;
+    /*return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
       
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftBlueWingNote2),
-      
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
-
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.middleBlueWingNote2),
-
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
-      
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote2),
-
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside)
-    );
-    
-   // RED
-   /* 
-    return new SequentialCommandGroup(
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
-      
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new WaitCommand(0.75),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftRedWingNote2),
-      
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
-
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new WaitCommand(0.75),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.middleRedWingNote2),
-
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
-
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new WaitCommand(0.75),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightRedWingNote2),
-
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center)
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.middleRedWingNote2)
     );
     */
 
-
-    // :> BLUE EDGES
-    /*
-    return new SequentialCommandGroup(
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside),
+    if (DriverStation.getAlliance().get() == Alliance.Blue && autoSelection == AutoSelection.Note3) {
+      return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
+        /* 
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftBlueWingNote2),
       
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftBlueWingNote2),
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.cent  er),
+        */
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.middleBlueWingNote2),
+
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
       
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside),
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote2),
 
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote2),
-
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside)
-    );
-
-    */
-
-
-
-
-    /*
-    return new SequentialCommandGroup(
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside),
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center)
+      );
+    } else if (DriverStation.getAlliance().get() == Alliance.Blue && autoSelection == AutoSelection.AmpsideNote) {
+      return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
       
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftRedWingNote2),
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftBlueWingNote2),
       
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside),
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center)
+      );
+    } else if (DriverStation.getAlliance().get() == Alliance.Blue && autoSelection == AutoSelection.SourcesideNote) {
+      return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
+      
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightBlueWingNote2),
+      
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center)
+      );
+    }
+    else if (DriverStation.getAlliance().get() == Alliance.Red && autoSelection == AutoSelection.Note3) {
+      return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
+      
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftRedWingNote2),
+      
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
 
-      new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
-      new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
-      new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightRedWingNote2),
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(2)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.middleRedWingNote2),
 
-      new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside)
-    );
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center),
 
-    */
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new WaitCommand(0.9),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightRedWingNote2),
+
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.center)
+      );
+    } else if (DriverStation.getAlliance().get() == Alliance.Red && autoSelection == AutoSelection.AmpsideNote) {
+      return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside),
+        
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(0)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.rightRedWingNote2),
+        
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.ampside)
+      );
+    } else if (DriverStation.getAlliance().get() == Alliance.Red && autoSelection == AutoSelection.SourcesideNote) {
+      return new SequentialCommandGroup(
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside),
+      
+        new CommandSwerveDriveToSetpoint(m_SubsystemSwerveDrivetrain, () -> DataManager.FieldPoses.getNotePositions(4)),
+        new CommandFourBarMoveFourBar(m_SubsystemFourBar, SubsystemFourBar.SetPoints.fourBarFullyDeployedPosition),
+        new CommandDriveAndIntake(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemFourBar, Constants.FieldConstants.leftRedWingNote2),
+      
+        new CommandScoreInSpeaker(m_SubsystemSwerveDrivetrain, m_subsystemIntake, m_SubsystemShooter, m_SubsystemFourBar, SpeakerPosition.sourceside)
+      );
+    }
+
+    return null;
   }
   public void configureAllianceDependence() {
     m_CommandSwerveTeleopDrive.handleReverse();
