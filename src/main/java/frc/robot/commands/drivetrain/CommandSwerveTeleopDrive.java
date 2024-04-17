@@ -66,8 +66,8 @@ public class CommandSwerveTeleopDrive extends Command {
     }
 
     // :3 get x and y speeds
-    double xSpeed = -m_controller.getLeftY() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
-    double ySpeed = -m_controller.getLeftX() * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double xSpeed = -m_controller.getLeftY() * 0.5 * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
+    double ySpeed = -m_controller.getLeftX() * 0.5 * (reverse ? -1 : 1) * DataManager.currentVelocityConstant.get();
     Translation2d speeds = new Translation2d(xSpeed, ySpeed);
 
     if (fieldRelative) {
